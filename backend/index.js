@@ -35,7 +35,7 @@ app.use(express.json());
 
 app.get('/users', (req, res) => {
     try{ 
-        pool.query('SELECT Count(*) FROM users', (err,result)=>{
+        pool.query('SELECT * FROM users', (err,result)=>{
             //console.log(result.rows);//
             res.json(result.rows);
             //pool.end();
