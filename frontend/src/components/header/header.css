@@ -1,0 +1,30 @@
+.Header {
+    background-color: #848d05;
+    width: calc(100vw - 250px);
+    min-height: 50px;
+    float: left;
+    /*display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: left;*/
+    font-size: calc(10px + 2vmin);
+    color: white;
+
+    /*margin-left: 5px;*/
+    text-align: center;
+
+    /*border-radius: 10px;*/
+}
+
+.NameSite {
+    float: left;
+    margin-left: 10px;
+}
+
+.Login {
+    float: left;
+    position: absolute;
+    right: 0;
+
+    margin-right: 10px;
+}

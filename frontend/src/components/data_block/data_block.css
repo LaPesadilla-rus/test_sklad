@@ -1,0 +1,45 @@
+.DataBlock {
+    background-color: #cecece;
+    float: left;
+    width: calc(100vw - 260px);
+    height: calc(100vh - 170px); 
+    /*height: 100%;*/
+    
+    margin-left: 10px;
+    margin-top: 10px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+
+    position: relative;
+}
+
+.Data {
+    /*width: 50px;
+    height: 50px;*/
+    height: calc(100vh - 190px);
+    margin: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+.Block {
+    
+    height: 50px;
+    background-color: #24a197;
+    margin: 4px;
+    border-radius: 4px;
+    display: block;
+    text-shadow: 0 2px 1px rgba(0, 0, 0, 0.075);
+    border: 1px solid #1c7e76;
+    text-decoration: none;
+    color: white;
+}
+
+.Block:hover {
+    background-color: #154792;
+    box-shadow: 0 0 10px rgb(10, 103, 165);
+    transition: all 1s;
+}

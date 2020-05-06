@@ -1,0 +1,37 @@
+.Menu {
+    background-color: #131313;
+    float: left;
+    position: relative;
+    width: 250px;
+    height: 100%;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.button_block {
+    min-width: 210px;
+    margin: 10px;
+    padding: 15px 5px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    background: #3d58a3;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgb(10, 103, 165);
+    transition: all 1s;
+    border-radius: 15px;
+    border: 2px solid #1d2b50;
+    float: left;
+    text-decoration: none;
+}
+
+
+.button_block:hover {
+    box-shadow:  0 0 25px rgb(180, 179, 178);
+    background-color: #1d2b50;
+    transition: all 1s;
+  }
+.button_block.act{
+    background-color: #29ac29;
+    transition: all 0.5s;
+}
+
