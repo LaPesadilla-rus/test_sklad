@@ -5,8 +5,8 @@ export default class Header extends Component{
     render (){
         return (
             <div className="Header">
-                <div className="NameSite"> SKALD </div>
-                <div className="Login"> USER: 123</div>
+                <div className="NameSite"> Склад 9000 </div>
+                <div className="Login"> Пользователь: Поьзователь1</div>
             </div>
         );
     }

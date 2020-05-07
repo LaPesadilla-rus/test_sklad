@@ -1,7 +1,7 @@
 .Actions {
     background-color: #c7c7c7;
     float: left;
-    width: calc(100vw - 260px);
+    width: calc(100vw - 280px);
     height: 100px;
     position: relative;
     margin-left: 10px;
@@ -25,7 +25,7 @@
 
     background-color: #3a64bd;
 
-    font-size: calc(5px + 2vmin);
+    font-size: 20px;
     line-height: 70px;
     white-space: nowrap;
     text-decoration: none;

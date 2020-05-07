@@ -1,5 +1,5 @@
 .Menu {
-    background-color: #131313;
+    background-color: #2e2e2e;
     float: left;
     position: relative;
     width: 250px;
@@ -31,7 +31,7 @@
     transition: all 1s;
   }
 .button_block.act{
-    background-color: #29ac29;
+    background-color: #278f27;
     transition: all 0.5s;
 }
 

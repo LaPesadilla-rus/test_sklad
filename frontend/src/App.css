@@ -10,7 +10,7 @@
     flex-direction: row;
     align-items: baseline;
     justify-content: left;*/
-    font-size: calc(10px + 2vmin);
+    font-size: 25px;
     color: white;
 
     position: relative;

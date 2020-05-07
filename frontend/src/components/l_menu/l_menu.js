@@ -6,7 +6,7 @@ export default class Menu extends Component{
     render (){
         return (
             <div className="Menu">
-                MENU
+                Меню
                 <NavLink className="button_block" activeClassName="act" to="/sklad/all">
                     Склад
                 </NavLink> 
