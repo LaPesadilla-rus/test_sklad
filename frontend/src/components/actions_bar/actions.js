@@ -11,7 +11,7 @@ export default class Actions extends Component{
             <div className="Actions">
                 <Route path='/sklad/all' component={Action_new}/>
                 <Route path='/sklad/edit/' component={Action_ed}/>
-                <Route path='/sklad/new/' component={Action_s}/>
+                <Route path='/sklad/new/123' component={Action_s}/>
             </div>
         );
     }

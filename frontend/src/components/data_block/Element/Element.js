@@ -11,8 +11,12 @@ export default class Element extends Component {
             name: '',
             e_type: '1',
             f_name: '1',
+            kol: '',
             date: '',
+            type_data: [],
+            man_data: [],
         };
+
     }
 
     handleSubmit = event => {
@@ -22,18 +26,40 @@ export default class Element extends Component {
             name: this.state.name,
             e_type: this.state.e_type,
             f_name: this.state.f_name,
+            kol: this.state.kol,
             date: this.state.date
         }
-
-        axio.post('/sklad/new/save', {data}).then(res => {
+        var err = '';
+        if (data.name == ''){
+            err = err + 'Инвентарный номер не введен!';
+        }
+        if (data.kol == ''){
+            err = err + 'Количество не введено!';
+        }
+        if (data.date == ''){
+            err = err + 'Дата не введена!';
+        }
+        if (!err == ''){
+            alert(err);
+        }else{
+            console.log(data);
+            axio.post('/sklad/new/save', {data}).then(res => {
             console.log(res.data);
+            if (res.data = 'POST COMPLITE') {
+                alert('Сохранение успешно');
+                this.props.history.push('/sklad/all');
+            }else{
+                alert('Данные не удалось сохранить');
+            }
         });
+        }
+        
     }
 
     handleChange = event => {
         if (event.target.name = 'name')
             this.setState({name: event.target.value});
-        console.log(event.target.name);
+        //console.log(event.target.name);
     };
 
     ChangeDate = event => {
@@ -48,36 +74,60 @@ export default class Element extends Component {
         this.setState({f_name: event.target.value});
     };
 
-    
+    ChangeKol = event => {
+        this.setState({kol: event.target.value});
+    };
+
+    componentDidMount = () => {
+        axio.get('./new/type').then(res=>{
+            console.log(res.data);
+            this.setState({
+                type_data: res.data
+            });
+        });
+        axio.get('./new/man').then(res=>{
+            console.log(res.data);
+            this.setState({
+                man_data: res.data
+            });
+        });
+    }
 
 
     render () {
         return (
             <div className="Element">
                 <form onSubmit={this.handleSubmit}>
-                <div>
-                    <p>Название элемента </p>
-                    <p>Тип элемента </p>
-                    <p>Производитель </p>
-                    <p>Дата ввода </p>
-                </div>
-                <div>
-                    <p><input name='name' onChange={this.handleChange}></input> </p>
-                    <p>
-                        <select id="elem_type" name='e_type' onChange={this.ChangeType}>
-                            <option value="1">Оперативная память</option>
-                            <option value="2">Жесткий диск</option>   
-                        </select> 
-                    </p>
-                    <p>
-                        <select id="fact_name" name='f_name' onChange={this.ChangeFirm}>
-                            <option value="1">Производитель 1</option>
-                            <option value="2">Производитель 2</option>
-                        </select> 
-                    </p>
-                    <p><input type="date" name='date' onChange={this.ChangeDate}></input> </p>
-                </div>
-                <button type='submit' className="action_block">Сохранить</button>
+                    <div>
+                        <p>Инвентарный номер </p>
+                        <p>Тип элемента </p>
+                        <p>Производитель </p>
+                        <p>Количество </p>
+                        <p>Дата ввода </p>
+                    </div>
+                    <div>
+                        <p><input name='name' onChange={this.handleChange}></input> </p>
+                        <p>
+                            <select id="elem_type" name='e_type' onChange={this.ChangeType}>
+                                {this.state.type_data.map( id => <option key={id.te_id} value={id.te_id}>{id.te_name}</option>)}
+                                  
+                            </select> 
+                        </p>
+                        <p>
+                            <select id="fact_name" name='f_name' onChange={this.ChangeFirm}>
+                            {this.state.man_data.map( id => <option key={id.m_id} value={id.m_id}>{id.m_name}</option>)}
+                                
+                            </select> 
+                        </p>
+                        <p><input name='kol' type='number' onChange={this.ChangeKol}></input> </p>
+                        <p><input type="date" name='date' onChange={this.ChangeDate}></input> </p>
+                    </div>
+                    <button type='submit' className="action_block">
+                        Сохранить
+                    </button>
+                    <button type='reset' className="action_block" >
+                        Отменить
+                    </button>
                 </form>
             </div>
         );
