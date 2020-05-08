@@ -53,7 +53,6 @@ app.get('/sklad/new/type', (req, res) => {
 app.get('/sklad/new/man', (req, res) => { 
     pool.query(`SELECT * FROM manufact`
     , (err,result)=>{
-        //res.json(result.rows);
         if (err !== undefined) {
             console.log("Error:", err);
         }else{
@@ -61,26 +60,6 @@ app.get('/sklad/new/man', (req, res) => {
         }
     }); 
 });
-
-/*app.get('/sklad/new', (req, res) => {
-    try{ 
-        pool.query(`SELECT * FROM type_equip`
-        , (err,result)=>{
-            for(var i = 0; i < result.rows.length; i++){
-                dt.push({
-                    id : result.rows[i].m_id,
-                    f_name : result.rows[i].m_name
-                })
-            }
-            //res.json(dt);
-            console.log(dt);
-        });
-    } catch (err) {
-        console.log(err);
-    }
-    console.log(dt);
-  
-});*/
 
 app.post('/sklad/new/save', (req,res) => {
     if(!req.body.data) return res.sendStatus(400);

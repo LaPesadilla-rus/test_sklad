@@ -33,7 +33,7 @@
 
 .Block {
     min-height: 50px;
-    min-width: 560px;
+    min-width: 854px;
     background-color: #24a197;
     margin-left: 4px;
     margin-right: 4px;
@@ -52,7 +52,7 @@
 
 .Block-head{
     min-height: 50px;
-    min-width: 560px;
+    min-width: 854px;
     margin-left: 4px;
     margin-right: 4px;
     border-radius: 4px;
@@ -72,8 +72,8 @@
 .Block-head label{
     display: grid;
     display: inline-grid;
-    width: calc((100vw - 324px)/4);
-    min-width: 174px;
+    width: calc((100vw - 330px)/7);
+    min-width: 120px;
     border-left: 1px solid black;
     border-right: 1px solid black;
 
@@ -84,12 +84,14 @@
     /*display: grid;
     display: inline-grid;*/
     display: table-cell;
-    width: calc((100vw - 324px)/4);
-    min-width: 174px;
+    width: calc((100vw - 330px)/7);
+    min-width: 120px;
+    height: 50px;
     border-left: 1px solid black;
     border-right: 1px solid black;
 
     text-align: center;
+    line-height: 20px;
     position: relative;
 
     border-radius: 3px;
