@@ -13,6 +13,9 @@ export default class Menu extends Component{
                 <NavLink className="button_block" activeClassName="act" to="/reports/all">
                     Заявки
                 </NavLink> 
+                <NavLink className="button_block" activeClassName="ext" to="/exit">
+                    Выход
+                </NavLink> 
             </div>
         );
     }

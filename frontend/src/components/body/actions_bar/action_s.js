@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './actions.css';
 import {NavLink} from 'react-router-dom';
 
@@ -6,10 +6,10 @@ import {NavLink} from 'react-router-dom';
 function Action_s () {
     return (
         <div className="Action_s">
-            <NavLink className="action_block" to="/sklad/new/save">
+            <NavLink className="action__button actions__button_pos" to="/sklad/new/save">
                 Сохранить
             </NavLink>
-            <NavLink className="action_block" to="/sklad/new/cancel">
+            <NavLink className="action__button actions__button_pos" to="/sklad/new/cancel">
                 Отменить
             </NavLink>
         </div>

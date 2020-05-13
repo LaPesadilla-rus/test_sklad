@@ -1,0 +1,131 @@
+.input_form {
+    background-color: rgba(238, 238, 238, 0.719);
+    border-radius: 10px;
+    color: black;
+    text-align: left;
+
+    padding: 4px;
+}
+
+.input_form_pos {
+    width: calc(100% - 20);
+    min-height: 100px;
+    overflow: auto;
+    position: relative;
+}
+
+.input_form__table{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-collapse: collapse;
+    /*border-radius: 4px;
+    border: 1px solid rgba(100, 100, 100, 0.849);*/
+    
+}
+
+.input_form__table_pos {
+    float: left;
+    width: 100%;
+    min-height: 100px;
+    
+}
+
+.input_form__table th{
+    background-color: #b1b1b1;
+
+}
+
+.input_form__table td{
+    border-bottom: 1px solid black;
+}
+
+.cell_name{
+    width: 12%;
+}
+
+.input_form__table input {
+    width: 250px;
+    height: 25px;
+
+    font-size: 15px;
+}
+
+.input_form__table select {
+    width: 250px;
+    height: 25px;
+
+    font-size: 15px;
+}
+/*.input_form p {
+    font-size: 20px;
+    min-height: 35px;
+    margin-top: 5px;
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+
+.input_form div {
+    float: left;
+}
+
+.input_form input {
+    margin-left: 10px;
+    height: 25px;
+    width: 250px;
+
+}
+
+.input_form select {
+    margin-left: 10px;
+    height: 25px;
+    width: 250px;
+}*/
+
+.input_form__bb {
+}
+
+.input_form__bb_pos {
+    float: left;
+    min-width: calc(100% - 8);
+    min-height: 50px;
+    padding: 10px;
+}
+
+.input_form__button{
+    box-shadow: 0 0 10px rgb(10, 103, 165);
+    transition: all 1s;
+    border-radius: 15px;
+    border: 2px solid #1d2b50;
+
+    background-color: #3a64bd;
+
+    font-size: 17px;
+    line-height: 70px;
+    white-space: nowrap;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+.input_form__button_pos {
+    float: left;
+    min-width: 130px;
+    min-height: 50px;
+    margin-left: 10px;
+}
+
+.input_form__button:hover {
+    box-shadow:  0 0 25px rgb(41, 16, 87);
+    background-color: #1d2b50;
+    transition: all 1s;
+  }
+  
+.cancel_button {
+    background-color: #992a2a;
+}
+
+.cancel_button:hover{
+    box-shadow:  0 0 25px rgb(137, 58, 173);
+    background-color: #5517a5;
+    transition: all 1s;
+}

@@ -16,9 +16,8 @@ const pool = new Pool ({
 app.use(express.json());
 
 app.get('/sklad/all', (req, res) => {
-    try{ 
-        pool.query(`SELECT eq.e_id, eq.e_kol, te.te_name, mn.m_name, eq.e_kod,
-                    to_char(eq.e_date, 'DD.MM.YYYY')
+    pool.query(`SELECT eq.e_id, eq.e_kol, te.te_name, mn.m_name, eq.e_kod, kat.kat_name,
+                    un.un_name, to_char(eq.e_date, 'DD.MM.YYYY')
                     
                     FROM equip eq
                     
@@ -27,16 +26,23 @@ app.get('/sklad/all', (req, res) => {
                     
                     inner join manufact mn
                     on mn.m_id = eq.e_m_id
+                    
+                    inner join kategor kat
+                    on kat.kat_id = eq.e_kat_id
+                    
+                    inner join units un
+                    on un.un_id = eq.e_un_id
 
-                    order by eq.e_id
-                    `
-        , (err,result)=>{
-            res.json(result.rows);
+                    order by eq.e_id 
+                `
+    , (err,result)=>{
+        if (err !== undefined) {
+            console.log("Error:", err);
+        }else{
+
+            res.json(result.rows); 
+        }
     })
-    } catch (err) {
-        console.log(err);
-    }
-  
 });
 
 app.get('/sklad/new/type', (req, res) => { 
@@ -50,12 +56,36 @@ app.get('/sklad/new/type', (req, res) => {
     });  
 });
 
-app.get('/sklad/new/man', (req, res) => { 
+app.get('/sklad/new/manufact', (req, res) => { 
     pool.query(`SELECT * FROM manufact`
     , (err,result)=>{
         if (err !== undefined) {
             console.log("Error:", err);
         }else{
+            res.json(result.rows); 
+        }
+    }); 
+});
+
+app.get('/sklad/new/units', (req, res) => { 
+    pool.query(`SELECT * FROM units`
+    , (err,result)=>{
+        if (err !== undefined) {
+            console.log("Error:", err);
+        }else{
+
+            res.json(result.rows); 
+        }
+    }); 
+});
+
+app.get('/sklad/new/kat', (req, res) => { 
+    pool.query(`SELECT * FROM kategor`
+    , (err,result)=>{
+        if (err !== undefined) {
+            console.log("Error:", err);
+        }else{
+
             res.json(result.rows); 
         }
     }); 

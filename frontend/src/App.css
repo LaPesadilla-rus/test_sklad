@@ -1,26 +1,28 @@
 .App {
     text-align: center;
+    background-image: url(background-texture.jpg);
     background-color: #fdfdfd;
+    background-size: cover;
     /*width: 100vw;*/
-    height: 100vh;
-    min-width: 1000px;
-    /*width: 1000px;
-    height: 1000px;*/
-    /*float: left;*/
-    /*display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: left;*/
-    font-size: 25px;
+    min-height: 100vh;
+    min-width: 1670px;
+    overflow: auto;
+    /*margin-left: auto;
+    margin-right: auto;*/
+
     color: white;
 
     position: relative;
+    display:flex;
+    flex-direction: row;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
+/*.back {
+    
+    background-color: #d3d3d3;
+    width: auto;
+    min-height: 100px;
+}*/
 
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
