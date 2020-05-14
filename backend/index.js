@@ -21,16 +21,16 @@ app.get('/sklad/all', (req, res) => {
                     
                     FROM equip eq
                     
-                    inner join type_equip te
+                    inner join type_equip_spr te
                     on te.te_id = eq.e_type_eq
                     
-                    inner join manufact mn
+                    inner join manufact_spr mn
                     on mn.m_id = eq.e_m_id
                     
-                    inner join kategor kat
+                    inner join kategor_spr kat
                     on kat.kat_id = eq.e_kat_id
                     
-                    inner join units un
+                    inner join units_spr un
                     on un.un_id = eq.e_un_id
 
                     order by eq.e_id 
@@ -46,7 +46,7 @@ app.get('/sklad/all', (req, res) => {
 });
 
 app.get('/sklad/new/type', (req, res) => { 
-    pool.query(`SELECT * FROM type_equip`
+    pool.query(`SELECT * FROM type_equip_spr`
     , (err,result)=>{
         if (err !== undefined) {
             console.log("Error:", err);
@@ -57,7 +57,7 @@ app.get('/sklad/new/type', (req, res) => {
 });
 
 app.get('/sklad/new/manufact', (req, res) => { 
-    pool.query(`SELECT * FROM manufact`
+    pool.query(`SELECT * FROM manufact_spr`
     , (err,result)=>{
         if (err !== undefined) {
             console.log("Error:", err);
@@ -68,7 +68,7 @@ app.get('/sklad/new/manufact', (req, res) => {
 });
 
 app.get('/sklad/new/units', (req, res) => { 
-    pool.query(`SELECT * FROM units`
+    pool.query(`SELECT * FROM units_spr`
     , (err,result)=>{
         if (err !== undefined) {
             console.log("Error:", err);
@@ -80,7 +80,7 @@ app.get('/sklad/new/units', (req, res) => {
 });
 
 app.get('/sklad/new/kat', (req, res) => { 
-    pool.query(`SELECT * FROM kategor`
+    pool.query(`SELECT * FROM kategor_spr`
     , (err,result)=>{
         if (err !== undefined) {
             console.log("Error:", err);

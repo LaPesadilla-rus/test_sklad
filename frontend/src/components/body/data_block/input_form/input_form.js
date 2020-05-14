@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './input_form.css';
 import axio from 'axios';
+import UnicId from 'react-html-id';
 
 
 const BlockItem = (props) => {
@@ -27,6 +28,7 @@ const BlockItem = (props) => {
 export default class Input_form extends Component {
     constructor() {
         super();
+        UnicId.enableUniqueIds(this);
         this.state = {
             name: '',
             e_type: '1',
@@ -52,14 +54,27 @@ export default class Input_form extends Component {
             date: this.state.date,
             prim: this.state.prim,
         };
-        //this.state.hyst_data;
-        /*this.state.hyst_data[0] = data;
-        this.state.hyst_data[1] = data;*/
+        //Заготовка проверки на изменение шапки
+        const hyst = this.state.hyst_data;
+        const indx = hyst[hyst.length - 1];
+        if ((hyst.length > 0) && (indx.prim === data.prim)) {
+            console.log(indx.prim + ' ' + data.prim);
+        }
+        //--
         this.setState({
             hyst_data: [...this.state.hyst_data, data]
         });
-        /*console.log(this.state.hyst_data);*/
-    }
+    };
+
+    
+    ClearTable = e => {
+        e.preventDefault();
+        var arr = this.state.hyst_data;
+        arr.splice(0,arr.length);
+        this.setState({
+            hyst_data: arr
+        });
+    };
 
     handleSubmit = event => {
         event.preventDefault();
@@ -116,11 +131,10 @@ export default class Input_form extends Component {
     ChangeDate = event => {
         this.setState({date: event.target.value});
     };
-
   
-
     ChangeType = event => {
         this.setState({e_type: event.target.value});
+        console.log(event.target.value);
     };
 
     ChangeFirm = event => {
@@ -166,7 +180,7 @@ export default class Input_form extends Component {
     render () {
         return (
             <div className="input_form input_form_pos">
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit, this.ClearTable}>
                     <table className='input_form__table input_form__table_pos'>
                         <thead>
                         <tr>
@@ -211,7 +225,7 @@ export default class Input_form extends Component {
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Ед. измерения</p></td>
-                            <td><p><select id="elem_type" name='e_type' onChange={this.ChangeType}>
+                            <td><p><select id="elem_type" name='e_type' onChange={this.ChangeType} value={this.state.value}>
                                 {this.state.units_data.map( id => <option key={id.un_id} value={id.un_id}>{id.un_name}</option>)}  
                             </select></p></td>
                         </tr>
@@ -221,6 +235,10 @@ export default class Input_form extends Component {
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Примечание</p></td>
+                            <td><p><input name='prim' onChange={this.ChangePrim}></input></p></td>
+                        </tr>
+                        <tr>
+                            <td className='cell_name'><p>Привязка</p></td>
                             <td><p><input name='prim' onChange={this.ChangePrim}></input></p></td>
                         </tr>
                         </tbody>
@@ -257,7 +275,7 @@ export default class Input_form extends Component {
                             <td className='data-table__cell data-table__cell_pos  cell_5'>15</td>
                             <td className='data-table__cell data-table__cell_pos  cell_6'>ВКС (конф-зал)</td>
                         </tr>
-                        {this.state.hyst_data.map( id =>  <BlockItem kol='12' date='20.20.2020' 
+                        {this.state.hyst_data.map( id =>  <BlockItem key={this.nextUniqueId()} kol={id.kol} date='20.20.2020' 
                             kod='AAAA' kat={id.name} id='12' units='шт' prim={id.prim} />)}
                        
                     </tbody>
