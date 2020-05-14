@@ -7,13 +7,15 @@
     display: inline-grid;
 
     
+
+    
 }
 
 .data-table_pos {
-    width: calc(100% - 8px);
+    /*width: calc(100% - 8px);*/
+    min-width: 100%;
     padding: 4px;
     float: left;
-    
     position: relative;
 }
 
@@ -63,10 +65,11 @@
     border-left: 1px solid black;
     border-right: 1px solid black;
     text-align: center;
-    word-break: break-all;
+    
+    word-wrap: break-word;
     /*white-space: normal;*/
     /*border-collapse: collapse;*/
-    line-height: 30px;
+    line-height: 26px;
     /*padding: 0px;*/
 }
 

@@ -8,7 +8,8 @@
 }
 
 .input_form_pos {
-    width: calc(100% - 20);
+    /*width: calc(100% - 20);*/
+    min-width: (100% - 20px);
     min-height: 100px;
     overflow: auto;
     position: relative;
@@ -50,7 +51,7 @@
 }
 
 .input_form__table select {
-    width: 250px;
+    width: 200px;
     height: 25px;
 
     font-size: 15px;

@@ -4,9 +4,10 @@
 
 .body_pos {
     float: left;
-    width: calc(100% - 270px);
-    min-width: 1400px;
+    /*width: calc(100% - 270px);*/
+    min-width: 500px;
     min-height: 100vh;
+    overflow: auto;
 
     position: relative;
 

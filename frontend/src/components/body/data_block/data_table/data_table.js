@@ -27,10 +27,10 @@ const BlockItem = (props) => {
     return <div><NavLink className="data-table__body data-table__body_pos"  to={path} ><tr>
             <td className='data-table__cell data-table__cell_pos cell_1'>{props.kat}</td> 
             <td className='data-table__cell data-table__cell_pos cell_2'>{props.kod}</td> 
-            <td className='data-table__cell data-table__cell_pos cell_3'></td>
+            <td className='data-table__cell data-table__cell_pos cell_3'>{props.name}</td>
             <td className='data-table__cell data-table__cell_pos cell_4'>{props.units}</td>
             <td className='data-table__cell data-table__cell_pos cell_5'>{props.kol}</td>
-            <td className='data-table__cell data-table__cell_pos cell_6'></td>
+            <td className='data-table__cell data-table__cell_pos cell_6'>{props.prim}</td>
         </tr></NavLink></div>
 }
 
@@ -96,8 +96,9 @@ export default class Data extends Component{
                             <td className='data-table__cell data-table__cell_pos  cell_5'>15</td>
                             <td className='data-table__cell data-table__cell_pos  cell_6'>ВКС (конф-зал)</td>
                         </tr>
-                        {this.state.equips.map( id => <BlockItem key={id.e_id} kol={id.e_kol} date={id.to_char} 
-                            kod={id.e_kod} kat={id.kat_name} id={id.e_id} units={id.un_name} />)}
+                        {this.state.equips.map( id => <BlockItem key={id.st_id} kol={id.st_amount} date={id.to_char} 
+                            kod={id.st_inv_num} kat={id.kat_name} id={id.st_id} units={id.un_name} 
+                            name={id.te_name + ' ' + id.eq_name} prim={id.st_prim} />)}
                     </tbody>
                 </table>
             </form>
