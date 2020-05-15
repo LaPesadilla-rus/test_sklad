@@ -1,0 +1,29 @@
+.spr_units {
+    background-color: rgb(207, 207, 207);
+    border-radius: 10px;
+    color: black;
+    border: 1px solid #707270;
+    box-shadow: 0 0 10px rgb(80, 80, 80);
+}
+
+.spr_units_pos {
+    min-width: 50px;
+    min-height: 50px;
+
+}
+
+.spr_units div {
+    margin-top: 10px;
+}
+
+.spr_units button {
+    margin: 10px;
+}
+
+.spr_units input {
+    font-size: 15px;
+    text-align: center;
+    border: 1px solid rgb(61, 61, 61);
+    box-shadow: 0 0 5px rgb(80, 80, 80);
+    border-radius: 5px;
+}

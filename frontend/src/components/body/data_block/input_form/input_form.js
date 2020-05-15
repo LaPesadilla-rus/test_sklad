@@ -226,6 +226,7 @@ export default class Input_form extends Component {
                         <tr>
                             <td className='cell_name'><p>Ед. измерения</p></td>
                             <td><p><select id="elem_type" name='e_type' onChange={this.ChangeType} value={this.state.value}>
+                                <button>123</button>
                                 {this.state.units_data.map( id => <option key={id.un_id} value={id.un_id}>{id.un_name}</option>)}  
                             </select></p></td>
                         </tr>

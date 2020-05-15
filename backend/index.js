@@ -40,7 +40,7 @@ app.get('/sklad/all', (req, res) => {
                 `
     , (err,result)=>{
         if (err !== undefined) {
-            console.log("Error:", err);
+            console.log("Error:", err.code + ' ' + err.hint);
         }else{
 
             res.json(result.rows); 

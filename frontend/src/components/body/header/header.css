@@ -11,6 +11,7 @@
 
 .header_pos {
     min-width: 101.4%;
+    height: 50px;
     float: left;
     margin-left: -10px;
 }
