@@ -42,14 +42,25 @@ export default class Spr_units extends Component {
         }
     }
 
-    render () {
+    render (props) {
+        const item = this.props.location.state.data;
+        let element;
+        
+  
+        if (!item == ''){
+           
+            element = <input name='units' onChange={this.ChangeUnit} value={this.state.value}></input>;  
+        }else{
+            element = <input name='units' onChange={this.ChangeUnit} value={this.state.value}></input>
+        }
+        console.log(item);
         return (
                 <div className='background_abs background_abs_pos'>
                     <div className="spr_units spr_units_pos">
                         <form onSubmit={this.handleSubmit}>
                             <div>
                                 <p>Ед. измерения: </p>
-                                <input name='units' onChange={this.ChangeUnit} value={this.state.value}></input>
+                                {element}
                             </div>
                             <div>
                                 <button type='submit' className='action__button'>Сохранить</button>

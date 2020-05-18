@@ -206,81 +206,63 @@ app.get('/spr/all', (req,res) => {
     }); */
     
 
-    pool.query(`SELECT * FROM kategor_spr`, (err, result) => {
+    client.query(`SELECT * FROM kategor_spr`, (err, result) => {
         if (err) {
             console.log("Error:", err);
         }else{
-            data = {...data, kat: result.rows};
+            data = {kat: result.rows};
+            //mas = [{kat: result.rows, name: 'NAME2', ref:'HREF2'}];
             //client.end();
             //console.log('1');
         }
     })
 
-    pool.query(`SELECT * FROM type_equip_spr`, (err, result) => {
+    client.query(`SELECT * FROM type_equip_spr`, (err, result) => {
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, type_equip: result.rows};
+            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
             //client.end();
             //console.log('2');
         }
     })
 
-    pool.query(`SELECT * FROM marka_equip_spr`, (err, result) => {
+    client.query(`SELECT * FROM marka_equip_spr`, (err, result) => {
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, marka_equip: result.rows};
+            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
             //client.end();
             //console.log('3');
         }
     })
     
-    /*pool.query(`SELECT * FROM type_equip_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, type_equip: result.rows};
-            console.log('2');
-        }
-    }); */
-    
-    /*pool.query(`SELECT * FROM marka_equip_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, marka_equip: result.rows};
-            console.log('3');
-        }
-    });*/ 
-    
-    //delay(console.log('3'),1000);
-    
-    pool.query(`SELECT * FROM provider_spr`
+    client.query(`SELECT * FROM provider_spr`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, provider: result.rows};
+            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
             //console.log('4');
             //setTimeout(1000);
         }
     }); 
-    pool.query(`SELECT * FROM filial_spr`
+    client.query(`SELECT * FROM filial_spr`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, filial: result.rows};
-            mas = [...mas, {main: {item: result.rows, name: 'NAME2', ref:'HREF2'}}];
+            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
             //mas = Object.assign({},mas, copy);
             //console.log(mas2);
             //console.log('5');
         }
     }); 
-    pool.query(`SELECT * FROM units_spr`
+    client.query(`SELECT * FROM units_spr`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
@@ -289,7 +271,7 @@ app.get('/spr/all', (req,res) => {
            /* console.log('--');
             console.log(data);*/
             
-           mas = [...mas, {main: {item: result.rows, name: 'NAME', ref:'HREF'}}];
+           mas = [...mas,{item: result.rows, name: 'NAME', ref:'HREF'}];
            
         //console.log(mas);
             
@@ -302,11 +284,11 @@ app.get('/spr/all', (req,res) => {
     
     console.log('----')
     //mas = delete mas[0];
-    console.log(mas.main)
+    console.log(data)
     /*if (mas.length > 1) {
         mas = delete mas[0];
     }*/
-    res.json(mas);
+    res.json(data);
     mas = [{main: {}}];
     //data = { kat: [], type_equip: [], marka_equip: [], provider: [], filial: [], units: []};
     //
