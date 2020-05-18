@@ -12,6 +12,29 @@
 
 }
 
+.background_abs{
+    background-color: rgba(146, 146, 146, 0.658);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 150;
+}
+
+.background_abs_pos{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+
+    
+    flex-wrap: wrap;
+    align-self: center;
+    margin-left: -10px;
+    margin-right: -20px;
+}
+
 .spr_units div {
     margin-top: 10px;
 }
@@ -25,5 +48,16 @@
     text-align: center;
     border: 1px solid rgb(61, 61, 61);
     box-shadow: 0 0 5px rgb(80, 80, 80);
+    transition: all 1s;
+
     border-radius: 5px;
 }
+
+.spr_units input:hover {
+    box-shadow: inset 0 0 5px rgb(28, 61, 207); 
+    border: 1px solid rgb(28, 61, 207);
+ }
+
+ .spr_units input:active {
+    box-shadow: inset 0 0 5px rgb(28, 61, 207); 
+ }

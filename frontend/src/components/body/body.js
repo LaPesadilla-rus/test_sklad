@@ -12,8 +12,9 @@ function Body () {
                 <Header />
                 <Route path='/sklad/all' component={Actions}/>
                 <Route path='/reports/all' component={Actions}/>
+                <Route path='/sklad/all' component={Data_Block}/>
+
                 
-                <Data_Block />
                 <Route path='/spr' component={Spr_forms}/>
             </div>
     );
