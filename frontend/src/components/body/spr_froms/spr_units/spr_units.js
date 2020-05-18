@@ -1,5 +1,7 @@
 import React, {Component}  from 'react';
 import './spr_units.css';
+import axio from 'axios';
+import {NavLink} from 'react-router-dom';
 
 export default class Spr_units extends Component {
     constructor () {
@@ -23,37 +25,38 @@ export default class Spr_units extends Component {
         console.log(this.state.units);
 
         var err = '';
-        if (data.units === ''){
+        if (data.units == ''){
             err = err + 'Единицы измерения не введены!';
         }
-        if (!err === ''){
+        if (!err == ''){
             alert(err);
         }else{
-            /*axio.post('/sklad/new/save', {data}).then(res => {
+            axio.post('/units/save', {data}).then(res => {
             console.log(res.data);
             if (res.data = 'POST COMPLITE') {
                 alert('Сохранение успешно');
-                this.props.history.push('/sklad/all');
             }else{
                 alert('Данные не удалось сохранить');
             }
-            });*/
+            });
         }
     }
 
     render () {
         return (
-                <div className="spr_units spr_units_pos">
-                    <form onSubmit={this.handleSubmit}>
-                        <div>
-                            <p>Ед. измерения: </p>
-                            <input name='units' onChange={this.ChangeUnit} value={this.state.value}></input>
-                        </div>
-                        <div>
-                            <button type='submit' className='action__button'>Сохранить</button>
-                            <button className='action__button out_button'>Отмена</button>
-                        </div>
-                    </form>
+                <div className='background_abs background_abs_pos'>
+                    <div className="spr_units spr_units_pos">
+                        <form onSubmit={this.handleSubmit}>
+                            <div>
+                                <p>Ед. измерения: </p>
+                                <input name='units' onChange={this.ChangeUnit} value={this.state.value}></input>
+                            </div>
+                            <div>
+                                <button type='submit' className='action__button'>Сохранить</button>
+                                <NavLink className='action__button out_button' to='/spr'>Отмена</NavLink>
+                            </div>
+                        </form>
+                    </div>
                 </div>
         );
     }
