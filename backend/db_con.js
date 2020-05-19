@@ -2,7 +2,7 @@ let conn_str =  ({
     user: 'postgres',
     host: 'localhost',
     database: 'sklad',
-    password: 'masterpas',
+    password: 'masterkey',
     port: 5432,
     max: 3
 });

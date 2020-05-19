@@ -17,6 +17,10 @@ const conn = require('./db_con.js');
 //console.log(conn);
 /*const spr = require('./modules/spr.js');
 spr.getData();*/
+
+var data = { kat: [], type_equip: [], marka_equip: [], provider: [], filial: [], units: []};
+var mas = [{main: {}}];
+
 const pool = new Pool (conn.conn_str);
 
 const client = new Client(conn.conn_str);
@@ -120,149 +124,70 @@ app.post('/sklad/new/save', (req,res) => {
 });
 //------------------------------
 // SPR
-var data = { kat: [], type_equip: [], marka_equip: [], provider: [], filial: [], units: []};
-var mas = [{main: {}}];
+
 var mas2 = {};
 var copy={};
-/*app.use('/spr/all', (req,res ,next)=>{
-    pool.query(`SELECT * FROM kategor_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, kat: result.rows};
-        }
-    }); 
-    console.log('1');
-    next();
-});
-
-app.use('/spr/all', (req,res ,next)=>{
-    pool.query(`SELECT * FROM type_equip_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, type_equip: result.rows};
-        }
-    }); 
-    console.log('2');
-    next();
-    
-});
-
-app.use('/spr/all', (req,res ,next)=>{
-    pool.query(`SELECT * FROM marka_equip_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, marka_equip: result.rows};
-        }
-    }); 
-    
-    //delay(console.log('3'),1000);
-    console.log('3')
-    next();
-});
-
-app.use('/spr/all', (req,res ,next)=>{
-    pool.query(`SELECT * FROM provider_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, provider: result.rows};
-        }
-    }); 
-    console.log('4');
-    next();
-});
-
-app.use('/spr/all', (req,res ,next)=>{
-    pool.query(`SELECT * FROM filial_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, filial: result.rows};
-        }
-    }); 
-    console.log('5');
-    next();
-});*/
 
 app.get('/spr/all', (req,res) => {
-    console.log('*******');
-    
-    /*pool.query(`SELECT * FROM kategor_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, kat: result.rows};
-            console.log('1');
-        }
-    }); */
-    
+    console.log('get: /spr/all');
 
-    client.query(`SELECT * FROM kategor_spr`, (err, result) => {
+    client.query(`SELECT kat_id as id, kat_name as item FROM kategor_spr order by item`, (err, result) => {
         if (err) {
             console.log("Error:", err);
         }else{
             data = {kat: result.rows};
-            //mas = [{kat: result.rows, name: 'NAME2', ref:'HREF2'}];
+            mas = [{item: result.rows, name: 'Категория', table:'kategor_spr'}];
             //client.end();
             //console.log('1');
         }
     })
 
-    client.query(`SELECT * FROM type_equip_spr`, (err, result) => {
+    client.query(`SELECT te_id as id, te_name as item FROM type_equip_spr  order by item`, (err, result) => {
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, type_equip: result.rows};
-            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
+            mas = [...mas, {item: result.rows, name: 'Тип обоудования', table:'type_equip_spr'}];
             //client.end();
             //console.log('2');
         }
     })
 
-    client.query(`SELECT * FROM marka_equip_spr`, (err, result) => {
+    client.query(`SELECT ma_id as id, ma_name as item FROM marka_equip_spr  order by item`, (err, result) => {
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, marka_equip: result.rows};
-            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
+            mas = [...mas, {item: result.rows, name: 'Марка', table:'marka_equip_spr'}];
             //client.end();
             //console.log('3');
         }
     })
     
-    client.query(`SELECT * FROM provider_spr`
+    client.query(`SELECT pr_id as id, pr_name as item FROM provider_spr  order by item`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, provider: result.rows};
-            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
+            mas = [...mas, {item: result.rows, name: 'Поставщик', table:'provider_spr'}];
             //console.log('4');
             //setTimeout(1000);
         }
     }); 
-    client.query(`SELECT * FROM filial_spr`
+    client.query(`SELECT fi_id as id, fi_name as item FROM filial_spr  order by item`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, filial: result.rows};
-            //mas = [...mas, {item: result.rows, name: 'NAME2', ref:'HREF2'}];
+            mas = [...mas, {item: result.rows, name: 'Филиал', table:'filial_spr'}];
             //mas = Object.assign({},mas, copy);
             //console.log(mas2);
             //console.log('5');
         }
     }); 
-    client.query(`SELECT * FROM units_spr`
+    client.query(`SELECT un_id as id, un_name as item FROM units_spr  order by item`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
@@ -270,28 +195,42 @@ app.get('/spr/all', (req,res) => {
             data = {...data, units: result.rows};
            /* console.log('--');
             console.log(data);*/
-            
-           mas = [...mas,{item: result.rows, name: 'NAME', ref:'HREF'}];
-           
-        //console.log(mas);
-            
-            
+            mas = [...mas,{item: result.rows, name: 'Ед. измерения', table:'units_spr'}];   
         }
     });
-    //copy = Object.assign(mas,mas2);
-    copy = [mas, mas2];
-    //copy = [...copy, {b: mas2}];
-    
-    console.log('----')
-    //mas = delete mas[0];
-    console.log(data)
-    /*if (mas.length > 1) {
-        mas = delete mas[0];
-    }*/
-    res.json(data);
-    mas = [{main: {}}];
-    //data = { kat: [], type_equip: [], marka_equip: [], provider: [], filial: [], units: []};
-    //
+
+    /*client.query(`SELECT un_id as id, un_name as item FROM units_spr`
+    , (err,result)=>{
+        if (err) {
+            console.log("Error:", err);
+        }else{
+            data = {...data, units: result.rows};
+            mas = [...mas,{item: result.rows, name: 'Ед. измерения2', table:'units_spr'}];   
+        }
+    });
+
+    client.query(`SELECT un_id as id, un_name as item FROM units_spr  order by item`
+    , (err,result)=>{
+        if (err) {
+            console.log("Error:", err);
+        }else{
+            data = {...data, units: result.rows};
+            mas = [...mas,{item: result.rows, name: 'Ед. измерения3', table:'units_spr'}];   
+        }
+    });*/
+
+    client.query(`SELECT ot_id as id, ot_name as item FROM otd_spr  order by item`
+    , (err,result)=>{
+        if (err) {
+            console.log("Error:", err);
+        }else{
+            data = {...data, otd: result.rows};
+            mas = [...mas,{item: result.rows, name: 'Отделение', table:'units_spr'}];
+            //console.log(mas);
+            res.json(mas);
+            mas = [{main: {}}];   
+        }
+    });
 });
 
 app.get('/spr/kat', (req,res) => {
@@ -305,12 +244,13 @@ app.get('/spr/kat', (req,res) => {
     }); 
 });
 
-app.post('/units/save', (req,res) => {
+app.post('/spr/save', (req,res) => {
+    console.log('/spr/save');
     if(!req.body.data) return res.sendStatus(400);
     var sql = `INSERT INTO public.units_spr (un_name)
-    VALUES ('`+req.body.data.units+`');`;
-    console.log(sql); 
-    pool.query(sql
+                VALUES ('`+req.body.data.item+`');`;
+    console.log(req.body); 
+    /*pool.query(sql
     , (err,result)=>{
         if (err !== undefined) {
             console.log("Postgres INSERT error:", err);
@@ -318,7 +258,34 @@ app.post('/units/save', (req,res) => {
             console.log('complite');
             res.send('POST COMPLITE');
         }
-    });
+    });*/
+    res.send('POST COMPLITE');
+});
+
+app.post('/spr/update', (req,res) =>{
+    var sql;
+    console.log('/spr/update');
+    if(!req.body.data) return res.sendStatus(400);
+    console.log(req.body); 
+    switch(req.body.data.table) {
+        case 'units_spr': sql =  `UPDATE public.units_spr
+                                    SET un_name ='`+req.body.data.item+`'
+                                    WHERE un_id = `+req.body.data.id_item+``;
+                                    break;
+        default: res.send('POST COMPLITE');
+    }
+    if (sql){
+        pool.query(sql
+            , (err,result)=>{
+                if (err) {
+                    console.log("Postgres INSERT error:", err);
+                }else{
+                    res.send('POST COMPLITE');
+                }
+            });
+    }
+    
+    //res.send('POST COMPLITE');
 });
 
 //------------------------------

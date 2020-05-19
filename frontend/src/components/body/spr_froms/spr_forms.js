@@ -9,7 +9,7 @@ export default class Spr_forms extends Component {
     render(){
         return (
                 <div className="spr_forms spr_forms_pos">
-                    <Route path='/spr/units' component={Spr_units}/>
+                    <Route path='/spr/all/redact' component={Spr_units}/>
                     <Route path='/spr' component={Spr_block}/>
                 </div>
         );

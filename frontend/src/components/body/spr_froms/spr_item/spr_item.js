@@ -1,5 +1,5 @@
 import React, {Component}  from 'react';
-import './spr_units.css';
+import './spr_item.css';
 import axio from 'axios';
 import {NavLink} from 'react-router-dom';
 
@@ -11,6 +11,7 @@ export default class Spr_units extends Component {
             inp: '',
             table:'',
             id_item: '',
+            show: { visibility: 'visible'},
         };
     }
 
@@ -68,7 +69,6 @@ export default class Spr_units extends Component {
             console.log(res.data);
             if (res.data = 'POST COMPLITE') {
                 alert('Сохранение успешно');
-                this.SaveComplite()
             }else{
                 alert('Данные не удалось сохранить');
             }
@@ -77,49 +77,60 @@ export default class Spr_units extends Component {
         }
     }
 
-    SaveComplite = () => {
-        this.props.onSave('abc');
-        //this.props.location.state.reb;
-    }
-
     componentDidMount = event => {
-        if (this.props.location.state.item){
+        if (this.props.item){
             this.setState({
-                item: this.props.location.state.item,
-                table: this.props.location.state.table,
-                id_item: this.props.location.state.id_item,
+                item: this.props.item,
+                table: this.props.table,
+                id_item: this.props.id_item,
+                show: this.props.style,
             })
         }else{
             this.setState({
                 item: '',
-                table: this.props.location.state.table,
+                table: this.props.table,
+                show: this.props.style,
             })
         }
-        console.log( this.props.location.state.table)
+        //console.log( this.props.table)
+    }
+
+    HideBlock = () => {
+        /*this.setState({
+            show: { visibility: 'hidden'}
+        })*/
+        this.props.onVisibleChange('hidden');
+        //console.log('hidden');
     }
 
     render (props) {
         let form
-        if (this.props.location.state.item){
+        const a = this.props.show_block;
+
+        /*this.setState({
+            show: this.props.style
+        })*/
+
+        if (this.props.item){
             form = <form onSubmit={this.handleUpdate}>
                         <div>
-                            <p>Справочник: {this.props.location.state.name}</p>
+                            <p>Справочник: {this.props.name}</p>
                             <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item}></input>
                         </div>
                         <div>
                             <button type='submit' className='action__button'>Сохранить изменения</button>
-                            <NavLink className='action__button out_button' to={{pathname: '/spr/all', state: { reboot: 'reboot' }}}>Отмена</NavLink>
+                            <button type='button' className='action__button out_button' onClick={this.HideBlock}>Отмена</button>
                         </div>
                     </form>
         }else{
             form = <form onSubmit={this.handleSubmit}>
                         <div>
-                            <p>Справочник: {this.props.location.state.name}</p>
+                            <p>Справочник: {this.props.name}</p>
                             <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item}></input>
                         </div>
                         <div>
                             <button type='submit' className='action__button'>Сохранить</button>
-                            <NavLink className='action__button out_button' to={{pathname: '/spr/all', state: { reboot: 'reboot' }}}>Отмена</NavLink>
+                            <button type='button' className='action__button out_button' onClick={this.HideBlock}>Отмена</button>
                         </div>
                     </form>
         }
@@ -127,7 +138,7 @@ export default class Spr_units extends Component {
         
 
         return (
-                <div className='background_abs background_abs_pos'>
+                <div className='background_abs background_abs_pos' style={this.state.show}>
                     <div className="spr_units spr_units_pos">
                         {form}
                     </div>

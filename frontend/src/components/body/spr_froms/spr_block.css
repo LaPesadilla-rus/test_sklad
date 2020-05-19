@@ -1,6 +1,8 @@
 .spr_block_main{
     display: flex;
     flex-direction: row;
+
+    flex-wrap: wrap;
 }
 .spr_block{
     border: 1px solid black;
@@ -14,11 +16,12 @@
 }
 
 .spr_block_pos {
-    min-width: 100px;
+    min-width: 130px;
     min-height: 100px;
 
     margin-top: 10px;
     margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .spr_block_heder{
@@ -41,6 +44,7 @@
     margin-top: 5px;
 
     color: black;
+    text-align: left;
 }
 
 .spr_block_data_item{
@@ -55,6 +59,7 @@
     text-decoration: none;
     color: black;
     padding: 5px;
+    margin-top: 2px;
 }
 
 .spr_block_data_item:hover{
