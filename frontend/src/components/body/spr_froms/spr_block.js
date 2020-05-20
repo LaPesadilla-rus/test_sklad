@@ -4,6 +4,7 @@ import {NavLink, Link} from 'react-router-dom';
 import axio from 'axios';
 import UnicId from 'react-html-id';
 import Spr_item from './spr_item/spr_item.js';
+import Table_block from './table_block.js';
 
 var un = 0;
 
@@ -32,7 +33,7 @@ const ButtonRef =(props) => {
 const BlockItem2 = (props) => {
     let path = './spr/' + props.hrf;
     return <div className='spr_block spr_block_pos'>
-                <div className='spr_block_heder'>{props.name}</div>
+                <div className='spr_block_heder' onClick={props.ClickDiv}>{props.name}</div>
                 <NavLink className="data-table__body data-table__body_pos" to={{pathname: '/spr/all/redact', state: {name: props.name, table: props.table}}}>+</NavLink>
                 <div className='spr_block_data'>
                     
@@ -62,7 +63,7 @@ export default class Spr_block extends Component {
             table: '',
             item: '',
             id_item: '',
-            reb: this.RebootData(),
+            isModalOpen: false,
         
         };
     }
@@ -108,7 +109,16 @@ export default class Spr_block extends Component {
         this.setState({
             show_block: 'hdden'
         })
-        this.RebootData();
+        //this.RebootData();
+    }
+
+    changeModal = () => {
+        this.setState(state => ({ isModalOpen: !state.isModalOpen}))
+    }
+
+    onClickDiv = (e,a) =>{
+        console.log('DIV CLICK');
+        console.log(e + ' ' + a);
     }
 
     render(props){
@@ -123,21 +133,22 @@ export default class Spr_block extends Component {
 
         let modal_window;
         //console.log(this.props.show_block);
-        if (this.state.show_block === 'show'){
+        /*if (this.state.show_block === 'show'){
             modal_window = <Spr_item items='test_item' name={this.state.name} table={this.state.table} onVisibleChange={this.HideBlock} onSave={this.RebootData} />
-        }
+        }*/
         
         return(
             <div className='spr_block_main'>
-                <button onClick={this.ShowBlock} name='aaaaa'>asdasd</button>
                 {this.state.main.map((id, index )=> 
-                   <BlockItem2 key={this.nextUniqueId()} reb={this.reb} act={this.ShowBlock2} ukey= {this.lastUniqueId()} name={id.name} table={id.table} hrf = 'redact' items={id.item} />)}
-                )} 
-                {modal_window}
+                   <Table_block key={this.nextUniqueId()} onReboot={this.RebootData} reb={this.reb} act={this.ShowBlock2} name={id.name} table={id.table} hrf = 'redact' items={id.item} />)}
             </div>
         )
     }          
 }
+
+/*{this.state.isModalOpen &&
+                    <Spr_item onClose={this.changeModal} items='test_item' name={this.state.name} table={this.state.table} onVisibleChange={this.HideBlock} onSave={this.RebootData} />
+                } */
 
 
 /*              <div className='spr_block spr_block_pos'>

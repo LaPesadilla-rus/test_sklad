@@ -17,7 +17,7 @@ export default class Action_new extends Component{
                     <NavLink className="action__button actions__button_pos out_button" to="/sklad/new">
                         Просмотр движений
                     </NavLink>
-                    <NavLink className="action__button actions__button_pos info_button" to="/sklad/spr">
+                    <NavLink className="action__button actions__button_pos info_button" to="/spr/all">
                         Справочники
                     </NavLink>
                     <NavLink className="action__button actions__button_pos info_button" to="/sklad/podr">

@@ -30,12 +30,24 @@
     border-radius: 5px;
 
     color: black;
+    text-align: center;
+}
+
+.spr_block_nav{
+    padding: 2px;
+}
+
+.spr_block_text {
+    text-align: center;
 }
 
 .spr_block a {
     text-align: center;
     margin-top: 5px;
+    border: 1px solid black;
 }
+
+
 
 .spr_block_data {
     /*background-color: rgb(228, 224, 224);*/
@@ -44,15 +56,42 @@
     margin-top: 5px;
 
     color: black;
-    text-align: left;
+    text-align: center;
+}
+
+.spr_block_data_line{
+    min-width: 50px;
+    min-height: 10px;
+
+    display:flex;
+    justify-content: center;
+}
+
+.delete_button{
+    background-color: rgb(167, 17, 17);
+    width: 20px;
+    text-align: center;
+    border: 1px solid rgb(100, 5, 5);
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.delete_button:hover{
+    background-color: rgb(211, 21, 21);
+    box-shadow: 0 0 5px rgb(214, 25, 12);
+    transition: all 0.5s;
 }
 
 .spr_block_data_item{
-    background-color: rgb(228, 224, 224);
+    background-color: rgb(221, 221, 221);
     border-radius: 5px;
     text-decoration: none;
     color: black;
     border: 1px solid black;
+    min-width: 50px;
+    flex-grow: 3;
 }
 
 .spr_block_data_item a{
@@ -63,8 +102,9 @@
 }
 
 .spr_block_data_item:hover{
-    
-    border: 1px solid rgb(37, 73, 172);
+    background-color: rgb(67, 141, 224);
     box-shadow: 0 0 5px rgb(10, 17, 117);
     transition: all 0.5s;
 }
+
+
