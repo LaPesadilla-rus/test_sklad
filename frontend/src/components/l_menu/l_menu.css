@@ -16,12 +16,12 @@
     padding: 15px 5px;
     text-transform: uppercase;
     vertical-align: middle;
-    background: #3d58a3;
+    background: #082164;
     color: #ffffff;
-    box-shadow: 0 0 10px rgb(10, 103, 165);
+    box-shadow: 0 0 10px rgb(7, 58, 92);
     transition: all 1s;
     border-radius: 15px;
-    border: 2px solid #1d2b50;
+    border: 2px solid #263b75;
     float: left;
     text-decoration: none;
 }
@@ -29,11 +29,11 @@
 
 .button_block:hover {
     box-shadow:  0 0 25px rgb(180, 179, 178);
-    background-color: #1d2b50;
+    background-color: #2764aa;
     transition: all 1s;
   }
 .button_block.act{
-    background-color: #278f27;
+    background-color: #12851b;;
     transition: all 0.5s;
 }
 

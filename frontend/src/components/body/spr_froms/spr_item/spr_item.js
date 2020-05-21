@@ -28,15 +28,15 @@ export default class Spr_units extends Component {
             id_item: this.state.id_item
         }      
         var err = '';
-        if (data.item == ''){
+        if (data.item === ''){
             err = err + 'Единицы измерения не введены!';
         }
-        if (!err == ''){
+        if (!err === ''){
             alert(err);
         }else{
             axio.post('/spr/save', {data}).then(res => {
             //console.log(res.data);
-            if (res.data = 'POST COMPLITE') {
+            if (res.data === 'POST COMPLITE') {
                // alert('Сохранение успешно');
                 this.onClose();
             }else{
@@ -56,16 +56,16 @@ export default class Spr_units extends Component {
             id_item: this.state.id_item
         } 
         var err = '';
-        if (data.item == ''){
+        if (data.item === ''){
             err = err + 'Единицы измерения не введены!';
         }
-        if (!err == ''){
+        if (!err === ''){
             alert(err);
         }else{
             axio.post('/spr/update', {data}).then(res => {
             //console.log(res.data);
-            if (res.data = 'UPDATE COMPLITE') {
-                alert('Редактирование успешно');
+            if (res.data === 'UPDATE COMPLITE') {
+                //alert('Редактирование успешно');
                 this.onClose();
             }else{
                 alert('Данные не удалось сохранить');
@@ -90,15 +90,6 @@ export default class Spr_units extends Component {
                 show: this.props.style,
             })
         }
-        //console.log( this.props.table)
-    }
-
-    HideBlock = () => {
-        /*this.setState({
-            show: { visibility: 'hidden'}
-        })*/
-        this.props.onVisibleChange('hidden');
-        //console.log('hidden');
     }
 
     onClose= () =>{
@@ -107,15 +98,9 @@ export default class Spr_units extends Component {
         this.props.onReboot();
     }
 
-    render (props) {
+    render () {
         let form
-        const a = this.props.show_block;
-
-        /*this.setState({
-            show: this.props.style
-        })*/
-        //console.log(this.props.act)
-        if (this.props.act == 'update'){
+        if (this.props.act === 'update'){
             form = <form onSubmit={this.handleUpdate}>
                         <div>
                             <p>Справочник: {this.props.name}</p>
@@ -140,11 +125,8 @@ export default class Spr_units extends Component {
                         </div>
                     </form>
         }
-
-        
-
         return (
-                <div className='background_modal background_modal_pos' style={this.state.show}>
+                <div className='background_modal background_modal_pos'>
                     <div className="modal modal_pos">
                         {form}
                     </div>

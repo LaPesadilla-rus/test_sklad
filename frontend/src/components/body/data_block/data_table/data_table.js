@@ -1,27 +1,8 @@
 import React, {Component} from 'react';
 import './data_table.css';
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
+import axio from 'axios';
 
-/*const BlockItem = (props) => {
-    let path = './edit/block/' + props.id;
-    return <NavLink className="Block" to={path}>{props.name}</NavLink>
-}
-
-function Data (props) {
-    return (
-        <div className="Data">
-            <BlockItem name="BLOCK1" id="1"/>
-            <BlockItem name="BLOCK2" id="2"/>
-            <BlockItem name="BLOCK3" id="3"/>
-            <BlockItem name="BLOCK4" id="4"/>
-            <BlockItem name="BLOCK5" id="5"/>
-        </div>
-    );
-}
-
-export default Data;
-*/
 const BlockItem = (props) => {
     let path = './edit/' + props.id;
     return <div><NavLink className="data-table__body data-table__body_pos"  to={path} ><tr>
@@ -52,10 +33,10 @@ export default class Data extends Component{
             id: a
         }
 
-        axios.post('/sklad/edit', {data}).then(res => {
+        axio.post('/sklad/edit', {data}).then(res => {
             console.log(res.data);
-            if (res.data = 'POST COMPLITE') {
-                alert('Сохранение успешно');
+            if (res.data === 'POST COMPLITE') {
+                //alert('Сохранение успешно');
             }else{
                 alert('Данные не удалось сохранить');
             }
@@ -63,7 +44,7 @@ export default class Data extends Component{
     }
 
     componentDidMount = () => {
-        axios.get('./all').then(res=>{
+        axio.get('./all').then(res=>{
             console.log(res.data);
             this.setState({
                 equips: res.data

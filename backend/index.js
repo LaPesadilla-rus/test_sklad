@@ -62,6 +62,7 @@ app.get('/sklad/all', (req, res) => {
 });
 
 app.get('/sklad/new/type', (req, res) => { 
+    console.log(req.body);
     pool.query(`SELECT * FROM type_equip_spr`
     , (err,result)=>{
         if (err !== undefined) {
@@ -72,10 +73,32 @@ app.get('/sklad/new/type', (req, res) => {
     });  
 });
 
-app.get('/sklad/new/manufact', (req, res) => { 
-    pool.query(`SELECT * FROM provider_spr`
+app.post('/sklad/new/type', (req, res) => { 
+    pool.query(`SELECT te_id as id, te_name as name FROM type_equip_spr WHERE te_kat_id = `+req.body.kat+` ORDER BY te_name`
     , (err,result)=>{
         if (err !== undefined) {
+            console.log("Error:", err);
+        }else{
+            res.json(result.rows);
+        }
+    });  
+});
+
+app.get('/sklad/new/provider', (req, res) => { 
+    pool.query(`SELECT * FROM provider_spr ORDER BY pr_name`
+    , (err,result)=>{
+        if (err) {
+            console.log("Error:", err);
+        }else{
+            res.json(result.rows); 
+        }
+    }); 
+});
+
+app.get('/sklad/new/marka', (req, res) => { 
+    pool.query(`SELECT ma_id as id, ma_name as name FROM marka_equip_spr ORDER BY ma_name`
+    , (err,result)=>{
+        if (err) {
             console.log("Error:", err);
         }else{
             res.json(result.rows); 
@@ -86,7 +109,7 @@ app.get('/sklad/new/manufact', (req, res) => {
 app.get('/sklad/new/units', (req, res) => { 
     pool.query(`SELECT * FROM units_spr`
     , (err,result)=>{
-        if (err !== undefined) {
+        if (err) {
             console.log("Error:", err);
         }else{
 
@@ -96,9 +119,21 @@ app.get('/sklad/new/units', (req, res) => {
 });
 
 app.get('/sklad/new/kat', (req, res) => { 
-    pool.query(`SELECT * FROM kategor_spr`
+    pool.query(`SELECT * FROM kategor_spr ORDER BY kat_id`
     , (err,result)=>{
-        if (err !== undefined) {
+        if (err) {
+            console.log("Error:", err);
+        }else{
+
+            res.json(result.rows); 
+        }
+    }); 
+});
+
+app.get('/sklad/kat', (req, res) => { 
+    pool.query(`SELECT kat_id as id, kat_name as name FROM kategor_spr ORDER BY kat_id`
+    , (err,result)=>{
+        if (err) {
             console.log("Error:", err);
         }else{
 
@@ -383,6 +418,22 @@ app.delete('/spr/delete', (req,res) =>{
 })
 
 //------------------------------
+app.post('/equip/save', (req,res) => {
+    if(!req.body.data) return res.sendStatus(400);
+    var sql = `INSERT INTO public.equip_spr (eq_kat_id, eq_mark_id, eq_type_id, eq_name)
+    VALUES ( `+req.body.data.kat+`,`+req.body.data.marka+`,`+req.body.data.type+`,'`+req.body.data.name+`');`;
+    console.log(sql); 
+    pool.query(sql
+    , (err,result)=>{
+        if (err !== undefined) {
+            console.log("Postgres INSERT error:", err);
+        }else{
+            console.log('complite');
+            res.send('INSERT COMPLITE');
+        }
+    });
+});
+//--------------------------------
 
 app.get('/', function(req, res) {
     res.send('SKALD SERVER');

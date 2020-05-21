@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './input_form.css';
 import axio from 'axios';
 import UnicId from 'react-html-id';
+import SprItem from '../../spr_froms/spr_item/spr_item.js';
 
 
 const BlockItem = (props) => {
@@ -41,6 +42,7 @@ export default class Input_form extends Component {
             man_data: [],
             units_data: [],
             hyst_data: [],
+            isModalOpen: false,
         };
 
     }
@@ -119,11 +121,13 @@ export default class Input_form extends Component {
             }
             });*/
         }
+
+        this.ClearTable();
         
     }
 
     handleChange = event => {
-        if (event.target.name = 'name')
+        if (event.target.name === 'name')
             this.setState({name: event.target.value});
         //console.log(event.target.name);
     };
@@ -151,27 +155,35 @@ export default class Input_form extends Component {
 
     componentDidMount = () => {
         axio.get('./new/type').then(res=>{
-            //console.log(res.data);
             this.setState({
                 type_data: res.data
             });
         });
-        axio.get('./new/manufact').then(res=>{
-            //console.log(res.data);
+        axio.get('./new/provider').then(res=>{
             this.setState({
                 man_data: res.data
             });
         });
         axio.get('./new/units').then(res=>{
-            //console.log(res.data);
             this.setState({
                 units_data: res.data
             });
         });
         axio.get('./new/kat').then(res=>{
-            //console.log(res.data);
             this.setState({
                 kat_data: res.data
+            });
+        });
+    }
+
+    changeModal = () => {
+        this.setState(state => ({ isModalOpen: !state.isModalOpen}))
+    }
+
+    onReboot = () =>{
+        axio.get('./new/provider').then(res=>{
+            this.setState({
+                man_data: res.data
             });
         });
     }
@@ -180,16 +192,19 @@ export default class Input_form extends Component {
     render () {
         return (
             <div className="input_form input_form_pos">
-                <form onSubmit={this.handleSubmit, this.ClearTable}>
+                <form onSubmit={this.handleSubmit}>
                     <table className='input_form__table input_form__table_pos'>
                         <thead>
                         <tr>
                             <th className='cell_name'>
                                 <p>Поставщик </p>
                             </th>
-                            <th><select id="elem_type" name='e_type' onChange={this.ChangeType}>
-                            {this.state.man_data.map( id => <option key={id.m_id} value={id.m_id}>{id.m_name}</option>)}     
-                            </select></th>
+                            <th>
+                                <select id="elem_type" name='e_type' onChange={this.ChangeType}>
+                                    {this.state.man_data.map( id => <option key={id.pr_id} value={id.pr_id}>{id.pr_name}</option>)}     
+                                </select>
+                                <div onClick={this.changeModal} className="data-table__body data-table__body_pos spr_block_text">+</div>
+                            </th>
                             <th className='cell_name'>
                                 <p>Номер договора</p>
                             </th>
@@ -281,6 +296,9 @@ export default class Input_form extends Component {
                        
                     </tbody>
                 </table>
+                {this.state.isModalOpen &&
+                    <SprItem onClose={this.changeModal} onReboot={this.onReboot} act='submit' name='Поставщик' table='provider_spr'/>
+                }
 
             </div>
         );

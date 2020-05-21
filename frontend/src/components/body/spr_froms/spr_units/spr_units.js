@@ -30,15 +30,15 @@ export default class Spr_units extends Component {
         console.log(this.state.item);
 
         var err = '';
-        if (data.item == ''){
+        if (data.item === ''){
             err = err + 'Единицы измерения не введены!';
         }
-        if (!err == ''){
+        if (!err === ''){
             alert(err);
         }else{
             axio.post('/spr/save', {data}).then(res => {
             console.log(res.data);
-            if (res.data = 'POST COMPLITE') {
+            if (res.data === 'POST COMPLITE') {
                 alert('Редактирование успешно');
             }else{
                 alert('Данные не удалось сохранить');
@@ -58,15 +58,15 @@ export default class Spr_units extends Component {
         console.log('Update Event : ' + this.state.item);
 
         var err = '';
-        if (data.item == ''){
+        if (data.item === ''){
             err = err + 'Единицы измерения не введены!';
         }
-        if (!err == ''){
+        if (!err === ''){
             alert(err);
         }else{
             axio.post('/spr/update', {data}).then(res => {
             console.log(res.data);
-            if (res.data = 'POST COMPLITE') {
+            if (res.data === 'POST COMPLITE') {
                 alert('Сохранение успешно');
                 this.SaveComplite()
             }else{

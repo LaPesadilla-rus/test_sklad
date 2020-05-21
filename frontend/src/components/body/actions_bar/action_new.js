@@ -8,20 +8,17 @@ export default class Action_new extends Component{
     render (){
         return (
                 <div className = 'Action_new'>
-                    <NavLink className="action__button actions__button_pos new_button" to="/sklad/new">
+                    <NavLink className="action__button actions__button_pos new_button" to="./new">
                         Поступление
                     </NavLink>
                     <NavLink className="action__button actions__button_pos" to="/sklad/out">
                         Выписка
                     </NavLink>
-                    <NavLink className="action__button actions__button_pos out_button" to="/sklad/new">
+                    <NavLink className="action__button actions__button_pos out_button" to="./new">
                         Просмотр движений
                     </NavLink>
                     <NavLink className="action__button actions__button_pos info_button" to="/spr/all">
                         Справочники
-                    </NavLink>
-                    <NavLink className="action__button actions__button_pos info_button" to="/sklad/podr">
-                        Подразделения
                     </NavLink>
                 </div>
         );

@@ -10,6 +10,9 @@ export default class Menu extends Component{
                 <NavLink className="button_block" activeClassName="act" to="/sklad/all">
                     Склад
                 </NavLink> 
+                <NavLink className="button_block" activeClassName="act" to="/otdel">
+                    Отделение
+                </NavLink>
                 <NavLink className="button_block" activeClassName="act" to="/reports/all">
                     Заявки
                 </NavLink> 

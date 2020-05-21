@@ -12,7 +12,7 @@ function Data_Block () {
                 <Route path='/sklad/all' component={Data_table}/>
                 <Route path='/reports/all' component={Data_table}/>
 
-                <Route path='/sklad/edit/' component={Input_form}/>
+                <Route path='/sklad/edit' component={Input_form}/>
                 <Route path='/sklad/new' component={Input_form}/>
             </div>
     );

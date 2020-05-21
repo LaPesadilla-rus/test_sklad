@@ -1,0 +1,59 @@
+.new_eq{
+    background-color: rgba(216, 216, 216, 0.719);
+    
+    padding: 10px;
+    float: left;
+
+    width: 450px;
+
+    display: flex;
+    justify-self: center;
+    align-self: center;
+
+    border-radius: 10px;
+
+    color: black;
+}
+
+.new_eq form {
+    background-color: rgb(207, 207, 207);
+    min-height: 50px;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+}
+.new_eq_data{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.new_eq_data table {
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.new_eq_data table td {
+    padding: 5px;
+}
+
+.new_eq_data select {
+    width: 200px;
+    height: 25px;
+}
+
+.new_eq_data input {
+    width: 195px;
+    height: 20px;
+}
+
+.new_eq_data__button{
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.new_eq_data__button button {
+    margin-left: 5px;
+    padding: 10px;
+}
