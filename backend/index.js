@@ -18,8 +18,6 @@ const conn = require('./db_con.js');
 /*const spr = require('./modules/spr.js');
 spr.getData();*/
 
-//test 22.05.2020
-
 var data = { kat: [], type_equip: [], marka_equip: [], provider: [], filial: [], units: []};
 var mas = [{main: {}}];
 
