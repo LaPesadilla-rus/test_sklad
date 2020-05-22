@@ -1,7 +1,7 @@
 .App {
     text-align: center;
-    background-image: url(background-texture.jpg);
-    background-color: #fdfdfd;
+    background-image: url(background-texture2.jpg);
+    /*background-color: #dfdfdf;*/
     background-size: cover;
     /*width: 100vw;*/
     min-height: 100vh;

@@ -219,9 +219,6 @@ app.get('/spr/all', (req,res) => {
         }else{
             data = {...data, filial: result.rows};
             mas = [...mas, {item: result.rows, name: 'Филиал', table:'filial_spr'}];
-            //mas = Object.assign({},mas, copy);
-            //console.log(mas2);
-            //console.log('5');
         }
     }); 
     client.query(`SELECT un_id as id, un_name as item FROM units_spr  order by item`
@@ -230,31 +227,27 @@ app.get('/spr/all', (req,res) => {
             console.log("Error:", err);
         }else{
             data = {...data, units: result.rows};
-           /* console.log('--');
-            console.log(data);*/
             mas = [...mas,{item: result.rows, name: 'Ед. измерения', table:'units_spr'}];   
         }
     });
 
-    /*client.query(`SELECT un_id as id, un_name as item FROM units_spr`
+    client.query(`SELECT eq.eq_id as id,
+                (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item
+                FROM equip_spr eq
+                
+                inner join marka_equip_spr ma
+                on ma.ma_id = eq.eq_mark_id
+                
+                inner join type_equip_spr te
+                on te.te_id = eq_type_id`
     , (err,result)=>{
         if (err) {
             console.log("Error:", err);
         }else{
             data = {...data, units: result.rows};
-            mas = [...mas,{item: result.rows, name: 'Ед. измерения2', table:'units_spr'}];   
+            mas = [...mas,{item: result.rows, name: 'Оборудование', table:'equip_spr'}];   
         }
     });
-
-    client.query(`SELECT un_id as id, un_name as item FROM units_spr  order by item`
-    , (err,result)=>{
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, units: result.rows};
-            mas = [...mas,{item: result.rows, name: 'Ед. измерения3', table:'units_spr'}];   
-        }
-    });*/
 
     client.query(`SELECT ot_id as id, ot_name as item FROM otd_spr  order by item`
     , (err,result)=>{

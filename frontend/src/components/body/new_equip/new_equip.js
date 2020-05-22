@@ -124,8 +124,9 @@ export default class New_equip extends Component {
 
     render(){
         return(
+            <div className='background_modal background_modal_pos'>
             <div className='new_eq'>
-                <form onSubmit={this.handleSubmit}>
+                <form className='new_eq__form' onSubmit={this.handleSubmit}>
                     <div className='new_eq_data'>
                         
                     
@@ -143,6 +144,7 @@ export default class New_equip extends Component {
                     <SprItem key={this.nextUniqueId()} onClose={this.changeModal} onReboot={this.onReboot} act='submit' name={this.state.name} table={this.state.table}/>
                 }
 
+            </div>
             </div>
         )
     }
