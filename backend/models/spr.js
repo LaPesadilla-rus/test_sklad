@@ -1,84 +1,46 @@
-var express = require('express');
-var app = express();
-
-const {Pool,Client} = require('pg');
+const {Pool, Client} = require('pg');
 
 const conn = require('../db_con.js');
 
-const pool = new Pool(conn.conn_str);
+const pool = new Pool (conn.conn_str);
 
-//------------------------------
-// SPR
+const client = new Client(conn.conn_str);
+client.connect();
 
-var mas2 = {};
-var copy={};
+var errm = {};
+var mas = [{main: {}}];
 
-app.get('/spr/all', (req,res) => {
-    console.log('get: /spr/all');
-
-    client.query(`SELECT kat_id as id, kat_name as item FROM kategor_spr order by item`, (err, result) => {
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {kat: result.rows};
-            mas = [{item: result.rows, name: 'Категория', table:'kategor_spr'}];
-            //client.end();
-            //console.log('1');
-        }
-    })
-
-    client.query(`SELECT te_id as id, te_name as item FROM type_equip_spr  order by item`, (err, result) => {
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, type_equip: result.rows};
-            mas = [...mas, {item: result.rows, name: 'Тип обоудования', table:'type_equip_spr'}];
-            //client.end();
-            //console.log('2');
-        }
-    })
-
-    client.query(`SELECT ma_id as id, ma_name as item FROM marka_equip_spr  order by item`, (err, result) => {
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, marka_equip: result.rows};
-            mas = [...mas, {item: result.rows, name: 'Марка', table:'marka_equip_spr'}];
-            //client.end();
-            //console.log('3');
-        }
-    })
-    
-    client.query(`SELECT pr_id as id, pr_name as item FROM provider_spr  order by item`
-    , (err,result)=>{
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, provider: result.rows};
-            mas = [...mas, {item: result.rows, name: 'Поставщик', table:'provider_spr'}];
-            //console.log('4');
-            //setTimeout(1000);
-        }
-    }); 
-    client.query(`SELECT fi_id as id, fi_name as item FROM filial_spr  order by item`
-    , (err,result)=>{
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, filial: result.rows};
-            mas = [...mas, {item: result.rows, name: 'Филиал', table:'filial_spr'}];
-        }
-    }); 
-    client.query(`SELECT un_id as id, un_name as item FROM units_spr  order by item`
-    , (err,result)=>{
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, units: result.rows};
-            mas = [...mas,{item: result.rows, name: 'Ед. измерения', table:'units_spr'}];   
-        }
+exports.all = function (cb) {
+    client.query(`SELECT kat_id as id, kat_name as item FROM kategor_spr order by item`
+    , (err, res) => {
+        errm = {err: err};
+        mas = [{item: res.rows, name: 'Категория', table:'kategor_spr'}];
     });
-
+    client.query(`SELECT te_id as id, te_name as item FROM type_equip_spr  order by item`
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas, {item: res.rows, name: 'Тип обоудования', table:'type_equip_spr'}];
+    });
+    client.query(`SELECT ma_id as id, ma_name as item FROM marka_equip_spr  order by item`
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas, {item: res.rows, name: 'Марка', table:'marka_equip_spr'}];
+    });
+    client.query(`SELECT pr_id as id, pr_name as item FROM provider_spr  order by item`
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas, {item: res.rows, name: 'Поставщик', table:'provider_spr'}];
+    });
+    client.query(`SELECT fi_id as id, fi_name as item FROM filial_spr  order by item`
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas, {item: res.rows, name: 'Филиал', table:'filial_spr'}];
+    });
+    client.query(`SELECT un_id as id, un_name as item FROM units_spr  order by item`
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas,{item: res.rows, name: 'Ед. измерения', table:'units_spr'}];
+    });
     client.query(`SELECT eq.eq_id as id,
                 (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item
                 FROM equip_spr eq
@@ -88,46 +50,29 @@ app.get('/spr/all', (req,res) => {
                 
                 inner join type_equip_spr te
                 on te.te_id = eq_type_id`
-    , (err,result)=>{
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, units: result.rows};
-            mas = [...mas,{item: result.rows, name: 'Оборудование', table:'equip_spr'}];   
-        }
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas,{item: res.rows, name: 'Оборудование', table:'equip_spr'}];
     });
-
     client.query(`SELECT ot_id as id, ot_name as item FROM otd_spr  order by item`
-    , (err,result)=>{
-        if (err) {
-            console.log("Error:", err);
-        }else{
-            data = {...data, otd: result.rows};
-            mas = [...mas,{item: result.rows, name: 'Отделение', table:'otd_spr'}];
-            //console.log(mas);
-            res.json(mas);
-            mas = [{main: {}}];   
-        }
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas,{item: res.rows, name: 'Ед. измерения', table:'units_spr'}];
+        cb(errm,mas);
     });
-});
+};
 
-app.get('/spr/kat', (req,res) => {
+exports.kat = function (cb) {
     pool.query(`SELECT * FROM kategor_spr`
-    , (err,result)=>{
-        if (err !== undefined) {
-            console.log("Error:", err);
-        }else{
-            res.json({item: result.rows, name: 'Категория', ref: 'kat'});
-        }
-    }); 
-});
+    , (err,res)=>{
+       cb(err,res);
+    });
+}
 
-app.post('/spr/save', (req,res) => {
-    console.log('/spr/save');
+exports.spr_save = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
     var sql = `INSERT INTO public.units_spr (un_name)
                 VALUES ('`+req.body.data.item+`');`;
-    console.log(req.body);
     switch(req.body.data.table) {
         case 'units_spr': sql =  `INSERT INTO public.units_spr (un_name)
                                     VALUES ('`+req.body.data.item+`')`;
@@ -154,22 +99,19 @@ app.post('/spr/save', (req,res) => {
     }
     if (sql){
         pool.query(sql
-            , (err,result)=>{
+            , (err,res)=>{
                 if (err) {
                     console.log("Postgres INSERT error:", err);
                 }else{
-                    res.send('INSERT COMPLITE');
+                    cb(err,'POST COMPLITE');
                 }
             });
     } 
-    //res.send('POST COMPLITE');
-});
+}
 
-app.post('/spr/update', (req,res) =>{
+exports.spr_update = function(req,cb) {
     var sql;
-    console.log('/spr/update');
     if(!req.body.data) return res.sendStatus(400);
-    console.log(req.body); 
     switch(req.body.data.table) {
         case 'units_spr': sql =  `UPDATE public.units_spr
                                     SET un_name ='`+req.body.data.item+`'
@@ -203,27 +145,19 @@ app.post('/spr/update', (req,res) =>{
     }
     if (sql){
         pool.query(sql
-            , (err,result)=>{
+            , (err,res)=>{
                 if (err) {
                     console.log("Postgres INSERT error:", err);
                 }else{
-                    res.send('UPDADE COMPLITE');
+                    cb(err,'UPDATE COMPLITE');
                 }
             });
     }
-});
+}
 
-app.delete('/spr/delete', (req,res) =>{
-    console.log('/spr/delete');
+exports.spr_delete = function(req,cb) {
     var sql;
-    console.log(req.body);
     if(!req.body) return res.sendStatus(400);
-    /*switch(req.body.table) {
-        case 'units_spr': sql =  `DELETE FROM public.units_spr
-                                    WHERE un_id = `+req.body.id_item+``;
-                                    break;
-        default: res.send('DELETE COMPLITE');
-    }*/
     switch(req.body.table) {
         case 'units_spr': sql =  `DELETE FROM public.units_spr
                                     WHERE un_id = `+req.body.id_item+``;
@@ -250,14 +184,12 @@ app.delete('/spr/delete', (req,res) =>{
     }
     if (sql){
         pool.query(sql
-            , (err,result)=>{
+            , (err,res)=>{
                 if (err) {
                     console.log("Postgres DELETE error:", err);
                 }else{
-                    res.send('DELETE COMPLITE');
+                    cb(err, 'DELETE COMPLITE');
                 }
             });
     }
-})
-console.log('spr.js')
-//------------------------------
+}
