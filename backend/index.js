@@ -49,11 +49,16 @@ app.post('/equip/save', skladController.equip_save);
 // SPR
 app.get('/spr/all', sprController.all);
 app.get('/spr/kat', sprController.kat);
+app.get('/spr/type', skladController.type_a);
 
+app.post('/spr/equip', sprController.equip)
 app.post('/spr/save', sprController.spr_save);
 app.post('/spr/update', sprController.spr_update);
+app.post('/equip/update', sprController.equip_update);
 
 app.delete('/spr/delete', sprController.spr_delete);
+
+
 //------------------------------
 
 //--------------------------------

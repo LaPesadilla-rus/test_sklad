@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './new_equip.css';
-import SprItem from '../spr_froms/spr_item/spr_item.js';
 
 
 export default class New_equip_select extends Component {
@@ -27,8 +26,8 @@ export default class New_equip_select extends Component {
                     <tbody><tr>
                         <td>{this.props.zagolovok}</td>
                         <td>
-                        <select name='kategor' onChange={this.props.ChangeSelect}>
-                            <option placeholder='----'></option>
+                        <select name='kategor' onChange={this.props.ChangeSelect} value={this.props.id_val}>
+                            <option placeholder='----' value='-1'></option>
                             {this.props.data.map( id => <option key={id.id} value={id.id}>{id.name}</option>)}
                         </select>
                         </td>

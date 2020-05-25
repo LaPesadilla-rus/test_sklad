@@ -93,7 +93,6 @@ export default class Spr_units extends Component {
     }
 
     onClose= () =>{
-        console.log(this.props);
         this.props.onClose();
         this.props.onReboot();
     }

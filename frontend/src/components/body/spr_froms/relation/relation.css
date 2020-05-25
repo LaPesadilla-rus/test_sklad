@@ -1,0 +1,87 @@
+.box_back_osn {
+    background-color: rgba(216, 216, 216, 0.719);
+    
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+
+    border-radius: 10px;
+}
+
+.box_back_dop{
+    background-color: rgb(207, 207, 207);
+    width: 100%;
+    min-height: 50px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.form_box{
+    min-width: 300px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: row;
+}
+.form_box_add{
+    width: 200px;
+    min-height: 100px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+
+    flex-grow: 1;
+
+    color: black;
+}
+
+.form_box_add div {
+    display: flex;
+    flex-direction: row;
+}
+
+.button{
+    margin: 5px;
+    padding: 10px;
+    min-width: 50px;
+    min-height: 30px;
+
+    background-color: rgb(13, 84, 117);
+    border: 1px solid #123545;
+    box-shadow: 0 0 3px rgb(10, 55, 92);
+    transition: all 0.5s;
+
+    border-radius: 10px;
+
+    color: white;
+    font-size: 15px;
+}
+
+.button:hover{
+    background-color: rgb(22, 125, 173);
+    box-shadow: 0 0 5px rgb(10, 55, 92);  
+}
+
+.button_red{
+    background-color: rgb(116, 11, 11);
+    border: 1px solid #500e0e;
+    box-shadow: 0 0 3px rgb(99, 7, 7);
+    transition: all 0.5s;
+}
+
+.button_red:hover{
+    background-color: rgb(192, 10, 10);
+    box-shadow: 0 0 3px rgb(99, 7, 7);  
+}
+
+.button_green{
+    background-color: rgb(29, 109, 9);
+    border: 1px solid #184b12;
+    box-shadow: 0 0 3px rgb(11, 85, 23);
+    transition: all 0.5s;
+}
+
+.button_green:hover{
+    background-color: rgb(14, 150, 25);
+    box-shadow: 0 0 3px rgb(11, 85, 23);  
+}

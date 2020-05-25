@@ -16,7 +16,7 @@ export default class Spr_block extends Component {
     }
 
     RebootData = () => {
-        axio.get('./all').then(res=>{
+        axio.get('/spr/all').then(res=>{
             this.setState({
                 main:  res.data,
             });
@@ -24,7 +24,7 @@ export default class Spr_block extends Component {
     }
 
     componentDidMount = () => {
-        axio.get('./all').then(res=>{
+        axio.get('/spr/all').then(res=>{
             this.setState({
                 main:  res.data,
             });
@@ -39,7 +39,7 @@ export default class Spr_block extends Component {
         return(
             <div className='spr_block_main'>
                 {this.state.main.map((id, index )=> 
-                   <TableBlock key={this.nextUniqueId()} onReboot={this.RebootData} name={id.name} table={id.table} items={id.item} />)}
+                   <TableBlock key={this.nextUniqueId()} onReboot={this.RebootData} name={id.name} table={id.table} items={id.item} type={id.type} />)}
             </div>
         )
     }          

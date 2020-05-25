@@ -50,6 +50,16 @@ exports.type = function(req, res) {
     })
 }
 
+exports.type_a = function(req, res) {
+    Sklad.type_a(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs.rows);
+    })
+}
+
 exports.type_post = function(req, res) {
     Sklad.type_post(req.body.kat, function(err,docs){
         if (err) {

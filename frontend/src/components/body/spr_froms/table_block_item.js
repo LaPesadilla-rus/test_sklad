@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './spr_block.css';
 import SprItem from './spr_item/spr_item.js';
 import ModalWarn from './spr_item/modal_warn.js';
+import NewEquip from './new_equip/new_equip.js';
 import axio from 'axios';
 
 export default class Table_block_item extends Component {
@@ -12,6 +13,7 @@ export default class Table_block_item extends Component {
             isModalOpen: false,
             isWarnOpen: false,
             isDeleteData: false,
+            isModalEquip: false,
         }
     }
 
@@ -23,14 +25,17 @@ export default class Table_block_item extends Component {
         this.setState(state => ({ isWarnOpen: !state.isWarnOpen}))
     }
 
+    changeEquip =() => {
+        this.setState(state => ({ isModalEquip: !state.isModalEquip}))
+    }
+
     handleDelete = () => {
         const data = {
             table: this.props.table,
             id_item: this.props.id_item
-        }      
+        }     
         axio.delete('/spr/delete', {data}).then(res => {
             if (res.data === 'DELETE COMPLITE') {
-                //alert('Данные удалены');
                 this.props.onReboot();
             }else{
                 alert('Данные не удалось сохранить');
@@ -39,14 +44,25 @@ export default class Table_block_item extends Component {
     }
 
     render(){
+        let block;
+        if (this.props.type === 'equip'){
+            block = <div onClick={this.changeEquip} className="spr_block_nav">
+                        <label>{this.props.item}</label>
+                    </div>
+        }else{
+            block = <div onClick={this.changeModal} className="spr_block_nav">
+                        <label>{this.props.item}</label>
+                    </div>
+        }
         return(
             <div  className="spr_block_data_line">
                 <div className="spr_block_data_item" >
-                    <div onClick={this.changeModal} className="spr_block_nav">
-                        <label>{this.props.item}</label>
-                    </div>
+                    {block}
                     {this.state.isModalOpen &&
                         <SprItem onClose={this.changeModal} onReboot={this.props.onReboot} act='update' id_item={this.props.id_item} item={this.props.item} name={this.props.name} table={this.props.table} />
+                    }
+                    {this.state.isModalEquip &&
+                        <NewEquip onClose={this.changeEquip} onReboot={this.props.onReboot} act='update' id_item={this.props.id_item} item={this.props.item} name={this.props.name} table={this.props.table} />
                     }
                     {this.state.isWarnOpen &&
                         <ModalWarn onClose={this.changeWarn} onDel={this.handleDelete} />

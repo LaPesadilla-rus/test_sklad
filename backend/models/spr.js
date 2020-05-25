@@ -41,6 +41,11 @@ exports.all = function (cb) {
         errm = {...errm, err: err};
         mas = [...mas,{item: res.rows, name: 'Ед. измерения', table:'units_spr'}];
     });
+    client.query(`SELECT mo_id as id, mo_name as item FROM mol_spr  order by item`
+    , (err, res) => {
+        errm = {...errm, err: err};
+        mas = [...mas,{item: res.rows, name: 'МОЛ', table:'mol_spr'}];
+    });
     client.query(`SELECT eq.eq_id as id,
                 (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item
                 FROM equip_spr eq
@@ -52,12 +57,12 @@ exports.all = function (cb) {
                 on te.te_id = eq_type_id`
     , (err, res) => {
         errm = {...errm, err: err};
-        mas = [...mas,{item: res.rows, name: 'Оборудование', table:'equip_spr'}];
+        mas = [...mas,{item: res.rows, name: 'Оборудование', table:'equip_spr', type:'equip'}];
     });
     client.query(`SELECT ot_id as id, ot_name as item FROM otd_spr  order by item`
     , (err, res) => {
         errm = {...errm, err: err};
-        mas = [...mas,{item: res.rows, name: 'Ед. измерения', table:'units_spr'}];
+        mas = [...mas,{item: res.rows, name: 'Отдел', table:'otd_spr'}];
         cb(errm,mas);
     });
 };
@@ -93,6 +98,9 @@ exports.spr_save = function(req,cb) {
                                     VALUES ('`+req.body.data.item+`')`;
                                     break;
         case 'type_equip_spr': sql =  `INSERT INTO public.type_equip_spr (te_name)
+                                    VALUES ('`+req.body.data.item+`')`;
+                                    break;
+        case 'mol_spr': sql =  `INSERT INTO public.mol_spr (mo_name)
                                     VALUES ('`+req.body.data.item+`')`;
                                     break;
         default: res.send('INSERT COMPLITE');
@@ -141,7 +149,11 @@ exports.spr_update = function(req,cb) {
                                     SET te_name ='`+req.body.data.item+`'
                                     WHERE te_id = `+req.body.data.id_item+``;
                                     break;
-        default: res.send('POST COMPLITE');
+        case 'mol_spr': sql =  `UPDATE public.mol_spr
+                                    SET mo_name ='`+req.body.data.item+`'
+                                    WHERE mo_id = `+req.body.data.id_item+``;
+                                    break;
+        default: cb('','POST COMPLITE');
     }
     if (sql){
         pool.query(sql
@@ -180,6 +192,12 @@ exports.spr_delete = function(req,cb) {
         case 'type_equip_spr': sql =  `DELETE FROM public.type_equip_spr
                                     WHERE te_id = `+req.body.id_item+``;
                                     break;
+        case 'mol_spr': sql =  `DELETE FROM public.mol_spr
+                                    WHERE mo_id = `+req.body.id_item+``;
+                                    break;
+        case 'equip_spr': sql =  `DELETE FROM public.equip_spr
+                                    WHERE eq_id = `+req.body.id_item+``;
+                                    break;
         default: res.send('POST COMPLITE');
     }
     if (sql){
@@ -192,4 +210,25 @@ exports.spr_delete = function(req,cb) {
                 }
             });
     }
+}
+
+exports.equip = function(id, cb) {
+    var sql = `SELECT * FROM public.equip_spr WHERE eq_id = `+id+``;
+    pool.query(sql 
+        ,(err,res)=>{
+            cb(err,res);
+        });
+}
+
+exports.equip_update = function(req, cb) {
+    var sql =  `UPDATE public.equip_spr
+                SET eq_name ='`+req.body.data.name+`',
+                    eq_type_id = `+req.body.data.type+`,
+                    eq_mark_id = `+req.body.data.marka+`,
+                    eq_kat_id =  `+req.body.data.kat+`
+                WHERE eq_id = `+req.body.data.id_item+``;
+    pool.query(sql 
+        ,(err,res)=>{
+            cb(err,'UPDATE COMPLITE');
+        });
 }

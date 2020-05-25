@@ -61,6 +61,13 @@ exports.type = function(cb) {
     });
 }
 
+exports.type_a = function(cb) {
+    pool.query(`SELECT te_id as id, te_name as name FROM type_equip_spr`
+    , (err,res)=>{
+        cb(err,res);
+    });
+}
+
 exports.type_post = function(id, cb) {
     pool.query(`SELECT te_id as id, te_name as name FROM type_equip_spr WHERE te_kat_id = `+id+` ORDER BY te_name`
     , (err,res)=>{

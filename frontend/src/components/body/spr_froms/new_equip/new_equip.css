@@ -18,6 +18,7 @@
 .new_eq__form {
     background-color: rgb(207, 207, 207);
     min-height: 50px;
+    min-width: 50px;
     width: 100%;
     border-radius: 10px;
     padding: 10px;

@@ -49,3 +49,24 @@ exports.spr_delete = function(req, res) {
         res.send(docs);
     })
 }
+
+exports.equip = function(req, res) {
+    Spr.equip(req.body.id, function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows)
+        res.send(docs.rows);
+    })
+}
+
+exports.equip_update = function(req, res) {
+    Spr.equip_update(req, function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs);
+    })
+}
