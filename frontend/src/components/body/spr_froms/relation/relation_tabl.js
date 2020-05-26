@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './relation.css';
 import UnicId from 'react-html-id';
-import NewEquipSelect from '../new_equip/new_equip_select';
+import SprItem from '../spr_item/spr_item';
+import NewEquipSelect from '../new_equip/new_equip_select.js';
+import Autocomplite from './autocomplite.js';
 import axio from 'axios';
 
 export default class Relation_tabl extends Component {
@@ -19,10 +21,25 @@ export default class Relation_tabl extends Component {
             kat_data: [],
             type_data: [],
             mark_data: [],
+            items: [],
+            equip_name_data: [],
+            error: '',
+            id: '',
         }
     }
 
     componentDidMount = () =>{
+        axio.get('/spr/equip_name').then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
+            this.setState({
+                equip_name_data: mas,
+                items: res.data,
+            })
+            
+        });
         axio.get('/sklad/kat').then(res=>{
             this.setState({
                 kat_data: res.data,
@@ -79,7 +96,7 @@ export default class Relation_tabl extends Component {
     }
 
     ChangeModelInp = (e) =>{
-        this.setState({model: e.target.value});
+        this.setState({model: e});
     }
 
     changeModal = (e) =>{
@@ -174,10 +191,65 @@ export default class Relation_tabl extends Component {
         this.props.onReboot();
     }
 
+    searchType = (value) => {
+        var i = this.state.type_data.length;
+        while (i--){
+            if (this.props.items[i].te_name === value){
+                return(this.state.type_data.te_id)
+            }
+        }
+    }
+
+    addItem = () => {
+        const data = {
+            kat: this.state.kat,
+            type: this.state.type,
+            marka: this.state.marka,
+            name: this.state.model,
+            txt: this.state.type + ' ' + this.state.marka + ' ' + this.state.model,
+        }      
+        var err = '';
+        if (data.kat === '' ){
+            err = err + 'Категория не выбрана! ';
+        }
+        if (data.type === ''){
+            err = err + 'Тип оборудования не выбран! ';
+        }
+        if (data.marka === ''){
+            err = err + 'Производитель не выбран! ';
+        }
+        if (data.name === ''){
+            err = err + 'Модель не заполнена! ';
+        }
+        if (this.state.equip_name_data.indexOf(data.name) === -1){
+            err = err + 'Модели нет в списке! '
+        }
+        if (err){
+            this.setState({error: err})
+        }else{
+            this.setState({error: null})
+            
+            if (!this.props.btn_stat){
+                this.props.changeButton(this.props.id_button, this.state.id, data.txt);
+            }
+        }
+    }
+
+    cancelClick = () =>{
+        if (this.props.btn_stat){
+            this.props.changeButton(this.props.id_button, this.state.id);
+        }
+    }
+
+    changeIdItem = (val) =>{
+        this.setState({id: val})
+        this.cancelClick();
+    }
 
     render(){
         return(
             <div className='form_box_add'> 
+                {this.props.zagl}
                 <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
                     ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
                     data={this.state.kat_data} id_val={this.state.kat} />
@@ -187,7 +259,22 @@ export default class Relation_tabl extends Component {
                 <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
                     ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
                     data={this.state.mark_data} id_val={this.state.marka} />
-                <p>Введите модель <input onChange={this.ChangeModelInp} value={this.state.model}></input></p>
+                <div className='new_eq_sel'>
+                    <div className='new_eq_sel_col1'>Введите модель </div>
+                    <div className='new_eq_sel_col2'>
+                        <Autocomplite id_item={this.changeIdItem} onChange={this.ChangeModelInp} items_full={this.state.items} 
+                                        items_arr={this.state.equip_name_data} value={this.state.model} />
+                    </div>
+                    <div className='new_eq_sel_col3'></div>
+                </div>
+                <div className='new_eq_sel'>{this.state.error}</div>
+                <div>
+                    <button className='button button_red' onClick={this.cancelClick}>Отмена</button>
+                    <button className='button' onClick={this.addItem}>Добавить</button>
+                </div>
+                {this.state.isModalOpen &&
+                    <SprItem key={this.nextUniqueId()} onClose={this.changeModal} onReboot={this.onReboot} act='submit' name={this.state.name} table={this.state.table}/>
+                }
             </div>
                         
         )

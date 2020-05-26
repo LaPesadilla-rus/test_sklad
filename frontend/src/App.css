@@ -42,3 +42,109 @@
         transform: rotate(360deg);
     }
 }
+
+.input {
+    border: 1px solid #8a8a8a;
+    transition: all 1s;
+}
+
+.input:hover{
+    border: 1px solid #0b358f;
+    box-shadow: 0px 0px 2px 1px rgba(5,34,161,1);
+}
+
+.input:focus{
+    border: 1px solid #0b358f;
+    box-shadow: 0px 0px 2px 1px rgba(5,34,161,1);
+}
+
+.input_green:focus{
+    border: 1px solid #0b8f16;
+    box-shadow: 0px 0px 2px 1px rgb(5, 161, 39);
+}
+
+.input_red:focus{
+    border: 1px solid #8f0b0b;
+    box-shadow: 0px 0px 2px 1px rgb(161, 5, 5);
+}
+
+.button{
+    margin: 5px;
+    padding: 10px;
+    min-width: 50px;
+    min-height: 30px;
+
+    background-color: rgb(13, 84, 117);
+    border: 1px solid #123545;
+    box-shadow: 0 0 3px rgb(10, 55, 92);
+    transition: all 0.5s;
+
+    border-radius: 10px;
+
+    color: white;
+    font-size: 15px;
+}
+
+.button:hover{
+    background-color: rgb(22, 125, 173); 
+}
+
+.button_red{
+    background-color: rgb(116, 11, 11);
+    border: 1px solid #500e0e;
+    box-shadow: 0 0 3px rgb(99, 7, 7);
+    transition: all 0.5s;
+}
+
+.button_red:hover{
+    background-color: rgb(192, 10, 10); 
+}
+
+.button_green{
+    background-color: rgb(29, 109, 9);
+    border: 1px solid #184b12;
+    box-shadow: 0 0 3px rgb(11, 85, 23);
+    transition: all 0.5s;
+}
+
+.button_green:hover{
+    background-color: rgb(14, 150, 25); 
+}
+
+.button_yellow {
+    background-color: rgb(136, 134, 10);
+    border: 1px solid #474b12;
+    box-shadow: 0 0 3px rgb(71, 85, 11);
+    transition: all 0.5s;
+}
+
+.button_yellow:hover{
+    background-color: rgb(180, 178, 16);
+}
+
+.button_yellow.active{
+    background-color: rgb(180, 178, 16);
+}
+
+.button_cancel{
+    background-color: rgb(116, 11, 11);
+    border: 1px solid #500e0e;
+    box-shadow: 0 0 3px rgb(99, 7, 7);
+    transition: all 0.5s;
+
+    margin-left: -5px;
+    width: 10px;
+    padding: 0px;
+}
+
+.button_cancel:hover{
+    background-color: rgb(192, 10, 10); 
+}
+
+.combo_button {
+    display: flex;
+    justify-content: center;
+    width: 150px;
+    height: 50px;
+    
+}

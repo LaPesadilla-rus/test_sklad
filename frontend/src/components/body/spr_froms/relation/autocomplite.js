@@ -1,143 +1,99 @@
 import React, {Component} from 'react';
-import './relation.css';
+import './autocomplite.css';
 import UnicId from 'react-html-id';
-import axio from 'axios';
 
 export default class Autocomplite extends Component {
-    constructor (){
-        super();
+    constructor (props){
+        super(props);
         UnicId.enableUniqueIds(this);
         this.state = {
-            kat: '',
-            type: '',
-            marka: '',
-            model: '',
-            name: '',
-            table: '',
-            isModalOpen: false,
-            kat_data: [],
-            type_data: [],
-            mark_data: [],
+            items: [],
+            txt: '',
+            suggestions: [],
+            allsuggestions: [],
+            err: false,
         }
     }
 
-    componentDidMount = () =>{
-        axio.get('/sklad/kat').then(res=>{
-            this.setState({
-                kat_data: res.data,
-            })
-        });
-        
-        axio.get('/sklad/new/marka').then(res=>{
-            this.setState({
-                mark_data: res.data,
-            })
-        });
-        if (this.props.id_item){
-            var data = { id: this.props.id_item};
-            axio.post('/spr/equip', data).then(res=>{
-                this.setState({
-                    model: res.data[0].eq_name,
-                    kat: res.data[0].eq_kat_id,
-                    marka: res.data[0].eq_mark_id,
-                    type: res.data[0].eq_type_id,
-                });
-                this.ChangeKategor({target: {value: res.data[0].eq_kat_id}});
-            });
+    searchWord = (e) => {
+        if (this.props.items_arr.indexOf(e) === -1){
+            this.setState({err: false})
         }else{
-            var data = { kat: '0'};
-            axio.post('/sklad/new/type', data).then(res=>{
-                this.setState({
-                    type_data: res.data,
-                })
-            });
-        }
-
-    }
-
-    handleSubmit = event => {
-        event.preventDefault();
-
-        const data = {
-            kat: this.state.kat,
-            type: this.state.type,
-            marka: this.state.marka,
-            name: this.state.model,
-        }      
-        var err = '';
-        console.log(data)
-        if (data.kat === '' ){
-            err = err + 'Категория не выбрана! ';
-        }
-        if (data.type === ''){
-            err = err + 'Тип оборудования не выбран! ';
-        }
-        if (data.marka === ''){
-            err = err + 'Производитель не выбран! ';
-        }
-        if (data.name === ''){
-            err = err + 'Модель не заполнена! ';
-        }
-        if (err){
-            alert(err);
-        }else{
-            axio.post('/equip/save', {data}).then(res => {
-                if (res.data === 'INSERT COMPLITE') {
-                    this.onClose();
-                }else{
-                    alert('Данные не удалось сохранить');
-                }
-            });
+            this.setState({err: true});
         }
     }
 
-    handleUpdate = event => {
-        event.preventDefault();
-        console.log('Update event')
-        const data = {
-            kat: this.state.kat,
-            type: this.state.type,
-            marka: this.state.marka,
-            name: this.state.model,
-            id_item: 1,
-            table: 'equip_spr',
-        }      
-        var err = '';
-        if (data.kat === '' ){
-            err = err + 'Категория не выбрана! ';
+    onChangeTxt = (e) => {
+        const value = e.target.value;
+        let suggestions = [];
+        //this.setState({items: this.props.items_arr})
+        if (value.length > 0){
+           
+            const regex = new RegExp(`${value}`, 'i');
+            
+           suggestions = this.props.items_arr.sort().filter(v => regex.test(v));
         }
-        if (data.type === ''){
-            err = err + 'Тип оборудования не выбран! ';
-        }
-        if (data.marka === ''){
-            err = err + 'Производитель не выбран! ';
-        }
-        if (data.name === ''){
-            err = err + 'Модель не заполнена! ';
-        }
-        if (err){
-            alert(err);
-        }else{
-            axio.post('/equip/update', {data}).then(res => {
-                console.log(res.data)
-                if (res.data === 'UPDATE COMPLITE') {
-                    this.onClose();
-                }else{
-                    alert('Данные не удалось сохранить');
-                }
-            });
+        this.setState({suggestions: suggestions})
+        this.setState({txt: e.target.value})
+        this.searchWord(e.target.value);
+        this.props.onChange(e.target.value);
+        //let id = this.props.items_full.find(line => line.name === e.target.value).eq_id;
+        this.searchItem(e.target.value);
+        //console.log(this.props.items_full)
+    }
+
+    searchItem = (value) => {
+        var i = this.props.items_full.length;
+        while (i--){
+            if (this.props.items_full[i].item === value){
+                this.props.id_item(this.props.items_full[i].eq_id)
+            }
         }
     }
 
+    suggestionSelected (value) {
+        this.setState({
+            txt: value,
+            suggestions: [],
+        })
+        this.props.onChange(value);
+        this.searchWord(value);
+        this.searchItem(value);
+        this.nameInput.focus(); 
+    }
 
+    renderSuggestions () {
+        var suggestions = this.state.suggestions;
+        if (suggestions.length === 0){
+            return null;
+        }
+        suggestions = suggestions.slice(0,8);
+        return (
+                <ul>
+                     {suggestions.map(item =>  <li onClick={() => this.suggestionSelected(item)} key={item}><label>{item}</label></li>)}
+                 </ul> 
+        )
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClickOutside, false);
+    }
+
+    componentDidMount() {
+        document.addEventListener('click', this.handleClickOutside, false);  
+    }
+
+    handleClickOutside =(e) => {
+        if (e.target.localName !== 'label'){
+            this.setState({suggestions: []});
+            }
+    }
 
     render(){
         return(
             <div className='autocomplite'>
-                 <input></input>
-                 <ul>
-                     <li></li>
-                 </ul>
+                 <div className='autocomplite_column'><input ref={(input) => { this.nameInput = input; }} className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  type='text' onChange={this.onChangeTxt} value={this.state.txt} ></input></div>
+                 <div className='autocomplite_column'>{this.renderSuggestions()}</div>
             </div>
         )
     }

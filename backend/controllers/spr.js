@@ -10,6 +10,16 @@ exports.all = function(req, res) {
     })
 };
 
+exports.equip_name = function(req, res) {
+    Spr.equip_name(function(err, docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.json(docs.rows);
+    })
+};
+
 exports.kat = function(req, res) {
     Spr.kat(function(err,docs){
         if (err) {

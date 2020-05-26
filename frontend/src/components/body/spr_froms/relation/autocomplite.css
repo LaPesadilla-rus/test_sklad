@@ -1,0 +1,44 @@
+.autocomplite{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.autocomplite_column {
+    width: 100%;
+}
+
+.autocomplite input{
+    width: 100%;
+    height: 25px;
+    
+    outline:none
+}
+
+.autocomplite ul {
+    min-width: 218px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    border: 1px solid #0b358f;
+    box-shadow: 0px 0px 2px 1px rgba(5,34,161,1);
+    text-align: left;
+
+    position: absolute;
+
+}
+
+.autocomplite li {
+    list-style-type: none;
+    padding: 5px;
+}
+.autocomplite li:hover{
+    background-color: rgb(156, 156, 156);
+}
+
+.autocomplite ul:focus{
+    border: 1px solid #0b358f;
+    box-shadow: 0px 0px 2px 1px rgba(5,34,161,1);
+}

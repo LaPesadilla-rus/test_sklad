@@ -74,6 +74,13 @@ exports.kat = function (cb) {
     });
 }
 
+exports.equip_name = function (cb) {
+    pool.query(`SELECT eq_name as item, * FROM equip_spr`
+    , (err,res)=>{
+       cb(err,res);
+    });
+}
+
 exports.spr_save = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
     var sql = `INSERT INTO public.units_spr (un_name)

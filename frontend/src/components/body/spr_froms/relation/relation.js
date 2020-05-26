@@ -20,6 +20,10 @@ export default class Relation extends Component {
             kat_data: [],
             type_data: [],
             mark_data: [],
+            btn1_show: false,
+            btn2_show: false,
+            btn1_txt: '',
+            btn2_txt: '',
         }
     }
 
@@ -131,17 +135,41 @@ export default class Relation extends Component {
         }
     }
 
+    changeButton = (e,val,txt) =>{
+        console.log('button: ', val)
+        if (e === '1'){
+            this.setState(state => ({ btn1_show: !state.btn1_show}))
+            this.setState({ btn1_txt: txt})
+        }else if (e === '2'){
+            this.setState(state => ({ btn2_show: !state.btn2_show}))
+            this.setState({ btn2_txt: txt})
+        }
+    }
 
 
     render(){
+        let btn1,btn2;
+        btn1 = <div className='combo_button'>
+                    <button className='button button_yellow'>{this.state.btn1_txt}</button>
+                </div>
+        btn2 = <div className='combo_button'>
+                    <button className='button button_yellow'>{this.state.btn2_txt}</button>
+                </div>
         return(
             <div className='box_back_osn'>
                  <div className='box_back_dop'>
                     <div className='form_box'>
-                        <RelationTabl />
-                        <RelationTabl />
+                        <RelationTabl changeButton={this.changeButton} id_button='1' btn_stat={this.state.btn1_show} zagl='Основной компонент' />
+                        <RelationTabl changeButton={this.changeButton} id_button='2' btn_stat={this.state.btn2_show} zagl='Дочерний компонент' />
                     </div>
-                    <div>sada</div>
+                    <div className='active_box'>
+                        <div className='active_box_block'>
+                            {this.state.btn1_show && btn1}
+                        </div>
+                        <div className='active_box_block'>
+                            {this.state.btn2_show && btn2}
+                        </div>
+                    </div>
                     <div>
                         <button className='button button_green'>Сохранить</button>
                         <button className='button button_red'>Отмена</button>

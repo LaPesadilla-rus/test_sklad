@@ -50,6 +50,7 @@ app.post('/equip/save', skladController.equip_save);
 app.get('/spr/all', sprController.all);
 app.get('/spr/kat', sprController.kat);
 app.get('/spr/type', skladController.type_a);
+app.get('/spr/equip_name', sprController.equip_name);
 
 app.post('/spr/equip', sprController.equip)
 app.post('/spr/save', sprController.spr_save);

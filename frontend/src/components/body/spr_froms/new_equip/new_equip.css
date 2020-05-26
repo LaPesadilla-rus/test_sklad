@@ -4,7 +4,7 @@
     padding: 10px;
     float: left;
 
-    width: 450px;
+    width: 500px;
 
     display: flex;
     justify-self: center;
@@ -38,9 +38,10 @@
     padding: 5px;
 }
 
-.new_eq_data select {
-    width: 200px;
+.new_eq_sel_col2 select {
+    min-width: 200px;
     height: 25px;
+    flex-grow:1
 }
 
 .new_eq_data input {
@@ -57,4 +58,37 @@
 .new_eq_data__button button {
     margin-left: 5px;
     padding: 10px;
+}
+
+.new_eq_sel{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.new_eq_sel_col1{
+    width: 140px;
+    width: 160px;
+    overflow-wrap: break-word;
+    margin: 5px;
+    text-align: center;
+}
+.new_eq_sel_col2{
+    min-width: 200px;
+    margin: 5px;
+    flex-grow:1
+}
+.new_eq_sel_col3{
+    min-width: 50px;
+    height: 26px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.new_eq_plus {
+    text-align: center;
 }

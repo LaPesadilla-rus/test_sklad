@@ -47,7 +47,7 @@ export default class New_equip extends Component {
                 this.ChangeKategor({target: {value: res.data[0].eq_kat_id}});
             });
         }else{
-            var data = { kat: '0'};
+            data = { kat: '0'};
             axio.post('/sklad/new/type', data).then(res=>{
                 this.setState({
                     type_data: res.data,
@@ -177,20 +177,23 @@ export default class New_equip extends Component {
 
     render(){
         let form;
-        var id_item = 0;
-        if (this.props.act == 'update'){
+        if (this.props.act === 'update'){
             form = <form className='new_eq__form' onSubmit={this.handleUpdate}>
                         <div className='new_eq_data'>
-                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
-                            ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
-                            data={this.state.kat_data} id_val={this.state.kat} />
-                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
-                            ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
-                            data={this.state.type_data} id_val={this.state.type} />
-                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
-                            ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
-                            data={this.state.mark_data} id_val={this.state.marka} />
-                        <p>Введите модель <input onChange={this.ChangeModelInp} value={this.state.model}></input></p>
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
+                                ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
+                                data={this.state.kat_data} id_val={this.state.kat} />
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
+                                ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
+                                data={this.state.type_data} id_val={this.state.type} />
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
+                                ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
+                                data={this.state.mark_data} id_val={this.state.marka} />
+                            <div className='new_eq_sel'>
+                                <div className='new_eq_sel_col1'>Введите модель </div>
+                                <div className='new_eq_sel_col2'><input className='input' onChange={this.ChangeModelInp} value={this.state.model}></input></div>
+                                <div className='new_eq_sel_col3'></div>
+                            </div>
                         </div>
                         <div className='new_eq_data__button'>
                             <button type='submit' className='action__button' >Редактировать</button>
@@ -200,16 +203,20 @@ export default class New_equip extends Component {
         }else{
             form = <form className='new_eq__form' onSubmit={this.handleSubmit}>
                     <div className='new_eq_data'>
-                    <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
-                        ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
-                        data={this.state.kat_data} />
-                    <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
-                        ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
-                        data={this.state.type_data} />
-                    <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
-                        ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
-                        data={this.state.mark_data} />
-                    <p>Введите модель <input onChange={this.ChangeModelInp} value={this.state.model}></input></p>
+                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
+                            ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
+                            data={this.state.kat_data} />
+                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
+                            ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
+                            data={this.state.type_data} />
+                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
+                            ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
+                            data={this.state.mark_data} />
+                        <div className='new_eq_sel'>
+                            <div className='new_eq_sel_col1'>Введите модель </div>
+                            <div className='new_eq_sel_col2'><input className='input' onChange={this.ChangeModelInp} value={this.state.model}></input></div>
+                            <div className='new_eq_sel_col3'></div>
+                        </div>
                     </div>
                     <div className='new_eq_data__button'>
                         <button type='submit' className='action__button' >Сохранить</button>
