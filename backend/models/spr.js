@@ -219,8 +219,31 @@ exports.spr_delete = function(req,cb) {
     }
 }
 
-exports.equip = function(id, cb) {
-    var sql = `SELECT * FROM public.equip_spr WHERE eq_id = `+id+``;
+exports.equip = function(req, cb) {
+    var sql = `SELECT * FROM public.equip_spr WHERE `;
+    if (req.body.id){
+        sql = sql + ` eq_id = `+req.body.id+`,`;
+    }
+    if (req.body.marka !== '') {
+        sql = sql + ` eq_mark_id = `+req.body.mark+`,`;
+    }
+    if (req.body.type !== '') {
+        sql = sql + ` eq_type_id = `+req.body.type+`,`;
+    }
+    if (req.body.kat !== '') {
+        sql = sql + ` eq_kat_id = `+req.body.kat+`,`;
+    }
+    sql = sql.substring(0, sql.length - 1);
+    console.log(req.body)
+    console.log(sql)
+    pool.query(sql 
+        ,(err,res)=>{
+            cb(err,res);
+        });
+}
+
+exports.equip_all = function(cb) {
+    var sql = `SELECT * FROM public.equip_spr`;
     pool.query(sql 
         ,(err,res)=>{
             cb(err,res);
@@ -238,4 +261,17 @@ exports.equip_update = function(req, cb) {
         ,(err,res)=>{
             cb(err,'UPDATE COMPLITE');
         });
+}
+
+exports.relation_add = function(req,cb) {
+    //console.log(req.body)
+    if(!req.body.data) return res.sendStatus(400);
+    var sql = `INSERT INTO public.relation_spr (re_id_osn, re_id_dop)
+                VALUES (`+req.body.data.osn+`,`+req.body.data.dop+`);`;
+    if (sql){
+        pool.query(sql
+            , (err,res)=>{
+                cb(err,res)
+            });
+    } 
 }

@@ -42,6 +42,19 @@ export default class Autocomplite extends Component {
         //console.log(this.props.items_full)
     }
 
+    setModelText = (e) => {
+        this.props.setModelText(this.props.id_button,e.target.value);
+        const value = e.target.value;
+        let suggestions = [];
+        if (value.length > 0){
+           
+            const regex = new RegExp(`${value}`, 'i');
+            
+           suggestions = this.props.items_arr.sort().filter(v => regex.test(v));
+        }
+        this.setState({suggestions: suggestions})
+    }
+
     searchItem = (value) => {
         var i = this.props.items_full.length;
         while (i--){
@@ -56,9 +69,11 @@ export default class Autocomplite extends Component {
             txt: value,
             suggestions: [],
         })
-        this.props.onChange(value);
+        console.log(value)
+        this.props.setModelText(this.props.id_button,value);
+        /*this.props.onChange(value);
         this.searchWord(value);
-        this.searchItem(value);
+        this.searchItem(value);*/
         this.nameInput.focus(); 
     }
 
@@ -92,7 +107,8 @@ export default class Autocomplite extends Component {
     render(){
         return(
             <div className='autocomplite'>
-                 <div className='autocomplite_column'><input ref={(input) => { this.nameInput = input; }} className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  type='text' onChange={this.onChangeTxt} value={this.state.txt} ></input></div>
+                 <div className='autocomplite_column'><input ref={(input) => { this.nameInput = input; }} className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  
+                        type='text' onChange={this.setModelText} value={this.props.modelText} ></input></div>
                  <div className='autocomplite_column'>{this.renderSuggestions()}</div>
             </div>
         )

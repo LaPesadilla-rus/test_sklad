@@ -5,7 +5,7 @@ import Actions from './actions_bar/actions.js';
 import Data_Block from './data_block/data_block.js';
 import Spr_forms from './spr_froms/spr_forms.js';
 import New_equip from './spr_froms/new_equip/new_equip';
-import Relation from './spr_froms/relation/relation.js';
+import Relation from './spr_froms/relation/relationContainer.js';
 import {Route} from 'react-router-dom';
 
 function Body () {

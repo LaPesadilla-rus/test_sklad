@@ -61,12 +61,21 @@ exports.spr_delete = function(req, res) {
 }
 
 exports.equip = function(req, res) {
-    Spr.equip(req.body.id, function(err,docs){
+    Spr.equip(req, function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        //console.log(docs.rows)
+        res.send(docs.rows);
+    })
+}
+
+exports.equip_all = function(req, res) {
+    Spr.equip_all(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
         res.send(docs.rows);
     })
 }
@@ -78,5 +87,21 @@ exports.equip_update = function(req, res) {
             return res.sendStatus(500);
         }
         res.send(docs);
+    })
+}
+
+exports.relation_add = function(req, res) {
+    Spr.relation_add(req, function(err,docs){
+        if (err) {
+            console.log("Postgres INSERT error:", err.code);
+            if (err.code === '23505'){
+                res.send('Связь уже существует!');
+            }else{
+                res.send("Postgres INSERT error:", err.code);
+            }
+        }else{
+            res.send('Связь успешно создана');
+        }
+        
     })
 }

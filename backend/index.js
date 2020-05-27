@@ -51,11 +51,13 @@ app.get('/spr/all', sprController.all);
 app.get('/spr/kat', sprController.kat);
 app.get('/spr/type', skladController.type_a);
 app.get('/spr/equip_name', sprController.equip_name);
+app.get('/spr/equip_all', sprController.equip_all);
 
 app.post('/spr/equip', sprController.equip)
 app.post('/spr/save', sprController.spr_save);
 app.post('/spr/update', sprController.spr_update);
 app.post('/equip/update', sprController.equip_update);
+app.post('/spr/relation/add', sprController.relation_add)
 
 app.delete('/spr/delete', sprController.spr_delete);
 
