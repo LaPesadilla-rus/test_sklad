@@ -10,6 +10,12 @@ export default class Relation_tabl extends Component {
     constructor (props){
         super(props);
         UnicId.enableUniqueIds(this);
+        this.container = {
+            kat: '',
+            type: '',
+            marka: '',
+            model: '',
+        }
         this.state = {
             kat: '',
             type: '',
@@ -22,6 +28,7 @@ export default class Relation_tabl extends Component {
             type_data: [],
             mark_data: [],
             items: [],
+            equip_all: [],
             equip_name_data: [],
             error: '',
             id: '',
@@ -29,6 +36,8 @@ export default class Relation_tabl extends Component {
     }
 
     componentDidMount = () =>{
+        //console.log(store.getState())
+        
         axio.get('/spr/equip_name').then(res=>{
             var mas = []
             for (let n = 0; n < res.data.length; n++){
@@ -81,19 +90,24 @@ export default class Relation_tabl extends Component {
 
     ChangeModelName = () => {
         var data = {
-            marka: this.props.markaText,
-            kat: this.props.katText,
-            type: this.props.typeText
+            marka: this.container.marka,
+            kat: this.container.kat,
+            type: this.container.type
         }
+        //console.log('---')
         axio.post('/spr/equip', data).then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
             this.setState({
-                equip_name_data: res.data,
+                equip_name_data: mas,
+                items: res.data,
             })
         });
     }
 
     ChangeKategor = (e) =>{
-        this.setState({kat: e});
         var data = { kat: e};
         axio.post('/sklad/new/type', data).then(res=>{
             this.setState({
@@ -108,12 +122,12 @@ export default class Relation_tabl extends Component {
     }
 
     ChangeType = (e) =>{
-        this.setState({type: e});
+        //this.setState({type: e});
         //this.ChangeModelName();
     }
 
     ChangeMarka = (e) =>{
-        this.setState({marka: e});
+        //this.setState({marka: e});
         //this.ChangeModelName();
     }
 
@@ -134,7 +148,7 @@ export default class Relation_tabl extends Component {
         console.log(e);
     }
 
-    handleSubmit = event => {
+    /*handleSubmit = event => {
         event.preventDefault();
 
         const data = {
@@ -168,67 +182,40 @@ export default class Relation_tabl extends Component {
                 }
             });
         }
-    }
-
-    handleUpdate = event => {
-        event.preventDefault();
-        console.log('Update event')
-        const data = {
-            kat: this.state.kat,
-            type: this.state.type,
-            marka: this.state.marka,
-            name: this.state.model,
-            id_item: 1,
-            table: 'equip_spr',
-        }      
-        var err = '';
-        if (data.kat === '' ){
-            err = err + 'Категория не выбрана! ';
-        }
-        if (data.type === ''){
-            err = err + 'Тип оборудования не выбран! ';
-        }
-        if (data.marka === ''){
-            err = err + 'Производитель не выбран! ';
-        }
-        if (data.name === ''){
-            err = err + 'Модель не заполнена! ';
-        }
-        if (err){
-            alert(err);
-        }else{
-            axio.post('/equip/update', {data}).then(res => {
-                console.log(res.data)
-                if (res.data === 'UPDATE COMPLITE') {
-                    this.onClose();
-                }else{
-                    alert('Данные не удалось сохранить');
-                }
-            });
-        }
-    }
+    }*/
 
     onClose= () =>{
         this.props.onClose();
         this.props.onReboot();
     }
 
-    searchType = (value) => {
+    /*searchType = (value) => {
         var i = this.state.type_data.length;
         while (i--){
             if (this.props.items[i].te_name === value){
                 return(this.state.type_data.te_id)
             }
         }
+    }*/
+    searchModelName (val) {
+        var arr = this.state.items;
+        var id = false
+        arr.forEach(function(item){
+            if (item.eq_name === val){
+                id =  true;
+            }
+        })
+        return (id)
     }
 
     addItem = () => {
         const data = {
-            kat: this.props.katText,
-            type: this.props.typeText,
-            marka: this.props.markaText,
-            name: this.props.modelText,
-        }      
+            marka: this.container.marka,
+            kat: this.container.kat,
+            type: this.container.type,
+            name: this.container.model,
+        }   
+        console.log(this.searchModelName(data.name))   
         var err = '';
         if (data.kat === '' ){
             err = err + 'Категория не выбрана! ';
@@ -242,7 +229,7 @@ export default class Relation_tabl extends Component {
         if (data.name === ''){
             err = err + 'Модель не заполнена! ';
         }
-        if (this.state.equip_name_data.indexOf(data.name) === -1){
+        if (!this.searchModelName(data.name)){
             err = err + 'Модели нет в списке! '
         }
         if (err){
@@ -280,26 +267,56 @@ export default class Relation_tabl extends Component {
         this.cancelClick();
     }
 
+    setKatText = (e) => {
+        this.container.kat = e;
+        this.props.setKatText(this.props.id_button,e);
+        var data = { kat:  e};
+        axio.post('/sklad/new/type', data).then(res=>{
+            console.log(res.data)
+            this.setState({
+                type_data: res.data,
+            })
+        });
+        this.ChangeModelName();
+    }
+
+    setTypeText = (e) => {
+        this.container.type = e;
+        this.props.setTypeText(this.props.id_button,e);
+        this.ChangeModelName();
+    }
+
+    setMarkaText = (e) => {
+        this.container.marka = e;
+        this.props.setMarkaText(this.props.id_button,e);
+        this.ChangeModelName();
+    }
+
+    setModelText = (e) => {
+        this.container.model = e;
+        this.props.setModelText(this.props.id_button,e);
+    }
+
     render(){
         return(
             <div className='form_box_add'> 
                 {this.props.zagl}
-                <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor}
-                    Text={this.props.katText} setText={this.props.setKatText}  id_button={this.props.id_button}
+                <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.setKatText}
+                    Text={this.props.katText} setText={this.setKatText}  id_button={this.props.id_button}
                     ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
                     data={this.state.kat_data} id_val={this.state.kat} />
-                <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
-                    Text={this.props.typeText} setText={this.props.setTypeText}  id_button={this.props.id_button}
+                <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.setTypeText} 
+                    Text={this.props.typeText} setText={this.setTypeText}  id_button={this.props.id_button}
                     ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
                     data={this.state.type_data} id_val={this.state.type} />
-                <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka}
-                    Text={this.props.markaText} setText={this.props.setMarkaText}  id_button={this.props.id_button}
+                <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.setMarkaText}
+                    Text={this.props.markaText} setText={this.setMarkaText}  id_button={this.props.id_button}
                     ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
                     data={this.state.mark_data}  />
                 <div className='new_eq_sel'>
                     <div className='new_eq_sel_col1'>Введите модель </div>
                     <div className='new_eq_sel_col2'>
-                        <Autocomplite modelText={this.props.modelText} setModelText={this.props.setModelText} id_item={this.changeIdItem} 
+                        <Autocomplite modelText={this.props.modelText} setModelText={this.setModelText} id_item={this.changeIdItem} 
                                         onChange={this.ChangeModelInp} items_full={this.state.items} 
                                         items_arr={this.state.equip_name_data} value={this.state.model}
                                         id_button={this.props.id_button} />

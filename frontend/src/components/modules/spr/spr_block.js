@@ -3,6 +3,7 @@ import './spr_block.css';
 import axio from 'axios';
 import UnicId from 'react-html-id';
 import TableBlock from './table_block.js';
+import Relation from './relation/relationContainer'
 
 export default class Spr_block extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ export default class Spr_block extends Component {
         this.state = {
             main: [],
             isModalOpen: false,
-        
+            isRelationOpen: false,
         };
     }
 
@@ -35,11 +36,19 @@ export default class Spr_block extends Component {
         this.setState(state => ({ isModalOpen: !state.isModalOpen}))
     }
 
+    changeRelation = () => {
+        this.setState(state => ({ isRelationOpen: !state.isRelationOpen}))
+    }
+
     render(props){
         return(
-            <div className='spr_block_main'>
-                {this.state.main.map((id, index )=> 
-                   <TableBlock key={this.nextUniqueId()} onReboot={this.RebootData} name={id.name} table={id.table} items={id.item} type={id.type} />)}
+            <div>
+                <button className='button' onClick={this.changeRelation}>Создать связь</button>
+                <div className='spr_block_main'>
+                    {this.state.main.map((id, index )=> 
+                    <TableBlock key={this.nextUniqueId()} onReboot={this.RebootData} name={id.name} table={id.table} items={id.item} type={id.type} />)}
+                </div>
+                {this.state.isRelationOpen && <Relation onClose={this.changeRelation}/>}
             </div>
         )
     }          

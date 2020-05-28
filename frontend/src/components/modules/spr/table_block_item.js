@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './spr_block.css';
 import SprItem from './spr_item/spr_item.js';
-import ModalWarn from './spr_item/modal_warn.js';
+import ModalWarn from '../../simple_comp/modal_warn/modal_warn';
 import NewEquip from './new_equip/new_equip.js';
 import axio from 'axios';
 
@@ -40,7 +40,16 @@ export default class Table_block_item extends Component {
             }else{
                 alert('Данные не удалось сохранить');
             }
-        });  
+        });
+        this.changeWarn();
+
+    }
+
+    modalYes = () => {
+        this.handleDelete();
+    }
+    modalNo = () => {
+        this.changeWarn()
     }
 
     render(){
@@ -65,7 +74,7 @@ export default class Table_block_item extends Component {
                         <NewEquip onClose={this.changeEquip} onReboot={this.props.onReboot} act='update' id_item={this.props.id_item} item={this.props.item} name={this.props.name} table={this.props.table} />
                     }
                     {this.state.isWarnOpen &&
-                        <ModalWarn onClose={this.changeWarn} onDel={this.handleDelete} />
+                        <ModalWarn text='Вы уверены, что хотите удалить?' clickYes={this.modalYes} clickNo={this.modalNo} />
                     }
                 </div>
                 <div className='delete_button' onClick={this.changeWarn}><label>x</label></div>

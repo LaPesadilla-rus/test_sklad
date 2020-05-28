@@ -1,34 +1,32 @@
 import React, {Component}  from 'react';
-import './spr_units.css';
+import './spr_item.css';
 import axio from 'axios';
-import {NavLink} from 'react-router-dom';
 
 export default class Spr_units extends Component {
+    
     constructor (props) {
         super(props);
         this.state = {
-            item: '',
+            item_name: '',
             inp: '',
             table:'',
             id_item: '',
+            show: { visibility: 'visible'},
         };
     }
 
     ChangeUnit = e => {
-        this.setState({item: e.target.value});
+        this.setState({item_name: e.target.value});
     }
 
     handleSubmit = event => {
         event.preventDefault();
 
         const data = {
-            item: this.state.item,
+            item: this.state.item_name,
             table: this.state.table,
             id_item: this.state.id_item
         }      
-
-        console.log(this.state.item);
-
         var err = '';
         if (data.item === ''){
             err = err + 'Единицы измерения не введены!';
@@ -37,26 +35,26 @@ export default class Spr_units extends Component {
             alert(err);
         }else{
             axio.post('/spr/save', {data}).then(res => {
-            console.log(res.data);
+            //console.log(res.data);
             if (res.data === 'POST COMPLITE') {
-                alert('Редактирование успешно');
+               // alert('Сохранение успешно');
+                this.onClose();
             }else{
                 alert('Данные не удалось сохранить');
             }
+            //console.log('Submit Event : ' + res.data);
             });
-            console.log('Submit Event : ' + this.state.item);
+            
         }
     }
 
     handleUpdate = event => {
         event.preventDefault();
         const data = {
-            item: this.state.item,
+            item: this.state.item_name,
             table: this.state.table,
             id_item: this.state.id_item
         } 
-        console.log('Update Event : ' + this.state.item);
-
         var err = '';
         if (data.item === ''){
             err = err + 'Единицы измерения не введены!';
@@ -65,70 +63,69 @@ export default class Spr_units extends Component {
             alert(err);
         }else{
             axio.post('/spr/update', {data}).then(res => {
-            console.log(res.data);
-            if (res.data === 'POST COMPLITE') {
-                alert('Сохранение успешно');
-                this.SaveComplite()
+            //console.log(res.data);
+            if (res.data === 'UPDATE COMPLITE') {
+                //alert('Редактирование успешно');
+                this.onClose();
             }else{
                 alert('Данные не удалось сохранить');
             }
+            //console.log('Update Event : ' + res.data);
             });
-            console.log('Submit Event : ' + this.state.item);
+            
         }
-    }
-
-    SaveComplite = () => {
-        this.props.onSave('abc');
-        //this.props.location.state.reb;
     }
 
     componentDidMount = event => {
-        if (this.props.location.state.item){
+        if (this.props.item){
             this.setState({
-                item: this.props.location.state.item,
-                table: this.props.location.state.table,
-                id_item: this.props.location.state.id_item,
+                item_name: this.props.item,
+                table: this.props.table,
+                id_item: this.props.id_item,
+                show: this.props.style,
             })
         }else{
             this.setState({
-                item: '',
-                table: this.props.location.state.table,
+                table: this.props.table,
+                show: this.props.style,
             })
         }
-        console.log( this.props.location.state.table)
     }
 
-    render (props) {
+    onClose= () =>{
+        this.props.onClose();
+    }
+
+    render () {
         let form
-        if (this.props.location.state.item){
+        if (this.props.act === 'update'){
             form = <form onSubmit={this.handleUpdate}>
                         <div>
-                            <p>Справочник: {this.props.location.state.name}</p>
-                            <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item}></input>
+                            <p>Справочник: {this.props.name}</p>
                         </div>
                         <div>
-                            <button type='submit' className='action__button'>Сохранить изменения</button>
-                            <NavLink className='action__button out_button' to={{pathname: '/spr/all', state: { reboot: 'reboot' }}}>Отмена</NavLink>
+                            <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item_name}></input>
+                        </div>
+                        <div>
+                            <button type='submit' onClick={this.onSubmit} className='action__button'>Сохранить изменения</button>
+                            <button type='button' className='action__button out_button' onClick={this.props.onClose}>Отмена</button>
                         </div>
                     </form>
         }else{
             form = <form onSubmit={this.handleSubmit}>
                         <div>
-                            <p>Справочник: {this.props.location.state.name}</p>
-                            <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item}></input>
+                            <p>Справочник: {this.props.name}</p>
+                            <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item_name}></input>
                         </div>
                         <div>
                             <button type='submit' className='action__button'>Сохранить</button>
-                            <NavLink className='action__button out_button' to={{pathname: '/spr/all', state: { reboot: 'reboot' }}}>Отмена</NavLink>
+                            <button type='button' className='action__button out_button' onClick={this.props.onClose}>Отмена</button>
                         </div>
                     </form>
         }
-
-        
-
         return (
-                <div className='background_abs background_abs_pos'>
-                    <div className="spr_units spr_units_pos">
+                <div className='background_modal background_modal_pos'>
+                    <div className="modal modal_pos">
                         {form}
                     </div>
                 </div>

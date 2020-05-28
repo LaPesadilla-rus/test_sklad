@@ -20,7 +20,8 @@ export default class New_equip_select extends Component {
     }
 
     selectChange = (e) => {
-        this.props.setText(this.props.id_button,e.target.value);
+        //this.props.setText(this.props.id_button,e.target.value);
+        //this.props.setText(() => { return(this.props.id_button,e.target.value)});
         this.props.ChangeSelect(e.target.value);
     }
 

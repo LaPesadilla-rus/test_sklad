@@ -1,0 +1,82 @@
+.modal {
+    background-color: rgb(207, 207, 207);
+    border-radius: 10px;
+    color: black;
+    border: 1px solid #707270;
+    box-shadow: 0 0 10px rgb(80, 80, 80);
+
+    flex-direction: row;
+    padding: 10px;
+}
+
+.modal_pos {
+    /*min-width: 50px;
+    min-height: 50px;*/
+
+}
+
+.background_modal{
+    background-color: rgba(146, 146, 146, 0.658);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 150;
+}
+
+.background_modal_pos{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+
+    
+    flex-wrap: wrap;
+    align-self: center;
+    margin-left: -10px;
+    margin-right: -20px;
+}
+
+.modal form{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal div {
+    margin-top: 10px;
+    align-self: center;
+}
+
+.modal button {
+    margin: 10px;
+}
+
+.modal input {
+    font-size: 15px;
+    text-align: center;
+    border: 1px solid rgb(61, 61, 61);
+    box-shadow: 0 0 5px rgb(80, 80, 80);
+    transition: all 1s;
+
+    border-radius: 5px;
+}
+
+.modal p{
+    min-width: 150px;
+    min-height: 10px;
+    background-color: rgb(248, 248, 248);
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px;
+}
+
+.modal input:hover {
+    box-shadow: inset 0 0 5px rgb(28, 61, 207); 
+    border: 1px solid rgb(28, 61, 207);
+ }
+
+ .modal input:active {
+    box-shadow: inset 0 0 5px rgb(28, 61, 207); 
+ }

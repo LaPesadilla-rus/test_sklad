@@ -74,6 +74,21 @@ exports.kat = function (cb) {
     });
 }
 
+exports.equip_fullname = function (cb) {
+    pool.query(`SELECT eq.eq_id as id,
+                (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item, *
+                FROM equip_spr eq
+                
+                inner join marka_equip_spr ma
+                on ma.ma_id = eq.eq_mark_id
+                
+                inner join type_equip_spr te
+                on te.te_id = eq_type_id`
+    , (err,res)=>{
+       cb(err,res);
+    });
+}
+
 exports.equip_name = function (cb) {
     pool.query(`SELECT eq_name as item, * FROM equip_spr`
     , (err,res)=>{
@@ -220,22 +235,33 @@ exports.spr_delete = function(req,cb) {
 }
 
 exports.equip = function(req, cb) {
-    var sql = `SELECT * FROM public.equip_spr WHERE `;
+    var sql = `SELECT eq_name as item, * FROM public.equip_spr WHERE `;
+    var regim = false
     if (req.body.id){
-        sql = sql + ` eq_id = `+req.body.id+`,`;
+        sql = sql + ` eq_id = `+req.body.id+`    `;
+        regim = true;
+    }else{
+        if (req.body.marka !== '' && req.body.marka !== '-1') {
+            sql = sql + ` eq_mark_id = `+req.body.marka+` and`;
+            regim = true;
+        }
+        if (req.body.type !== ''  && req.body.type !== '-1') {
+            sql = sql + ` eq_type_id = `+req.body.type+` and`;
+            regim = true;
+        }
+        if (req.body.kat !== ''  && req.body.kat !== '-1') {
+            sql = sql + ` eq_kat_id = `+req.body.kat+` and`;
+            regim = true;
+        }
+    
+        sql = sql.substring(0, sql.length - 3);
+        sql = sql + ` ORDER BY eq_name`
     }
-    if (req.body.marka !== '') {
-        sql = sql + ` eq_mark_id = `+req.body.mark+`,`;
-    }
-    if (req.body.type !== '') {
-        sql = sql + ` eq_type_id = `+req.body.type+`,`;
-    }
-    if (req.body.kat !== '') {
-        sql = sql + ` eq_kat_id = `+req.body.kat+`,`;
-    }
-    sql = sql.substring(0, sql.length - 1);
+    
     console.log(req.body)
-    console.log(sql)
+    if (!regim) {
+        sql = `SELECT * FROM public.equip_spr ORDER BY eq_name `;
+    }
     pool.query(sql 
         ,(err,res)=>{
             cb(err,res);

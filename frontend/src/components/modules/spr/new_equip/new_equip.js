@@ -3,12 +3,19 @@ import './new_equip.css';
 import SprItem from '../spr_item/spr_item.js';
 import NewEquipSelect from './new_equip_select.js';
 import UnicId from 'react-html-id';
+import Autocomplite from '../../../simple_comp/autocomplite/autocomplite';
 import axio from 'axios';
 
 export default class New_equip extends Component {
     constructor(props){
         super(props);
         UnicId.enableUniqueIds(this);
+        this.container = {
+            kat: '',
+            type: '',
+            marka: '',
+            model: '',
+        }
         this.state = {
             kat: '',
             type: '',
@@ -16,6 +23,8 @@ export default class New_equip extends Component {
             model: '',
             name: '',
             table: '',
+            equip_name: '',
+            equip_arr: [],
             isModalOpen: false,
             kat_data: [],
             type_data: [],
@@ -54,17 +63,39 @@ export default class New_equip extends Component {
                 })
             });
         }
+        /*axio.post('/spr/equip').then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
+            this.setState({
+                equip_arr: mas
+            });
+        });*/
+
+        axio.get('/spr/equip_name').then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
+            this.setState({
+                equip_arr: mas,
+            })
+            
+        });
 
     }
 
     ChangeKategor = (e) =>{
         this.setState({kat: e.target.value});
+        this.container.kat = e.target.value;
         var data = { kat: e.target.value};
         axio.post('/sklad/new/type', data).then(res=>{
             this.setState({
                 type_data: res.data,
             })
         });
+        this.ChangeModelName();
     }
 
     onReboot = () =>{
@@ -73,14 +104,19 @@ export default class New_equip extends Component {
 
     ChangeType = (e) =>{
         this.setState({type: e.target.value});
+        this.container.type = e.target.value;
+        this.ChangeModelName();
     }
 
     ChangeMarka = (e) =>{
         this.setState({marka: e.target.value});
+        this.container.marka = e.target.value;
+        this.ChangeModelName();
     }
 
     ChangeModelInp = (e) =>{
         this.setState({model: e.target.value});
+        this.container.model = e.target.value;
     }
 
     changeModal = (e) =>{
@@ -88,12 +124,12 @@ export default class New_equip extends Component {
     }
 
     ModalData = (e) => {
-        console.log(e);
+        //console.log(e);
         this.setState({
             name: e.name,
             table: e.table,
         })
-        console.log(e);
+        //console.log(e);
     }
 
     handleSubmit = event => {
@@ -170,13 +206,129 @@ export default class New_equip extends Component {
         }
     }
 
+    //---------------------
+
+    handleSelect = event => {
+        event.preventDefault();
+        //console.log('Select event ' + this.state.equip_name)
+
+        const data = {
+            marka: this.container.marka,
+            kat: this.container.kat,
+            type: this.container.type,
+            name: this.container.model,
+        }   
+        console.log(this.searchModelName(data.name))   
+        var err = '';
+        if (data.kat === '' ){
+            err = err + 'Категория не выбрана! ';
+        }
+        if (data.type === ''){
+            err = err + 'Тип оборудования не выбран! ';
+        }
+        if (data.marka === ''){
+            err = err + 'Производитель не выбран! ';
+        }
+        if (data.name === ''){
+            err = err + 'Модель не заполнена! ';
+        }
+        if (!this.searchModelName(data.name)){
+            err = err + 'Модели нет в списке! '
+        }
+        if (err){
+            alert(err);
+        }else{
+            //this.setState({error: null})
+            if (!this.props.btn_stat){
+                var type = this.state.type;
+                this.props.type_data.forEach(function(item) {
+                    if(item.te_id == type){
+                        type = item.te_name
+                    }
+                })
+                var marka = this.state.marka;
+                this.props.marka_data.forEach(function(item) {
+                    console.log(item)
+                    if(item.id == marka){
+                        marka = item.name
+                    }
+                })
+                //console.log(type + ' ' + marka + ' ' + data.name)
+                this.props.setText((type + ' ' + marka + ' ' + data.name));
+                //this.props.changeButton(this.props.id_button, (type + ' ' + marka + ' ' + this.props.modelText));
+            }
+        }
+    }
+
+    searchModelName (val) {
+        var arr = this.props.equip_arr;
+        var id = false
+        arr.forEach(function(item){
+            if (item.eq_name === val){
+                id =  true;
+            }
+        })
+        return (id)
+    }
+
+    //--------------------
+
+    ChangeModelName = () => {
+        var data = {
+            marka: this.container.marka,
+            kat: this.container.kat,
+            type: this.container.type
+        }
+        //console.log('---')
+        axio.post('/spr/equip', data).then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
+            this.setState({
+                equip_arr: mas,
+                items: res.data,
+            })
+        });
+    }
+
     onClose= () =>{
         this.props.onClose();
-        this.props.onReboot();
     }
+
+    setText= (val) => {
+        this.setState({equip_name: val})
+        this.container.model = val;
+    }
+
+    
 
     render(){
         let form;
+        if (this.props.act === 'select'){
+            form = <form className='new_eq__form' onSubmit={this.handleSelect}>
+                        <div className='new_eq_data'>
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
+                                ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
+                                data={this.state.kat_data} id_val={this.state.kat} />
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
+                                ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
+                                data={this.state.type_data} id_val={this.state.type} />
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
+                                ModalData={this.ModalData} table='marka_equip_spr' name='Производитель' zagolovok='Фирма производитель' 
+                                data={this.state.mark_data} id_val={this.state.marka} />
+                            <div className='new_eq_sel'>
+                                <div className='new_eq_sel_col1'>Введите модель </div>
+                                <div className='new_eq_sel_col2'><Autocomplite modelText={this.state.equip_name} items_arr={this.state.equip_arr} setText={this.setText}/></div>
+                                <div className='new_eq_sel_col3'></div>
+                            </div>
+                        </div>
+                        <div className='new_eq_data__button'>
+                            <button type='submit' className='button button_green' >Выбрать</button>
+                            <button type='button' className='button button_red' onClick={this.props.onClose}>Отмена</button>
+                        </div>
+                    </form>
+        }
         if (this.props.act === 'update'){
             form = <form className='new_eq__form' onSubmit={this.handleUpdate}>
                         <div className='new_eq_data'>
@@ -191,16 +343,17 @@ export default class New_equip extends Component {
                                 data={this.state.mark_data} id_val={this.state.marka} />
                             <div className='new_eq_sel'>
                                 <div className='new_eq_sel_col1'>Введите модель </div>
-                                <div className='new_eq_sel_col2'><input className='input' onChange={this.ChangeModelInp} value={this.state.model}></input></div>
+                                <div className='new_eq_sel_col2'><Autocomplite modelText={this.props.equip_name} items_arr={['asd','ddfas']} setText={this.props.setText}/></div>
                                 <div className='new_eq_sel_col3'></div>
                             </div>
                         </div>
                         <div className='new_eq_data__button'>
-                            <button type='submit' className='action__button' >Редактировать</button>
-                            <button type='button' className='action__button out_button' onClick={this.props.onClose}>Отмена</button>
+                            <button type='submit' className='button button_green' >Редактировать</button>
+                            <button type='button' className='button button_red' onClick={this.props.onClose}>Отмена</button>
                         </div>
                     </form>
-        }else{
+        }
+        if (this.props.act === 'insert'){
             form = <form className='new_eq__form' onSubmit={this.handleSubmit}>
                     <div className='new_eq_data'>
                         <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
@@ -219,8 +372,8 @@ export default class New_equip extends Component {
                         </div>
                     </div>
                     <div className='new_eq_data__button'>
-                        <button type='submit' className='action__button' >Сохранить</button>
-                        <button type='button' className='action__button out_button' onClick={this.props.onClose}>Отмена</button>
+                        <button type='submit' className='button button_green' >Сохранить</button>
+                        <button type='button' className='button button_red' onClick={this.props.onClose}>Отмена</button>
                     </div>
                 </form>
         }

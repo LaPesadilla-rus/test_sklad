@@ -44,12 +44,6 @@ export default class Relation extends Component {
         if (this.props.id_item){
             var data = { id: this.props.id_item};
             axio.post('/spr/equip', data).then(res=>{
-                this.setState({
-                    model: res.data[0].eq_name,
-                    kat: res.data[0].eq_kat_id,
-                    marka: res.data[0].eq_mark_id,
-                    type: res.data[0].eq_type_id,
-                });
                 this.ChangeKategor({target: {value: res.data[0].eq_kat_id}});
             });
         }else{
@@ -135,42 +129,43 @@ export default class Relation extends Component {
         }
     }
 
-
     render(){
         let btn1,btn2;
         btn1 = <div className='button button_yellow'>{this.state.btn1_txt}</div>
                 
         btn2 = <div className='button button_yellow'>{this.state.btn2_txt}</div>
         return(
-            <div className='box_back_osn'>
-                 <div className='box_back_dop'>
-                    <div className='form_box'>
-                        <RelationTabl modelText={this.props.model.model1} setModelText={this.props.setModelText} 
-                                        typeText={this.props.type.model1} setTypeText={this.props.setTypeText}
-                                        markaText={this.props.marka.model1} setMarkaText={this.props.setMarkaText}
-                                        katText={this.props.kat.model1} setKatText={this.props.setKatText}
-                                        changeButton={this.changeButton} id_button='1' 
-                                        btn_stat={this.state.btn1_show} zagl='Основной компонент' />
-                        <RelationTabl modelText={this.props.model.model2} setModelText={this.props.setModelText} 
-                                        typeText={this.props.type.model2} setTypeText={this.props.setTypeText}
-                                        markaText={this.props.marka.model2} setMarkaText={this.props.setMarkaText}
-                                        katText={this.props.kat.model2} setKatText={this.props.setKatText}
-                                        changeButton={this.changeButton} id_button='2' 
-                                        btn_stat={this.state.btn2_show} zagl='Дочерний компонент' />
-                    </div>
-                    <div className='active_box'>
-                        <div className='active_box_block'>
-                            {this.state.btn1_show && btn1}
+            <div className='background_modal background_modal_pos'>
+                <div className='box_back_osn'>
+                    <div className='box_back_dop'>
+                        <div className='form_box'>
+                            <RelationTabl modelText={this.props.model.model1} setModelText={this.props.setModelText} 
+                                            typeText={this.props.type.model1} setTypeText={this.props.setTypeText}
+                                            markaText={this.props.marka.model1} setMarkaText={this.props.setMarkaText}
+                                            katText={this.props.kat.model1} setKatText={this.props.setKatText}
+                                            changeButton={this.changeButton} id_button='1' 
+                                            btn_stat={this.state.btn1_show} zagl='Основной компонент' />
+                            <RelationTabl modelText={this.props.model.model2} setModelText={this.props.setModelText} 
+                                            typeText={this.props.type.model2} setTypeText={this.props.setTypeText}
+                                            markaText={this.props.marka.model2} setMarkaText={this.props.setMarkaText}
+                                            katText={this.props.kat.model2} setKatText={this.props.setKatText}
+                                            changeButton={this.changeButton} id_button='2' 
+                                            btn_stat={this.state.btn2_show} zagl='Дочерний компонент' />
                         </div>
-                        <div className='active_box_block'>
-                            {this.state.btn2_show && btn2}
+                        <div className='active_box'>
+                            <div className='active_box_block'>
+                                {this.state.btn1_show && btn1}
+                            </div>
+                            <div className='active_box_block'>
+                                {this.state.btn2_show && btn2}
+                            </div>
+                        </div>
+                        <div>
+                            <button onClick={this.saveAction} className='button button_green'>Сохранить</button>
+                            <button className='button button_red' onClick={this.props.onClose}>Отмена</button>
                         </div>
                     </div>
-                    <div>
-                        <button onClick={this.saveAction} className='button button_green'>Сохранить</button>
-                        <button className='button button_red'>Отмена</button>
-                    </div>
-                 </div>
+                </div>
             </div>
         )
     }

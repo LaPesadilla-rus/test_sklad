@@ -33,11 +33,13 @@ export default class Table_block extends Component {
     }
 
     changeModal = () => {
-        this.setState(state => ({ isModalOpen: !state.isModalOpen}))
+        this.setState(state => ({ isModalOpen: !state.isModalOpen}));
+        this.props.onReboot();
     }
 
     changeEquip = () => {
-        this.setState(state => ({ isModalEquip: !state.isModalEquip}))
+        this.setState(state => ({ isModalEquip: !state.isModalEquip}));
+        this.props.onReboot();
     }
 
     render(){
@@ -60,7 +62,7 @@ export default class Table_block extends Component {
                     <SprItem onClose={this.changeModal} onReboot={this.props.onReboot} act='submit' name={this.props.name} table={this.props.table} type={this.props.type}/>
                 }
                 {this.state.isModalEquip &&
-                    <NewEquip onClose={this.changeEquip} onReboot={this.props.onReboot} act='submit' name={this.props.name} table={this.props.table}/>
+                    <NewEquip onClose={this.changeEquip} onReboot={this.props.onReboot} act='insert' name={this.props.name} table={this.props.table}/>
                 }
             </div>
         )

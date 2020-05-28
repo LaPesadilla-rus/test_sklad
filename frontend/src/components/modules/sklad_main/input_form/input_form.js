@@ -2,29 +2,20 @@ import React, {Component} from 'react';
 import './input_form.css';
 import axio from 'axios';
 import UnicId from 'react-html-id';
-import SprItem from '../../spr_froms/spr_item/spr_item.js';
-
+import SprItem from '../../spr/spr_item/spr_item';
+import Autocomplite from '../../../simple_comp/autocomplite/autocomplite';
+import NewEquip from '../../spr/new_equip/new_equip';
 
 const BlockItem = (props) => {
     return  <tr className="data-table__body data-table__body_pos">
                 <td className='data-table__cell data-table__cell_pos cell_1'>{props.kat}</td> 
-                <td className='data-table__cell data-table__cell_pos cell_2'>{props.name}</td> 
-                <td className='data-table__cell data-table__cell_pos cell_3'></td>
+                <td className='data-table__cell data-table__cell_pos cell_2'>{props.inv_num}</td> 
+                <td className='data-table__cell data-table__cell_pos cell_3'>{props.name}</td>
                 <td className='data-table__cell data-table__cell_pos cell_4'>{props.units}</td>
                 <td className='data-table__cell data-table__cell_pos cell_5'>{props.kol}</td>
                 <td className='data-table__cell data-table__cell_pos cell_6'>{props.prim}</td>
             </tr>        
 }
-
-/*
- /*<NavLink className="data-table__body data-table__body_pos"  to={path} ><tr>
-            <td className='data-table__cell data-table__cell_pos cell_1'>{props.kat}</td> 
-            <td className='data-table__cell data-table__cell_pos cell_2'>{props.kod}</td> 
-            <td className='data-table__cell data-table__cell_pos cell_3'></td>
-            <td className='data-table__cell data-table__cell_pos cell_4'>{props.units}</td>
-            <td className='data-table__cell data-table__cell_pos cell_5'>{props.kol}</td>
-            <td className='data-table__cell data-table__cell_pos cell_6'></td>
-        </tr></NavLink>*/
 
 export default class Input_form extends Component {
     constructor() {
@@ -32,51 +23,124 @@ export default class Input_form extends Component {
         UnicId.enableUniqueIds(this);
         this.state = {
             name: '',
-            e_type: '1',
+            provider: '1',
+            units: '1',
             f_name: '1',
             kol: '',
             date: '',
             prim: '',
+            inv_num: '',
             type_data: [],
             kat_data: [],
-            man_data: [],
+            prov_data: [],
+            marka_data: [],
             units_data: [],
             hyst_data: [],
+            full_name: [],
+            equip_arr: [],
             isModalOpen: false,
+            isNewEquip: false,
+            isSelectEquip: false,
+            equip_name: '',
         };
 
     }
 
-    handleSaveD = event => {
+    componentDidMount = () => {
+        axio.get('./new/type').then(res=>{
+            this.setState({
+                type_data: res.data
+            });
+        });
+        axio.get('/sklad/new/marka').then(res=>{
+            this.setState({
+                marka_data: res.data
+            });
+        });
+        axio.get('./new/provider').then(res=>{
+            this.setState({
+                prov_data: res.data
+            });
+        });
+        axio.get('./new/units').then(res=>{
+            this.setState({
+                units_data: res.data
+            });
+        });
+        axio.get('./new/kat').then(res=>{
+            this.setState({
+                kat_data: res.data
+            });
+        });
+        axio.get('/spr/equip/fullname').then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
+            this.setState({
+                full_name: mas,
+                equip_arr: res.data,
+            });
+        });
+    }
+
+    handleSaveAndCopy = event => {
+        var units = parseInt(this.state.units);
+        //var equip_name = this.state.equip_name;
+        var prov = parseInt(this.state.provider);
+        console.log(this.state.prov_data.find(items => items.pr_id === prov).pr_name)
         const data = {
-            name: this.state.name,
-            e_type: this.state.e_type,
+            equip_name: this.state.equip_name,
+            units_name: this.state.units_data.find(items => items.un_id === units).un_name,
             f_name: this.state.f_name,
             kol: this.state.kol,
             date: this.state.date,
             prim: this.state.prim,
+            inv_num: this.state.inv_num,
+            provider: this.state.prov_data.find(items => items.pr_id === prov).pr_name,
         };
-        //Заготовка проверки на изменение шапки
-        const hyst = this.state.hyst_data;
-        const indx = hyst[hyst.length - 1];
-        if ((hyst.length > 0) && (indx.prim === data.prim)) {
-            console.log(indx.prim + ' ' + data.prim);
+        var stat = this.saveDB(data);
+        if (stat){
+            this.setState({
+                hyst_data: [...this.state.hyst_data, data]
+            });
         }
-        //--
-        this.setState({
-            hyst_data: [...this.state.hyst_data, data]
-        });
+            
+        
     };
 
     
-    ClearTable = e => {
-        e.preventDefault();
-        var arr = this.state.hyst_data;
-        arr.splice(0,arr.length);
-        this.setState({
-            hyst_data: arr
-        });
+    ClearTable = () => {
+        this.setState({ hyst_data: []})
     };
+
+    saveDB = (arr) => {
+        var err = '';
+        console.log(arr)
+        var stat = false
+        if (arr.inv_num === ''){
+            err = err + 'Инвентарный номер не введен! ';
+        }
+        if (arr.equip_name === ''){
+            err = err + 'Оборудование не выбрано! ';
+        }
+        if (arr.provider === ''){
+            err = err + 'Поставщик не выбран! ';
+        }
+        if (arr.kol === ''){
+            err = err + 'Количество не введено! ';
+        }
+        if (arr.date === ''){
+            err = err + 'Дата не введена! ';
+        }
+        if (err !== ''){
+            alert(err);
+        }else{
+            stat = true;
+        }
+        //console.log(err)
+        return stat;
+    }
 
     handleSubmit = event => {
         event.preventDefault();
@@ -136,9 +200,9 @@ export default class Input_form extends Component {
         this.setState({date: event.target.value});
     };
   
-    ChangeType = event => {
-        this.setState({e_type: event.target.value});
-        console.log(event.target.value);
+    ChangeProvider = event => {
+        this.setState({provider: event.target.value});
+        //console.log(event.target.value);
     };
 
     ChangeFirm = event => {
@@ -153,39 +217,49 @@ export default class Input_form extends Component {
         this.setState({prim: e.target.value});
     };
 
-    componentDidMount = () => {
-        axio.get('./new/type').then(res=>{
-            this.setState({
-                type_data: res.data
-            });
-        });
-        axio.get('./new/provider').then(res=>{
-            this.setState({
-                man_data: res.data
-            });
-        });
-        axio.get('./new/units').then(res=>{
-            this.setState({
-                units_data: res.data
-            });
-        });
-        axio.get('./new/kat').then(res=>{
-            this.setState({
-                kat_data: res.data
-            });
-        });
-    }
-
     changeModal = () => {
         this.setState(state => ({ isModalOpen: !state.isModalOpen}))
+    }
+
+    changeNewEquip = () => {
+        this.setState(state => ({ isNewEquip: !state.isNewEquip}))
+    }
+
+    changeSelectEquip = () => {
+        this.setState(state => ({ isSelectEquip: !state.isSelectEquip}))
     }
 
     onReboot = () =>{
         axio.get('./new/provider').then(res=>{
             this.setState({
-                man_data: res.data
+                prov_data: res.data
             });
         });
+        axio.get('/spr/equip/fullname').then(res=>{
+            var mas = []
+            for (let n = 0; n < res.data.length; n++){
+                mas[n] = res.data[n].item;
+            }
+            this.setState({
+                full_name: mas,
+                equip_arr: res.data,
+            });
+        });
+    }
+
+    setText= (val) => {
+        this.setState({equip_name: val})
+    }
+
+    searchNameInArr (val,arr) {
+        var arr = this.props.equip_arr;
+        var id = false
+        arr.forEach(function(item){
+            if (item.eq_name === val){
+                id =  true;
+            }
+        })
+        return (id)
     }
 
 
@@ -199,50 +273,42 @@ export default class Input_form extends Component {
                             <th className='cell_name'>
                                 <p>Поставщик </p>
                             </th>
-                            <th>
-                                <select id="elem_type" name='e_type' onChange={this.ChangeType}>
-                                    {this.state.man_data.map( id => <option key={id.pr_id} value={id.pr_id}>{id.pr_name}</option>)}     
+                            <th className='cell_content'>
+                                <select id="elem_type" name='e_type' onChange={this.ChangeProvider}>
+                                    {this.state.prov_data.map( id => <option key={id.pr_id} value={id.pr_id}>{id.pr_name}</option>)}     
                                 </select>
-                                <div onClick={this.changeModal} className="data-table__body data-table__body_pos spr_block_text">+</div>
+                                
                             </th>
+                            <th><div onClick={this.changeModal} className="data-table__body data-table__body_pos spr_block_text"><label>+</label></div></th>
                             <th className='cell_name'>
                                 <p>Номер договора</p>
                             </th>
-                            <th><input></input></th>
+                            <th className='cell_content'><input></input></th>
                             <th className='cell_name'>
                                 <p>Дата договора</p>
                             </th>
-                            <th><input type="date" name='date' onChange={this.ChangeDate}></input></th>
+                            <th className='cell_content'><input type="date" name='date' onChange={this.ChangeDate}></input></th>
                         </tr>
                         </thead>
                     </table>
                     <table className='input_form__table input_form__table_pos'>
                         <tbody>
                         <tr>
-                            <td className='cell_name'><p>Категория</p></td>
-                            <td><select id="elem_type" name='e_type' onChange={this.ChangeType}>
-                                {this.state.kat_data.map( id => <option key={id.kat_id} value={id.kat_id}>{id.kat_name}</option>)}  
-                            </select></td>
+                            <td className='cell_name' ><p>Поиск оборудования</p></td>
+                            <td ><Autocomplite modelText={this.state.equip_name} items_arr={this.state.full_name} setText={this.setText}/></td>
+                        </tr>
+                        <tr>
+                            <td><p><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></p></td>
+                            <td><p><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></p></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Инвентарный номер</p></td>
-                            <td><p><input></input></p></td>
-                        </tr>
-                        <tr>
-                            <td className='cell_name'><p>Тип оборудования</p></td>
-                            <td><p><select id="elem_type" name='e_type' onChange={this.ChangeType}>
-                                {this.state.type_data.map( id => <option key={id.te_id} value={id.te_id}>{id.te_name}</option>)}  
-                            </select></p></td>
-                        </tr>
-                        <tr>
-                            <td className='cell_name'><p>Модель оборудования</p></td>
-                            <td><p><input></input></p></td>
+                            <td><p><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></p></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Ед. измерения</p></td>
-                            <td><p><select id="elem_type" name='e_type' onChange={this.ChangeType} value={this.state.value}>
-                                <button>123</button>
-                                {this.state.units_data.map( id => <option key={id.un_id} value={id.un_id}>{id.un_name}</option>)}  
+                            <td><p><select id="elem_type" name='e_type' onChange={(e) => { console.log(e.target.text); this.setState({units: e.target.value})}} value={this.state.units}>
+                                {this.state.units_data.map( id => <option key={id.un_id} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
                             </select></p></td>
                         </tr>
                         <tr>
@@ -251,22 +317,19 @@ export default class Input_form extends Component {
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Примечание</p></td>
-                            <td><p><input name='prim' onChange={this.ChangePrim}></input></p></td>
+                            <td><p><textarea name='prim' onChange={this.ChangePrim}></textarea></p></td>
                         </tr>
-                        <tr>
-                            <td className='cell_name'><p>Привязка</p></td>
-                            <td><p><input name='prim' onChange={this.ChangePrim}></input></p></td>
-                        </tr>
+                        
                         </tbody>
                     </table>
                     <div className='input_form__bb input_form__bb_pos'>
-                        <button type='submit' className="input_form__button input_form__button_pos">
+                        <button type='submit' className="button">
                             Сохранить
                         </button>
-                        <button type='button' onClick={this.handleSaveD} className="input_form__button input_form__button_pos" >
+                        <button type='button' onClick={this.handleSaveAndCopy} className="button" >
                             Сохранить и дублировать
                         </button>
-                        <button type='reset' className="input_form__button input_form__button_pos cancel_button" >
+                        <button type='reset' className="button button_red" >
                             Отмена
                         </button>
                     </div>
@@ -278,26 +341,33 @@ export default class Input_form extends Component {
                             <th className='data-table__cell data-table__cell_pos cell_2'>Инв номер</th> 
                             <th className='data-table__cell data-table__cell_pos cell_3'>Наименование</th>
                             <th className='data-table__cell data-table__cell_pos cell_4'>Ед.изм</th>
-                            <th className='data-table__cell data-table__cell_pos cell_5'>Остаток</th>
+                            <th className='data-table__cell data-table__cell_pos cell_5'>Кол-во</th>
                             <th className='data-table__cell data-table__cell_pos cell_6'>Примечание</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="data-table__body data-table__body_pos">
-                            <td className='data-table__cell data-table__cell_pos  cell_1'>Основные средства</td> 
-                            <td className='data-table__cell data-table__cell_pos  cell_2'>ПД00000033642</td> 
-                            <td className='data-table__cell data-table__cell_pos  cell_3'>Моторизированный кронштейн Brateck PLB M0544</td>
-                            <td className='data-table__cell data-table__cell_pos  cell_4'>шт</td>
-                            <td className='data-table__cell data-table__cell_pos  cell_5'>15</td>
-                            <td className='data-table__cell data-table__cell_pos  cell_6'>ВКС (конф-зал)</td>
-                        </tr>
-                        {this.state.hyst_data.map( id =>  <BlockItem key={this.nextUniqueId()} kol={id.kol} date='20.20.2020' 
-                            kod='AAAA' kat={id.name} id='12' units='шт' prim={id.prim} />)}
+                        {this.state.hyst_data.map( id =>  <BlockItem 
+                                                                key={this.nextUniqueId()} kol={id.kol} date='20.20.2020' 
+                                                                kod='AAAA' kat='KAT' id='12' units={id.units_name} prim={id.prim} inv_num={id.inv_num}
+                                                                name={id.equip_name}
+                                                            />)
+                        }
                        
                     </tbody>
                 </table>
                 {this.state.isModalOpen &&
                     <SprItem onClose={this.changeModal} onReboot={this.onReboot} act='submit' name='Поставщик' table='provider_spr'/>
+                }
+                {this.state.isNewEquip &&
+                    <NewEquip onClose={this.changeNewEquip} act='insert' />
+                }
+                {this.state.isSelectEquip &&
+                    <NewEquip 
+                        onClose={this.changeSelectEquip} setText={this.setText} 
+                        act='select' equip_arr={this.state.equip_arr} 
+                        setText={this.setText} equip_name={this.state.equip_name} 
+                        marka_data={this.state.marka_data} type_data={this.state.type_data}
+                    />
                 }
 
             </div>
@@ -305,6 +375,40 @@ export default class Input_form extends Component {
     }
     
 }
+
+/*
+ <tr className="data-table__body data-table__body_pos">
+                            <td className='data-table__cell data-table__cell_pos  cell_1'>Основные средства</td> 
+                            <td className='data-table__cell data-table__cell_pos  cell_2'>ПД00000033642</td> 
+                            <td className='data-table__cell data-table__cell_pos  cell_3'>Моторизированный кронштейн Brateck PLB M0544</td>
+                            <td className='data-table__cell data-table__cell_pos  cell_4'>шт</td>
+                            <td className='data-table__cell data-table__cell_pos  cell_5'>15</td>
+                            <td className='data-table__cell data-table__cell_pos  cell_6'>ВКС (конф-зал)</td>
+                        </tr>
+
+
+<tr>
+                            <td className='cell_name'><p>Категория</p></td>
+                            <td><select id="elem_type" name='e_type' onChange={this.ChangeType}>
+                                {this.state.kat_data.map( id => <option key={id.kat_id} value={id.kat_id}>{id.kat_name}</option>)}  
+                            </select></td>
+                        </tr> 
+                        <tr>
+                            <td className='cell_name'><p>Модель оборудования</p></td>
+                            <td><p><input></input></p></td>
+                        </tr>
+                        <tr>
+                            <td className='cell_name'><p>Тип оборудования</p></td>
+                            <td><p><select id="elem_type" name='e_type' onChange={this.ChangeType}>
+                                {this.state.type_data.map( id => <option key={id.te_id} value={id.te_id}>{id.te_name}</option>)}  
+                            </select></p></td>
+                        </tr>
+                        <tr>
+                            <td className='cell_name'><p>Привязка</p></td>
+                            <td><p><input name='prim' onChange={this.ChangePrim}></input></p></td>
+                        </tr>
+                        */
+
 
 /*
 <div>

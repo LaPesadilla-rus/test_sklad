@@ -1,7 +1,7 @@
 import React from 'react';
-import './data_block.css';
-import Data_table from './data_table/data_table.js'
-import Input_form from './input_form/input_form.js'
+import './sklad_main.css';
+import Data_table from '../../modules/sklad_main/data_table/data_table'
+import Input_form from '../../modules/sklad_main/input_form/input_form.js'
 //import Users from './components/Users.js';
 //import Users from '../Users.js'
 import {Route} from 'react-router-dom';

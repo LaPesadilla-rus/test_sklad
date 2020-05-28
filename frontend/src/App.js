@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
-import Menu from './components/l_menu/l_menu.js';
-import Body from './components/body/body.js';
+import Menu from './components/modules/l_menu/l_menu.js';
+//import Body from './components/body/body.js';
+import Routs from './components/routs/routs';
 
 import {BrowserRouter} from 'react-router-dom';
 
@@ -18,7 +19,7 @@ function App() {
       <div className="back">
         <div className="App">
           <Menu />
-          <Body />
+          <Routs />
         </div> 
       </div>
     </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './spr_forms.css';
-import Spr_units from './spr_units/spr_units.js';
-import Spr_block from './spr_block.js';
+import Spr_units from '../../modules/spr/spr_units/spr_units';
+import Spr_block from '../../modules/spr/spr_block';
 import {Route} from 'react-router-dom';
 
 export default class Spr_forms extends Component {

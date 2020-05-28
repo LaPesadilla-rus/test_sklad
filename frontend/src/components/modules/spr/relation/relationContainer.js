@@ -8,7 +8,8 @@ class RelationContainer extends React.Component {
     render (){
         return(
             <Relation kat={this.props.kat} type={this.props.type} marka={this.props.marka} model={this.props.model} 
-            setKatText={this.props.setKatText}  setTypeText={this.props.setTypeText} setMarkaText={this.props.setMarkaText} setModelText={this.props.setModelText}/>
+            setKatText={this.props.setKatText}  setTypeText={this.props.setTypeText} setMarkaText={this.props.setMarkaText} setModelText={this.props.setModelText}
+            onClose={this.props.onClose}/>
         )
     }
 }

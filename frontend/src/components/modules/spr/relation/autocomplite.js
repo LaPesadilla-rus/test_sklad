@@ -12,6 +12,7 @@ export default class Autocomplite extends Component {
             suggestions: [],
             allsuggestions: [],
             err: false,
+            isWindowOpen: false,
         }
     }
 
@@ -26,6 +27,7 @@ export default class Autocomplite extends Component {
     onChangeTxt = (e) => {
         const value = e.target.value;
         let suggestions = [];
+        console.log(this.props.items_arr)
         //this.setState({items: this.props.items_arr})
         if (value.length > 0){
            
@@ -43,15 +45,15 @@ export default class Autocomplite extends Component {
     }
 
     setModelText = (e) => {
-        this.props.setModelText(this.props.id_button,e.target.value);
+        this.props.setModelText(e.target.value);
         const value = e.target.value;
         let suggestions = [];
         if (value.length > 0){
-           
             const regex = new RegExp(`${value}`, 'i');
-            
-           suggestions = this.props.items_arr.sort().filter(v => regex.test(v));
+            suggestions = this.props.items_arr.sort().filter(v => regex.test(v));
         }
+        console.log(this.props.items_arr)
+        console.log(suggestions);
         this.setState({suggestions: suggestions})
     }
 
@@ -69,12 +71,9 @@ export default class Autocomplite extends Component {
             txt: value,
             suggestions: [],
         })
-        console.log(value)
-        this.props.setModelText(this.props.id_button,value);
-        /*this.props.onChange(value);
-        this.searchWord(value);
-        this.searchItem(value);*/
+        this.props.setModelText(value);
         this.nameInput.focus(); 
+        this.setState(state => ({ isWindowOpen: !state.isWindowOpen}))
     }
 
     renderSuggestions () {
@@ -85,7 +84,7 @@ export default class Autocomplite extends Component {
         suggestions = suggestions.slice(0,8);
         return (
                 <ul>
-                     {suggestions.map(item =>  <li onClick={() => this.suggestionSelected(item)} key={item}><label>{item}</label></li>)}
+                     {suggestions.map(item =>  <li onClick={() => this.suggestionSelected(item)} key={this.nextUniqueId()}><label>{item}</label></li>)}
                  </ul> 
         )
     }
@@ -101,15 +100,34 @@ export default class Autocomplite extends Component {
     handleClickOutside =(e) => {
         if (e.target.localName !== 'label'){
             this.setState({suggestions: []});
+            /*if (this.state.isWindowOpen) {
+               this.setState({isWindowOpen: false})
+            }*/
             }
     }
 
+    renderZeroSuggestions = () => {
+        this.setState(state => ({ isWindowOpen: !state.isWindowOpen}))
+    }
+
     render(){
+        let window;
+        if (this.state.suggestions.length === 0 && this.state.isWindowOpen && this.props.modelText.length === 0) {
+            //console.log(this.props.items_arr)
+            window = <ul>
+                        {this.props.items_arr.map(item =>  <li onClick={() => this.suggestionSelected(item)} key={this.nextUniqueId()}>{item}</li>)}
+                    </ul>;
+        }else {
+            window = null;
+        }
         return(
             <div className='autocomplite'>
-                 <div className='autocomplite_column'><input ref={(input) => { this.nameInput = input; }} className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  
-                        type='text' onChange={this.setModelText} value={this.props.modelText} ></input></div>
-                 <div className='autocomplite_column'>{this.renderSuggestions()}</div>
+                 <div className='autocomplite_column'>
+                    <input onClick={this.renderZeroSuggestions} ref={(input) => { this.nameInput = input; }} 
+                        className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  
+                        type='text' onChange={this.setModelText} value={this.props.modelText} >
+                    </input></div>
+                 <div className='autocomplite_column'>{this.renderSuggestions()}{window}</div>
             </div>
         )
     }

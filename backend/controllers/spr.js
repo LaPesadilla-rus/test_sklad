@@ -63,6 +63,7 @@ exports.spr_delete = function(req, res) {
 exports.equip = function(req, res) {
     Spr.equip(req, function(err,docs){
         if (err) {
+            console.log('Error CODE: ' + err.code);
             console.log(err);
             return res.sendStatus(500);
         }
@@ -72,6 +73,16 @@ exports.equip = function(req, res) {
 
 exports.equip_all = function(req, res) {
     Spr.equip_all(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs.rows);
+    })
+}
+
+exports.equip_fullname = function(req, res) {
+    Spr.equip_fullname(function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);

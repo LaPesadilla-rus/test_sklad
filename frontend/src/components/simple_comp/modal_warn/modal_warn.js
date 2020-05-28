@@ -1,5 +1,5 @@
 import React, {Component}  from 'react';
-import './spr_item.css';
+import './modal_warn.css';
 
 export default class Spr_units extends Component {
     
@@ -9,20 +9,14 @@ export default class Spr_units extends Component {
         };
     }
 
-    onClose = () =>{
-        this.props.onDel();
-        this.props.onClose();
-        
-    }
-
     render (props) {
         return (
                 <div className='background_modal background_modal_pos'>
                     <div className="modal modal_pos">
-                        <p> Вы уверены, что хотите удалить? </p>
+                        <p>{this.props.text}</p>
                         <div>
-                            <button type='submit' className='action__button' onClick={this.onClose}>Да</button>
-                            <button type='button' className='action__button out_button' onClick={this.props.onClose}>Нет</button>
+                            <button type='submit' className='button button_green' onClick={this.props.clickYes}>Да</button>
+                            <button type='button' className='button button_red' onClick={this.props.clickNo}>Нет</button>
                         </div>
                     </div>
                 </div>
