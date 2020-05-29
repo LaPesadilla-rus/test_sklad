@@ -8,7 +8,7 @@ import NewEquip from '../../spr/new_equip/new_equip';
 
 const BlockItem = (props) => {
     return  <tr className="data-table__body data-table__body_pos">
-                <td className='data-table__cell data-table__cell_pos cell_1'>{props.kat}</td> 
+                <td className='data-table__cell data-table__cell_pos cell_1'>{props.dogvr_num}</td> 
                 <td className='data-table__cell data-table__cell_pos cell_2'>{props.inv_num}</td> 
                 <td className='data-table__cell data-table__cell_pos cell_3'>{props.name}</td>
                 <td className='data-table__cell data-table__cell_pos cell_4'>{props.units}</td>
@@ -23,13 +23,14 @@ export default class Input_form extends Component {
         UnicId.enableUniqueIds(this);
         this.state = {
             name: '',
-            provider: '1',
-            units: '1',
+            provider: '',
+            units: '0',
             f_name: '1',
             kol: '',
             date: '',
             prim: '',
             inv_num: '',
+            dogvr_num: '',
             type_data: [],
             kat_data: [],
             prov_data: [],
@@ -85,28 +86,58 @@ export default class Input_form extends Component {
     }
 
     handleSaveAndCopy = event => {
+        event.preventDefault();
         var units = parseInt(this.state.units);
-        //var equip_name = this.state.equip_name;
         var prov = parseInt(this.state.provider);
-        console.log(this.state.prov_data.find(items => items.pr_id === prov).pr_name)
+        var txt = this.state.equip_name;
+        if (!this.searchNameInArr(txt, this.state.equip_arr) ) {
+            alert("Оборудования нет в базе!")
+            return;
+        }
+        if(this.state.provider === '-1' || this.state.provider.length === 0){
+            alert("Поставщик не выбран!")
+            return;
+        }
         const data = {
             equip_name: this.state.equip_name,
+            equip_id: this.state.equip_arr.find(items => items.item === txt).eq_id,
             units_name: this.state.units_data.find(items => items.un_id === units).un_name,
+            units_id: this.state.units,
             f_name: this.state.f_name,
             kol: this.state.kol,
             date: this.state.date,
             prim: this.state.prim,
             inv_num: this.state.inv_num,
             provider: this.state.prov_data.find(items => items.pr_id === prov).pr_name,
+            provider_id: this.state.provider,
+            dogvr_num: this.state.dogvr_num,
+            user: 'admin',
         };
         var stat = this.saveDB(data);
+        var n = this.state.hyst_data.length
         if (stat){
+            if (n > 0) {
+                if(this.state.hyst_data[n-1].dogvr_num !== this.state.dogvr_num || this.state.hyst_data[n-1].date !== this.state.date || this.state.hyst_data[n-1].provider !== data.provider){
+                        stat = false;
+                        this.setState({
+                            hyst_data: [data],
+                            equip_name: '',
+                            inv_num: '',
+                            kol: '',
+                            prim: '',
+                        });
+                        return;
+                        
+                }
+            }
             this.setState({
-                hyst_data: [...this.state.hyst_data, data]
+                hyst_data: [...this.state.hyst_data, data],
+                equip_name: '',
+                inv_num: '',
+                kol: '',
+                prim: '',
             });
         }
-            
-        
     };
 
     
@@ -114,80 +145,87 @@ export default class Input_form extends Component {
         this.setState({ hyst_data: []})
     };
 
-    saveDB = (arr) => {
+    saveDB = (data) => {
         var err = '';
-        console.log(arr)
+        console.log(data)
         var stat = false
-        if (arr.inv_num === ''){
+        if (data.inv_num === ''){
             err = err + 'Инвентарный номер не введен! ';
         }
-        if (arr.equip_name === ''){
+        if (data.dogvr_num === ''){
+            err = err + 'Номер договора не введен! ';
+        }
+        if (data.equip_name === ''){
             err = err + 'Оборудование не выбрано! ';
         }
-        if (arr.provider === ''){
+        if (data.provider === ''){
             err = err + 'Поставщик не выбран! ';
         }
-        if (arr.kol === ''){
+        if (data.kol === ''){
             err = err + 'Количество не введено! ';
         }
-        if (arr.date === ''){
+        if (data.date === ''){
             err = err + 'Дата не введена! ';
         }
         if (err !== ''){
             alert(err);
         }else{
             stat = true;
+            axio.post('/sklad/new/save', {data}).then(res => {
+                console.log(res.data);
+                if (res.data === 'POST COMPLITE') {
+                    alert('Сохранение успешно');
+                }else{
+                    alert('Данные не удалось сохранить');
+                }
+            });
         }
         //console.log(err)
         return stat;
     }
 
     handleSubmit = event => {
-        event.preventDefault();
-
+        //event.preventDefault();
+        var units = parseInt(this.state.units);
+        var prov = parseInt(this.state.provider);
+        var txt = this.state.equip_name;
+        if (!this.searchNameInArr(txt, this.state.equip_arr) ) {
+            alert("Оборудования нет в базе!")
+            return;
+        }
+        if(this.state.provider === '-1' || this.state.provider.length === 0){
+            alert("Поставщик не выбран!")
+            return;
+        }
         const data = {
-            name: this.state.name,
-            e_type: this.state.e_type,
+            equip_name: this.state.equip_name,
+            equip_id: this.state.equip_arr.find(items => items.item === txt).eq_id,
+            units_name: this.state.units_data.find(items => items.un_id === units).un_name,
+            units_id: this.state.units,
             f_name: this.state.f_name,
             kol: this.state.kol,
             date: this.state.date,
             prim: this.state.prim,
+            inv_num: this.state.inv_num,
+            provider: this.state.prov_data.find(items => items.pr_id === prov).pr_name,
+            provider_id: this.state.provider,
+            dogvr_num: this.state.dogvr_num,
+            user: 'admin',
+        };
+        var stat = this.saveDB(data);
+        if (stat){
+            this.ClearTable();
+            this.setState({
+                equip_name: '',
+                inv_num: '',
+                kol: '',
+                prim: '',
+                provider: '-1',
+                date: '',
+                dogvr_num: '',
+            });
+            this.ChangeProvider({target: {value: '-1'}});
         }
-
-        this.setState({
-            hyst_data: data
-        });
-        
-
-        console.log(this.setState.hyst_data);
-
-        var err = '';
-        if (data.name === ''){
-            err = err + 'Инвентарный номер не введен!';
-        }
-        if (data.kol === ''){
-            err = err + 'Количество не введено!';
-        }
-        if (data.date === ''){
-            err = err + 'Дата не введена!';
-        }
-        if (!err === ''){
-            alert(err);
-        }else{
-            console.log(data);
-            /*axio.post('/sklad/new/save', {data}).then(res => {
-            console.log(res.data);
-            if (res.data = 'POST COMPLITE') {
-                alert('Сохранение успешно');
-                this.props.history.push('/sklad/all');
-            }else{
-                alert('Данные не удалось сохранить');
-            }
-            });*/
-        }
-
-        this.ClearTable();
-        
     }
 
     handleChange = event => {
@@ -252,10 +290,10 @@ export default class Input_form extends Component {
     }
 
     searchNameInArr (val,arr) {
-        var arr = this.props.equip_arr;
+        //arr = this.props.equip_arr;
         var id = false
         arr.forEach(function(item){
-            if (item.eq_name === val){
+            if (item.item === val){
                 id =  true;
             }
         })
@@ -274,8 +312,9 @@ export default class Input_form extends Component {
                                 <p>Поставщик </p>
                             </th>
                             <th className='cell_content'>
-                                <select id="elem_type" name='e_type' onChange={this.ChangeProvider}>
-                                    {this.state.prov_data.map( id => <option key={id.pr_id} value={id.pr_id}>{id.pr_name}</option>)}     
+                                <select id="elem_type" name='e_type' onChange={this.ChangeProvider} value={this.state.provider}>
+                                    <option key={this.nextUniqueId()} value='-1'></option>
+                                    {this.state.prov_data.map( id => <option key={this.nextUniqueId()} value={id.pr_id}>{id.pr_name}</option>)}     
                                 </select>
                                 
                             </th>
@@ -283,11 +322,11 @@ export default class Input_form extends Component {
                             <th className='cell_name'>
                                 <p>Номер договора</p>
                             </th>
-                            <th className='cell_content'><input></input></th>
+                            <th className='cell_content'><input type='text' onChange={(e) => {this.setState({ dogvr_num: e.target.value})}} value={this.state.dogvr_num} ></input></th>
                             <th className='cell_name'>
                                 <p>Дата договора</p>
                             </th>
-                            <th className='cell_content'><input type="date" name='date' onChange={this.ChangeDate}></input></th>
+                            <th className='cell_content'><input type="date" name='date' onChange={this.ChangeDate} value={this.state.date}></input></th>
                         </tr>
                         </thead>
                     </table>
@@ -308,22 +347,22 @@ export default class Input_form extends Component {
                         <tr>
                             <td className='cell_name'><p>Ед. измерения</p></td>
                             <td><p><select id="elem_type" name='e_type' onChange={(e) => { console.log(e.target.text); this.setState({units: e.target.value})}} value={this.state.units}>
-                                {this.state.units_data.map( id => <option key={id.un_id} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
+                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
                             </select></p></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Количество</p></td>
-                            <td><p><input name='kol' type='number' onChange={this.ChangeKol}></input></p></td>
+                            <td><p><input name='kol' type='number' onChange={this.ChangeKol} value={this.state.kol}></input></p></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Примечание</p></td>
-                            <td><p><textarea name='prim' onChange={this.ChangePrim}></textarea></p></td>
+                            <td><p><textarea name='prim' onChange={this.ChangePrim} value={this.state.prim}></textarea></p></td>
                         </tr>
                         
                         </tbody>
                     </table>
                     <div className='input_form__bb input_form__bb_pos'>
-                        <button type='submit' className="button">
+                        <button type='button' onClick={this.handleSubmit} className="button">
                             Сохранить
                         </button>
                         <button type='button' onClick={this.handleSaveAndCopy} className="button" >
@@ -337,7 +376,7 @@ export default class Input_form extends Component {
                 <table className="data-table data-table_pos">
                     <thead>
                         <tr className="data-table__head data-table__body_pos" onClick={this.handleSubmit} id='123'>
-                            <th className='data-table__cell data-table__cell_pos cell_1'>Категория</th> 
+                            <th className='data-table__cell data-table__cell_pos cell_1'>Номер договора</th> 
                             <th className='data-table__cell data-table__cell_pos cell_2'>Инв номер</th> 
                             <th className='data-table__cell data-table__cell_pos cell_3'>Наименование</th>
                             <th className='data-table__cell data-table__cell_pos cell_4'>Ед.изм</th>
@@ -348,7 +387,7 @@ export default class Input_form extends Component {
                     <tbody>
                         {this.state.hyst_data.map( id =>  <BlockItem 
                                                                 key={this.nextUniqueId()} kol={id.kol} date='20.20.2020' 
-                                                                kod='AAAA' kat='KAT' id='12' units={id.units_name} prim={id.prim} inv_num={id.inv_num}
+                                                                kod='AAAA' dogvr_num={id.dogvr_num} id='12' units={id.units_name} prim={id.prim} inv_num={id.inv_num}
                                                                 name={id.equip_name}
                                                             />)
                         }
@@ -359,11 +398,11 @@ export default class Input_form extends Component {
                     <SprItem onClose={this.changeModal} onReboot={this.onReboot} act='submit' name='Поставщик' table='provider_spr'/>
                 }
                 {this.state.isNewEquip &&
-                    <NewEquip onClose={this.changeNewEquip} act='insert' />
+                    <NewEquip onClose={this.changeNewEquip} onReboot={this.onReboot} act='insert' />
                 }
                 {this.state.isSelectEquip &&
                     <NewEquip 
-                        onClose={this.changeSelectEquip} setText={this.setText} 
+                        onClose={this.changeSelectEquip} onReboot={this.onReboot} 
                         act='select' equip_arr={this.state.equip_arr} 
                         setText={this.setText} equip_name={this.state.equip_name} 
                         marka_data={this.state.marka_data} type_data={this.state.type_data}

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './relation.css';
 import UnicId from 'react-html-id';
-import NewEquipSelect from '../new_equip/new_equip_select';
 import RelationTabl from './relation_tabl.js';
 import axio from 'axios';
 
@@ -24,6 +23,7 @@ export default class Relation extends Component {
     }
 
     componentDidMount = () =>{
+        var data = {};
         axio.get('/sklad/kat').then(res=>{
             this.setState({
                 kat_data: res.data,
@@ -42,12 +42,12 @@ export default class Relation extends Component {
             })
         });
         if (this.props.id_item){
-            var data = { id: this.props.id_item};
+            data = { id: this.props.id_item};
             axio.post('/spr/equip', data).then(res=>{
                 this.ChangeKategor({target: {value: res.data[0].eq_kat_id}});
             });
         }else{
-            var data = { kat: '0'};
+            data = { kat: '0'};
             axio.post('/sklad/new/type', data).then(res=>{
                 this.setState({
                     type_data: res.data,

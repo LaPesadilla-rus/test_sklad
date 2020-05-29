@@ -11,10 +11,10 @@
 
 .input_form_pos {
     /*width: calc(100% - 20);*/
-    min-width: (100% - 20px);
+    width:  calc(100% - 10);;
     min-height: 100px;
-    overflow: auto;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .input_form__table{

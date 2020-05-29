@@ -103,7 +103,7 @@ exports.equip_save = function(req, res) {
 exports.sklad_save = function(req, res) {
     Sklad.sklad_save(req ,function(err,docs){
         if (err) {
-            console.log(err);
+            //console.log(err);
             return res.sendStatus(500);
         }
         res.send(docs);

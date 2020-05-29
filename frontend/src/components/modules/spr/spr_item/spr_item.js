@@ -38,6 +38,7 @@ export default class Spr_units extends Component {
             //console.log(res.data);
             if (res.data === 'POST COMPLITE') {
                // alert('Сохранение успешно');
+               this.props.onReboot();
                 this.onClose();
             }else{
                 alert('Данные не удалось сохранить');
@@ -66,6 +67,7 @@ export default class Spr_units extends Component {
             //console.log(res.data);
             if (res.data === 'UPDATE COMPLITE') {
                 //alert('Редактирование успешно');
+                this.props.onReboot();
                 this.onClose();
             }else{
                 alert('Данные не удалось сохранить');
@@ -106,7 +108,7 @@ export default class Spr_units extends Component {
                         <div>
                             <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item_name}></input>
                         </div>
-                        <div>
+                        <div className='modal_button_div'>
                             <button type='submit' onClick={this.onSubmit} className='action__button'>Сохранить изменения</button>
                             <button type='button' className='action__button out_button' onClick={this.props.onClose}>Отмена</button>
                         </div>
@@ -117,7 +119,7 @@ export default class Spr_units extends Component {
                             <p>Справочник: {this.props.name}</p>
                             <input name='inpt' type='text' onChange={this.ChangeUnit} value={this.state.item_name}></input>
                         </div>
-                        <div>
+                        <div className='modal_button_div'>
                             <button type='submit' className='action__button'>Сохранить</button>
                             <button type='button' className='action__button out_button' onClick={this.props.onClose}>Отмена</button>
                         </div>

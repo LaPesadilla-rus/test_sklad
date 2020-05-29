@@ -1,39 +1,44 @@
 .Menu {
     background-color: #2e2e2e;
-    float: left;
-    position: relative;
-    width: 250px;
-    align-items: stretch;
-    
-   
-
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    width: 240px;
+    display: flex;
+    flex-direction: column;
 }
 
 .button_block {
     min-width: 210px;
-    margin: 10px;
-    padding: 15px 5px;
-    text-transform: uppercase;
-    vertical-align: middle;
-    background: #082164;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    /*vertical-align: middle;*/
+    /*background: #082164;*/
     color: #ffffff;
-    box-shadow: 0 0 10px rgb(7, 58, 92);
-    transition: all 1s;
-    border-radius: 15px;
-    border: 2px solid #263b75;
-    float: left;
+    text-transform: uppercase;
     text-decoration: none;
+    /*box-shadow: 0 0 10px rgb(7, 58, 92);*/
+    transition: all 1s;
+    border-top: 2px solid #354161;
+    border-bottom: 2px solid #354161;
+
+    display: flex;
+    align-items: center;
+}
+
+.button_block label {
+    margin-left: 5px;
 }
 
 
 .button_block:hover {
-    box-shadow:  0 0 25px rgb(180, 179, 178);
+    box-shadow:  0 0 10px rgb(180, 179, 178);
     background-color: #2764aa;
     transition: all 1s;
   }
 .button_block.act{
-    background-color: #12851b;;
+    background-color: #2764aa;;
     transition: all 0.5s;
 }
 

@@ -1,22 +1,14 @@
 .data-table {
-    
     background-color: #f1f0f0;
     border-radius: 10px;
-
-    display: grid;
-    display: inline-grid;
-
-    
-
-    
 }
 
 .data-table_pos {
     /*width: calc(100% - 8px);*/
-    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     padding: 4px;
-    float: left;
-    position: relative;
 }
 
 .data-table__head{
@@ -26,19 +18,16 @@
     border: 1px solid #1c7e76;
 
     font-size: 17px;
-    line-height: 50px;
     text-decoration: none;
-    vertical-align: middle;
     color: white;
-    text-align: left;
     background-color: #0a5e74;
-
     border-collapse: collapse;
 }
 
 .data-table__body {
     background-color: #24a197;
     border-radius: 4px;
+    height: 23px;
     
     text-shadow: 0 2px 1px rgba(0, 0, 0, 0.075);
     border: 1px solid #0a5e74;
@@ -56,9 +45,41 @@
 .data-table__body_pos {
     float: left;
     width: calc(100% - 8px);
+    margin-top: 4px;
     margin-left: 4px;
     margin-right: 4px;
     position: relative;
+}
+
+.data-table__row{
+    background-color: #0f8076;
+    border-radius: 4px;
+    
+    text-shadow: 0 2px 1px rgba(0, 0, 0, 0.075);
+    border: 1px solid #0a5e74;
+
+    font-size: 16px;
+    
+    text-decoration: none;
+   
+    color: white;
+    text-align: left;
+
+    border-collapse: collapse;
+}
+
+.data-table__row_pos{
+    float: left;
+    width: calc(100% - 8px);
+    margin-left: 4px;
+    margin-right: 4px;
+    height: 35px;
+}
+
+.data-table__row_pos:hover {
+    background-color: #12a599;
+    box-shadow: 0 0 10px rgb(10, 103, 165);
+    transition: all 1s;
 }
 
 .data-table__cell {
@@ -69,7 +90,7 @@
     word-wrap: break-word;
     /*white-space: normal;*/
     /*border-collapse: collapse;*/
-    line-height: 26px;
+    line-height: 35px;
     /*padding: 0px;*/
 }
 
@@ -85,7 +106,7 @@
 }
 
 .data-table__body:hover {
-    background-color: #154792;
+    background-color: #254677;
     box-shadow: 0 0 10px rgb(10, 103, 165);
     transition: all 1s;
 }
@@ -118,4 +139,21 @@
 .cell_6 {
     width: 30%;
     min-width: 300px;
+}
+
+.kat_osn {
+    background-color: #2a6b13;
+}
+
+.kat_osn:hover {
+    background-color: #2e9409;
+}
+
+.kat_kartr{
+    background-color: #944511;
+}
+
+
+.kat_kartr:hover{
+    background-color: #bb520d;
 }

@@ -4,6 +4,7 @@ import SprItem from './spr_item/spr_item.js';
 import ModalWarn from '../../simple_comp/modal_warn/modal_warn';
 import NewEquip from './new_equip/new_equip.js';
 import axio from 'axios';
+import { RiCloseLine } from 'react-icons/ri'
 
 export default class Table_block_item extends Component {
     constructor(props){
@@ -77,7 +78,7 @@ export default class Table_block_item extends Component {
                         <ModalWarn text='Вы уверены, что хотите удалить?' clickYes={this.modalYes} clickNo={this.modalNo} />
                     }
                 </div>
-                <div className='delete_button' onClick={this.changeWarn}><label>x</label></div>
+                <div className='delete_button' onClick={this.changeWarn}><RiCloseLine /></div>
             </div>
             
         )

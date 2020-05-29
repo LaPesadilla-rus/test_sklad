@@ -6,15 +6,14 @@
 } 
 
 .actions_pos {
-    float: left;
     margin-top: 10px;
     width: 100%;
     min-height: 70px;
-    position: relative;
+    display: flex;
 }
 
 .action__button{
-    box-shadow: 0 0 10px rgb(10, 103, 165);
+    /*box-shadow: 0 0 10px rgb(10, 103, 165);*/
     transition: all 1s;
     border-radius: 15px;
     border: 2px solid #1d2b50;
@@ -26,12 +25,18 @@
     white-space: nowrap;
     text-decoration: none;
     text-align: center;
-    vertical-align: middle;
     color: white;
 
     padding: 5px;
 
     word-wrap: break-word;
+
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.action__button label{
+    margin-left: 5px;
 }
 
 .actions__button_pos {
@@ -42,7 +47,7 @@
 }
 
 .action__button:hover {
-    box-shadow:  0 0 25px rgb(45, 46, 141);
+    box-shadow:  0 0 25px rgb(44, 46, 128);
     background-color: #1688d4;
     transition: all 1s;
   }
@@ -53,7 +58,7 @@
 
 .out_button:hover{
     box-shadow:  0 0 25px rgb(72, 38, 134);
-    background-color: #b32b13;
+    background-color: #a52610;
     transition: all 1s;
 }
 
@@ -63,7 +68,7 @@
 
 .new_button:hover{
     box-shadow:  0 0 25px rgb(172, 160, 55);
-    background-color: #afc01a;
+    background-color: #94a118;
     transition: all 1s;
 }
 
@@ -73,7 +78,7 @@
 
 .info_button:hover{
     box-shadow:  0 0 25px rgb(19, 175, 32);
-    background-color: #19b119;
+    background-color: #229c22;
     transition: all 1s;
 }
 

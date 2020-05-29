@@ -21,7 +21,7 @@ exports.all = function (cb) {
                     on pr.pr_id = st.st_pr_id
                     
                     inner join kategor_spr kat
-                    on kat.kat_id = st.st_kat_id
+                    on kat.kat_id = eq.eq_kat_id
                     
                     inner join units_spr un
                     on un.un_id = st.st_un_id
@@ -106,8 +106,12 @@ exports.equip_save = function(req,cb) {
 
 exports.sklad_save = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
-    var sql = `INSERT INTO public.storage (st_eq_id, st_pr_id, st_inv_num, st_amount, st_inp_date)
-    VALUES ( `+req.body.data.e_type+`,`+req.body.data.f_name+`,'`+req.body.data.name+`',`+req.body.data.kol+`,'`+req.body.data.date+`');`;
+    /*let date = new Date();
+    let dateNow = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();*/
+    var sql = `INSERT INTO public.storage (st_eq_id, st_pr_id, st_un_id, st_inv_num, st_amount, st_contr_date, st_contr_num, st_inp_usr)
+    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`,'`+req.body.data.date+`',
+    '`+req.body.data.dogvr_num+`', '`+req.body.data.user+`');`;
+    //console.log(sql)
     pool.query(sql
     , (err,res)=>{
         if (err !== undefined) {
@@ -115,5 +119,5 @@ exports.sklad_save = function(req,cb) {
         }else{
             cb(err,'POST COMPLITE');
         }
-    }); 
+    });
 }

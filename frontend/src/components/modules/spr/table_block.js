@@ -45,13 +45,13 @@ export default class Table_block extends Component {
     render(){
         let block;
         if (this.props.type === 'equip'){
-            block = <div onClick={this.changeEquip} className="data-table__body data-table__body_pos spr_block_text">+</div>
+            block = <div onClick={this.changeEquip} className="data-table__body data-table__body_pos spr_block_text"><label>+</label></div>
         }else{
-            block = <div onClick={this.changeModal} className="data-table__body data-table__body_pos spr_block_text">+</div>
+            block = <div onClick={this.changeModal} className="data-table__body data-table__body_pos spr_block_text"><label>+</label></div>
         }
         return(
             <div className='spr_block spr_block_pos'>
-                <button className='spr_block_heder' >{this.props.name}</button>
+                <label className='spr_block_heder' >{this.props.name}</label>
                 {block}
                 <div className='spr_block_data'>
                     {this.props.items.map(id => <TableBlockItem key={this.ukey(this.props.table)} act={this.props.act} 

@@ -1,19 +1,8 @@
 import React, {Component} from 'react';
 import './data_table.css';
-import {NavLink} from 'react-router-dom';
 import axio from 'axios';
 
-const BlockItem = (props) => {
-    let path = './edit/' + props.id;
-    return <div><NavLink className="data-table__body data-table__body_pos"  to={path} ><tr>
-            <td className='data-table__cell data-table__cell_pos cell_1'>{props.kat}</td> 
-            <td className='data-table__cell data-table__cell_pos cell_2'>{props.kod}</td> 
-            <td className='data-table__cell data-table__cell_pos cell_3'>{props.name}</td>
-            <td className='data-table__cell data-table__cell_pos cell_4'>{props.units}</td>
-            <td className='data-table__cell data-table__cell_pos cell_5'>{props.kol}</td>
-            <td className='data-table__cell data-table__cell_pos cell_6'>{props.prim}</td>
-        </tr></NavLink></div>
-}
+import DataRow from './data_row';
 
 export default class Data extends Component{
     constructor() {
@@ -45,7 +34,7 @@ export default class Data extends Component{
 
     componentDidMount = () => {
         axio.get('./all').then(res=>{
-            console.log(res.data);
+            //console.log(res.data);
             this.setState({
                 equips: res.data
             });
@@ -69,7 +58,18 @@ export default class Data extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="data-table__body data-table__body_pos">
+                        {this.state.equips.map( id => <DataRow key={id.st_id} kol={id.st_amount} date={id.to_char} 
+                                                                kod={id.st_inv_num} kat={id.kat_name} id={id.st_id} units={id.un_name} 
+                                                                name={id.te_name + ' ' + id.eq_name} prim={id.st_prim} />)}
+                    </tbody>
+                </table>
+            </form>
+        );
+    }
+}
+
+/**
+ * <tr className="data-table__body data-table__body_pos">
                             <td className='data-table__cell data-table__cell_pos  cell_1'>Основные средства</td> 
                             <td className='data-table__cell data-table__cell_pos  cell_2'>ПД00000033642</td> 
                             <td className='data-table__cell data-table__cell_pos  cell_3'>Моторизированный кронштейн Brateck PLB M0544</td>
@@ -77,12 +77,4 @@ export default class Data extends Component{
                             <td className='data-table__cell data-table__cell_pos  cell_5'>15</td>
                             <td className='data-table__cell data-table__cell_pos  cell_6'>ВКС (конф-зал)</td>
                         </tr>
-                        {this.state.equips.map( id => <BlockItem key={id.st_id} kol={id.st_amount} date={id.to_char} 
-                            kod={id.st_inv_num} kat={id.kat_name} id={id.st_id} units={id.un_name} 
-                            name={id.te_name + ' ' + id.eq_name} prim={id.st_prim} />)}
-                    </tbody>
-                </table>
-            </form>
-        );
-    }
-}
+ */

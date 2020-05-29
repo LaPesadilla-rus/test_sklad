@@ -3,9 +3,9 @@ import './routs.css';
 //import Header from '../body/header/header.js';
 import Header from '../modules/header/header.js'
 import Actions from '../modules/actions_bar/actions';
-import Sklad_main from '../pages/sklad_main/sklad_main';
-import Spr_forms from '../pages/spr/spr_forms.js';
-import New_equip from '../modules/spr/new_equip/new_equip';
+import SkladMain from '../pages/sklad_main/sklad_main';
+import SprForms from '../pages/spr/spr_forms.js';
+import NewEquip from '../modules/spr/new_equip/new_equip';
 import Relation from '../modules/spr/relation/relationContainer';
 import {Route} from 'react-router-dom';
 
@@ -15,11 +15,11 @@ function Routs () {
                 <Header />
                 <Route path='/sklad' component={Actions}/>
                 <Route path='/reports/all' component={Actions}/>
-                <Route path='/sklad' component={Sklad_main}/>
+                <Route path='/sklad' component={SkladMain}/>
 
                 
-                <Route path='/spr' component={Spr_forms}/>
-                <Route path='/newequip' component={New_equip}/>
+                <Route path='/spr' component={SprForms}/>
+                <Route path='/newequip' component={NewEquip}/>
                 <Route path='/rel' component={Relation}/>
             </div>
     );

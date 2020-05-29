@@ -6,13 +6,18 @@
 }
 
 .body_pos {
-    float: left;
+    /*float: left;*/
     /*width: calc(100% - 270px);*/
     min-width: calc(100vw - 280px);
     min-height: 100vh;
-    overflow: auto;
+    /*overflow: auto;
 
-    position: relative;
+    position: relative;*/
+
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: center;
 
     padding-left: 10px;
     padding-right: 10px;

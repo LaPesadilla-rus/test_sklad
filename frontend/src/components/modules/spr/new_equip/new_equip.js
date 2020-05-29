@@ -99,7 +99,37 @@ export default class New_equip extends Component {
     }
 
     onReboot = () =>{
-
+        axio.get('/sklad/kat').then(res=>{
+            this.setState({
+                kat_data: res.data,
+            })
+        });
+        
+        axio.get('/sklad/new/marka').then(res=>{
+            this.setState({
+                mark_data: res.data,
+            })
+        });
+        if (this.props.id_item){
+            var data = { id: this.props.id_item};
+            axio.post('/spr/equip', data).then(res=>{
+                this.setState({
+                    model: res.data[0].eq_name,
+                    kat: res.data[0].eq_kat_id,
+                    marka: res.data[0].eq_mark_id,
+                    type: res.data[0].eq_type_id,
+                });
+                this.ChangeKategor({target: {value: res.data[0].eq_kat_id}});
+            });
+        }else{
+            data = { kat: '0'};
+            axio.post('/sklad/new/type', data).then(res=>{
+                this.setState({
+                    type_data: res.data,
+                })
+            });
+        }
+        this.props.onReboot();
     }
 
     ChangeType = (e) =>{
