@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './input_form.css';
 import axio from 'axios';
+import PropTypes from 'prop-types';
 import UnicId from 'react-html-id';
 import SprItem from '../../spr/spr_item/spr_item';
 import Autocomplite from '../../../simple_comp/autocomplite/autocomplite';
@@ -18,8 +19,8 @@ const BlockItem = (props) => {
 }
 
 export default class Input_form extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         UnicId.enableUniqueIds(this);
         this.state = {
             name: '',
@@ -31,6 +32,7 @@ export default class Input_form extends Component {
             prim: '',
             inv_num: '',
             dogvr_num: '',
+            mol: '',
             type_data: [],
             kat_data: [],
             prov_data: [],
@@ -83,6 +85,28 @@ export default class Input_form extends Component {
                 equip_arr: res.data,
             });
         });
+        
+        if (this.props.id_item){
+            var id_item = this.props.id_item;
+            console.log(this.props.equips_arr.find(items => items.st_id === id_item).to_char)
+            this.setState({
+                provider: this.props.equips_arr.find(items => items.st_id === id_item).st_pr_id,
+                units: this.props.equips_arr.find(items => items.st_id === id_item).st_un_id,
+                f_name: '1',
+                kol: this.props.equips_arr.find(items => items.st_id === id_item).st_amount,
+                date: this.props.equips_arr.find(items => items.st_id === id_item).to_char,
+                //prim: this.props.equips_arr.find(items => items.st_id === id_item).st_prim,
+                inv_num: this.props.equips_arr.find(items => items.st_id === id_item).st_inv_num,
+                dogvr_num: this.props.equips_arr.find(items => items.st_id === id_item).st_contr_num,
+            })
+        }
+        /*console.log(this.props)
+        if (isEmpty(this.props.id_item)) {
+            const id_item = this.props.id_item;
+            console.log(id_item)
+        }else{
+            console.log('empty')
+        }*/
     }
 
     handleSaveAndCopy = event => {
@@ -236,6 +260,7 @@ export default class Input_form extends Component {
 
     ChangeDate = event => {
         this.setState({date: event.target.value});
+        console.log(event.target.value)
     };
   
     ChangeProvider = event => {
@@ -300,9 +325,55 @@ export default class Input_form extends Component {
         return (id)
     }
 
+    handleOut = () => {
+        console.log(this.props.id_item)
+        var data = {
+            id_item: this.props.id_item,
+            mol: '1',
+            user: 'admin',
+            kol: '1',
+        }
+
+        axio.post('/sklad/out', {data}).then(res => {
+            console.log(res.data);
+            if (res.data === 'UPDATE COMPLITE') {
+                alert('Заявка отправлена успешно');
+            }else{
+                alert('Данные не удалось отправить');
+            }
+        });
+    }
+
+    
+
 
     render () {
+        let id_item = this.props.id_item;
+        let redactItem = <div className='input_form__bb input_form__bb_pos'>
+                        <button type='button' onClick={this.handleSubmit} className="button">
+                            Редактировать
+                        </button>
+                        <button type='button' onClick={this.handleOut} className="button" >
+                            Выписать
+                        </button>
+                        <button type='button' onClick={this.props.onClose} className="button button_red" >
+                            Отмена
+                        </button>
+                    </div>;
+        let newItem = <div className='input_form__bb input_form__bb_pos'>
+                        <button type='button' onClick={this.handleSubmit} className="button">
+                            Сохранить
+                        </button>
+                        <button type='button' onClick={this.handleSaveAndCopy} className="button" >
+                            Сохранить и дублировать
+                        </button>
+                        <button type='button' onClick={this.props.onClose} className="button button_red" >
+                            Отмена
+                        </button>
+                    </div>;
         return (
+            <div className='background_modal background_modal_pos'>
+                    <div className="modal modal_pos">
             <div className="input_form input_form_pos">
                 <form onSubmit={this.handleSubmit}>
                     <table className='input_form__table input_form__table_pos'>
@@ -337,43 +408,39 @@ export default class Input_form extends Component {
                             <td ><Autocomplite modelText={this.state.equip_name} items_arr={this.state.full_name} setText={this.setText}/></td>
                         </tr>
                         <tr>
-                            <td><p><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></p></td>
-                            <td><p><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></p></td>
+                            <td><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></td>
+                            <td><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Инвентарный номер</p></td>
-                            <td><p><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></p></td>
+                            <td><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Ед. измерения</p></td>
-                            <td><p><select id="elem_type" name='e_type' onChange={(e) => { console.log(e.target.text); this.setState({units: e.target.value})}} value={this.state.units}>
+                            <td><select id="elem_type" name='e_type' onChange={(e) => { console.log(e.target.text); this.setState({units: e.target.value})}} value={this.state.units}>
                                 {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
-                            </select></p></td>
+                            </select></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Количество</p></td>
-                            <td><p><input name='kol' type='number' onChange={this.ChangeKol} value={this.state.kol}></input></p></td>
+                            <td><input name='kol' type='number' onChange={this.ChangeKol} value={this.state.kol}></input></td>
                         </tr>
                         <tr>
                             <td className='cell_name'><p>Примечание</p></td>
-                            <td><p><textarea name='prim' onChange={this.ChangePrim} value={this.state.prim}></textarea></p></td>
+                            <td><textarea name='prim' onChange={this.ChangePrim} value={this.state.prim}></textarea></td>
                         </tr>
+                        {id_item ? <tr>
+                            <td className='cell_name'><p>МОЛ</p></td>
+                            <td><select onChange={(e) => { console.log(e.target.text); this.setState({mol: e.target.value})}} value={this.state.mol}>
+                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
+                            </select></td>
+                        </tr> : ''}
                         
                         </tbody>
                     </table>
-                    <div className='input_form__bb input_form__bb_pos'>
-                        <button type='button' onClick={this.handleSubmit} className="button">
-                            Сохранить
-                        </button>
-                        <button type='button' onClick={this.handleSaveAndCopy} className="button" >
-                            Сохранить и дублировать
-                        </button>
-                        <button type='reset' className="button button_red" >
-                            Отмена
-                        </button>
-                    </div>
+                    {id_item ? redactItem : newItem}
                 </form>
-                <table className="data-table data-table_pos">
+                {id_item ? '' : <table className="data-table data-table_pos">
                     <thead>
                         <tr className="data-table__head data-table__body_pos" onClick={this.handleSubmit} id='123'>
                             <th className='data-table__cell data-table__cell_pos cell_1'>Номер договора</th> 
@@ -393,7 +460,8 @@ export default class Input_form extends Component {
                         }
                        
                     </tbody>
-                </table>
+                </table>}
+                
                 {this.state.isModalOpen &&
                     <SprItem onClose={this.changeModal} onReboot={this.onReboot} act='submit' name='Поставщик' table='provider_spr'/>
                 }
@@ -410,10 +478,21 @@ export default class Input_form extends Component {
                 }
 
             </div>
+            </div>
+            </div>
+            
         );
     }
-    
 }
+
+BlockItem.propTypes = {
+    id_item: PropTypes.string
+  };
+
+/**
+ *  <div className='background_modal background_modal_pos'>
+            <div className="modal modal_pos">
+ */
 
 /*
  <tr className="data-table__body data-table__body_pos">

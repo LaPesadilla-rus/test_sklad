@@ -109,3 +109,24 @@ exports.sklad_save = function(req, res) {
         res.send(docs);
     })
 }
+
+exports.sklad_out = function(req, res) {
+    var data = [];
+    Sklad.sklad_out(req ,function(err,docs){
+        if (err) {
+            return res.sendStatus(500);
+        }
+        data = docs;
+        Sklad.sklad_out_midl1(data, req, function(err,docs){
+            if (err) {
+                return res.sendStatus(500);
+            }
+            Sklad.sklad_out_midl2(data,req, function(err,docs){
+                if (err) {
+                    return res.sendStatus(500);
+                }
+                res.send(docs);
+            })
+        })
+    }); 
+}

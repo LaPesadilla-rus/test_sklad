@@ -6,14 +6,16 @@ import { NavLink } from 'react-router-dom';
 import { MdAddBox, MdCreateNewFolder, MdFolder } from 'react-icons/md';
 import { IconContext } from "react-icons";
 
+import InputForm from '../sklad_main/input_form/input_form';
+
 export default class Action_new extends Component{
     render (){
         return (
                 <div className = 'Action_new'>
                     <IconContext.Provider value={{size: "25"}}>
-                        <NavLink className="action__button actions__button_pos new_button" to="./new">
+                        <button onClick={this.props.changeEdit} className="action__button actions__button_pos new_button" >
                         <MdCreateNewFolder /> <label>Поступление</label>
-                        </NavLink>
+                        </button>
                         <NavLink className="action__button actions__button_pos" to="/sklad/out">
                             <MdAddBox /> <label>Выписка</label>
                         </NavLink>

@@ -32,7 +32,7 @@ app.use(express.json());
 app.get('/sklad/all', skladController.all);
 
 app.get('/sklad/new/type', skladController.type);
-app.post('/sklad/new/type', skladController.type_post);
+
 
 app.get('/sklad/new/provider', skladController.provider);
 app.get('/sklad/new/marka', skladController.marka);
@@ -41,6 +41,8 @@ app.get('/sklad/new/kat', skladController.kat);
 app.get('/sklad/kat', skladController.kat2);
 
 app.post('/sklad/new/save', skladController.sklad_save);
+app.post('/sklad/new/type', skladController.type_post);
+app.post('/sklad/out', skladController.sklad_out);
 
 //------------------------------
 app.post('/equip/save', skladController.equip_save);

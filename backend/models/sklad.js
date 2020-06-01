@@ -1,13 +1,16 @@
 
-const {Pool} = require('pg');
+const {Pool/*, Client*/} = require('pg');
 
 const conn = require('../db_con.js');
 
 const pool = new Pool (conn.conn_str);
 
+/*const client = new Client(conn.conn_str);
+client.connect();*/
+
 exports.all = function (cb) {
     pool.query(`SELECT st.st_id, st.st_amount, st.st_prim, te.te_name, eq.eq_name, pr.pr_name, st.st_inv_num, kat.kat_name,
-                    un.un_name, to_char(st.st_inp_date, 'DD.MM.YYYY')
+                    un.un_name, to_char(st.st_inp_date, 'YYYY-MM-DD'), *
                     
                     FROM storage st
                     
@@ -15,7 +18,7 @@ exports.all = function (cb) {
                     on eq.eq_id = st.st_eq_id
 
                     inner join type_equip_spr te
-					on te.te_id = eq.eq_id
+					on te.te_id = eq.eq_type_id
                     
                     inner join provider_spr pr
                     on pr.pr_id = st.st_pr_id
@@ -30,6 +33,7 @@ exports.all = function (cb) {
                 `
     , (err,res)=>{
         cb(err, res); 
+        //console.log(res.rows)
     });
 };
 
@@ -119,5 +123,53 @@ exports.sklad_save = function(req,cb) {
         }else{
             cb(err,'POST COMPLITE');
         }
+    });
+}
+
+exports.sklad_out = function(req,cb) {
+    if(!req.body.data) return res.sendStatus(400);
+    var sql = '';
+    var data = [];
+    sql = `SELECT * FROM storage WHERE st_id = `+req.body.data.id_item+` AND st_amount >= `+req.body.data.kol+``;
+    pool.query(sql
+        , (err,res)=>{
+            if (err) {
+                console.log("Postgres INSERT error:", err);
+            }else{
+                data = res.rows[0];
+               cb(err,data);
+            }
+    });
+
+}
+
+exports.sklad_out_midl1 = function(data, req,cb) {
+    var sql = `INSERT INTO public.balance(
+                    bl_eq_id, bl_pr_id, bl_un_id, bl_amount, bl_inv_num, bl_contr_num,  bl_inp_usr, bl_prim, bl_mol_id)
+                    VALUES (`+data.st_eq_id+`, `+data.st_pr_id+`, `+data.st_un_id+`, `+req.body.data.kol+`, '`+data.st_inv_num+`',
+                    '`+data.st_contr_num+`','`+data.st_inp_usr+`', '`+data.st_prim+`', `+req.body.data.mol+`);`;
+    //console.log(sql)
+    pool.query(sql
+        , (err,res)=>{
+            if (err) {
+                console.log("Postgres INSERT error:", err);
+            }else{
+                //data = res.rows[0];
+               cb(err,'INSERT COMPLITE');
+            }
+    });
+}
+
+exports.sklad_out_midl2 = function(data, req,cb) {
+    var a = (data.st_amount - req.body.data.kol);
+    var sql = `UPDATE public.storage SET st_amount = `+a+` WHERE st_id = `+req.body.data.id_item+``;
+    //console.log(sql)
+    pool.query(sql
+        , (err,res)=>{
+            if (err) {
+                console.log("Postgres INSERT error:", err);
+            }else{
+               cb(err,'UPDATE COMPLITE');
+            }
     });
 }

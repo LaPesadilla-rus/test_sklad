@@ -2,7 +2,7 @@ import React from 'react';
 import './routs.css';
 //import Header from '../body/header/header.js';
 import Header from '../modules/header/header.js'
-import Actions from '../modules/actions_bar/actions';
+//import Actions from '../modules/actions_bar/actions';
 import SkladMain from '../pages/sklad_main/sklad_main';
 import SprForms from '../pages/spr/spr_forms.js';
 import NewEquip from '../modules/spr/new_equip/new_equip';
@@ -13,8 +13,7 @@ function Routs () {
     return (
             <div className="body body_pos">
                 <Header />
-                <Route path='/sklad' component={Actions}/>
-                <Route path='/reports/all' component={Actions}/>
+                
                 <Route path='/sklad' component={SkladMain}/>
 
                 
@@ -26,3 +25,8 @@ function Routs () {
 }
 
 export default Routs;
+
+/**
+ * <Route path='/sklad' component={Actions}/>
+                <Route path='/reports/all' component={Actions}/>
+ */

@@ -2,13 +2,21 @@ import React, {Component} from 'react';
 import './data_table.css';
 import axio from 'axios';
 
+import Actions from '../../actions_bar/action_new';
 import DataRow from './data_row';
+import InputForm from '../input_form/input_form';
 
 export default class Data extends Component{
     constructor() {
         super();
+        this.table = {
+            id: '',
+        }
         this.state = {
             equips: [],
+            isEditOpen: false,
+            isNewOpen: false,
+            id_item: '',
         };
     }
 
@@ -34,17 +42,29 @@ export default class Data extends Component{
 
     componentDidMount = () => {
         axio.get('./all').then(res=>{
-            //console.log(res.data);
+            console.log(res.data);
             this.setState({
                 equips: res.data
             });
         });
+    }
+
+    changeEdit = (val) => {
+        this.setState({ id_item: val })
+        this.table.id = val;
+        this.setState(state => ({ isEditOpen: !state.isEditOpen}))
+    }
+
+    changeNew = () => {
+        this.setState(state => ({ isNewOpen: !state.isNewOpen}))
     }
     //{this.state.equips.map( e_id => <NavLink className="Block" to='./edit/block/'>{e_id}</NavLink>)}
             
 
     render() {
         return (
+            <div>
+                {<Actions changeEdit={this.changeNew} />}
             <form onSubmit={this.handleSubmit}>
                 <table className="data-table data-table_pos">
                     <thead>
@@ -60,10 +80,17 @@ export default class Data extends Component{
                     <tbody>
                         {this.state.equips.map( id => <DataRow key={id.st_id} kol={id.st_amount} date={id.to_char} 
                                                                 kod={id.st_inv_num} kat={id.kat_name} id={id.st_id} units={id.un_name} 
-                                                                name={id.te_name + ' ' + id.eq_name} prim={id.st_prim} />)}
+                                                                name={id.te_name + ' ' + id.eq_name} prim={id.st_prim} changeEdit={this.changeEdit} />)}
                     </tbody>
                 </table>
             </form>
+            {this.state.isEditOpen &&
+                    <InputForm id_item={this.table.id} equips_arr={this.state.equips}  onClose={this.changeEdit}/>
+                }
+            {this.state.isNewOpen &&
+                    <InputForm id_item=''  onClose={this.changeNew}/>
+                }
+            </div>
         );
     }
 }

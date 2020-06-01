@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './data_table.css';
 
 
+
+
 /*const Data_row = (props) => {
     let path = './edit/' + props.id;
     return <div><NavLink className="data-table__body data-table__body_pos"  to={path} ><tr>
@@ -15,6 +17,17 @@ import './data_table.css';
 }*/
 
 export default class DataRow extends Component{
+    constructor(){
+        super();
+        this.state = {
+            isEditOpen: false,
+        }
+    }
+
+    editEquip = () =>{
+        console.log('edit' + this.props.id)
+        this.props.changeEdit(this.props.id);
+    }
 
     render() {
         var color_sreds= false;
@@ -26,7 +39,7 @@ export default class DataRow extends Component{
             color_kart = true;
         }
         return (
-                <tr className="data-table__row data-table__row_pos ">
+                <tr onClick={this.editEquip} className="data-table__row data-table__row_pos ">
                     <td className='data-table__cell data-table__cell_pos cell_1 '>{this.props.kat}</td> 
                     <td className='data-table__cell data-table__cell_pos cell_2'>{this.props.kod}</td> 
                     <td className='data-table__cell data-table__cell_pos cell_3'>{this.props.name}</td>
@@ -34,6 +47,7 @@ export default class DataRow extends Component{
                     <td className='data-table__cell data-table__cell_pos cell_5'>{this.props.kol}</td>
                     <td className='data-table__cell data-table__cell_pos cell_6'>{this.props.prim}</td>
                 </tr>
+                
         );
     }
 }
