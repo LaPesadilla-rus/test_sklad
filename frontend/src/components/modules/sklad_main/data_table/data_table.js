@@ -31,7 +31,7 @@ export default class Data extends Component{
         }
 
         axio.post('/sklad/edit', {data}).then(res => {
-            console.log(res.data);
+            //console.log(res.data);
             if (res.data === 'POST COMPLITE') {
                 //alert('Сохранение успешно');
             }else{
@@ -42,7 +42,7 @@ export default class Data extends Component{
 
     componentDidMount = () => {
         axio.get('./all').then(res=>{
-            console.log(res.data);
+            //console.log(res.data);
             this.setState({
                 equips: res.data
             });

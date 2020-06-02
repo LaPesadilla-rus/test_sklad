@@ -130,3 +130,18 @@ exports.sklad_out = function(req, res) {
         })
     }); 
 }
+
+exports.sklad_download = function(req,res){
+    //console.log(req.body.data)
+    const Excel = require('exceljs');
+
+    var workbook = new Excel.Workbook();
+    workbook.xlsx.readFile('./docs/14-23.xlsx').then(function(){
+        var ws = workbook.getWorksheet(1);
+        ws.getCell(11,6).value = req.body.data.user;
+
+        workbook.xlsx.writeFile('./docs/test10.xlsx').then(function(){
+            res.download('./docs/test10.xlsx');
+        });
+    });
+}

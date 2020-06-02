@@ -30,14 +30,14 @@ export default class DataRow extends Component{
     }
 
     render() {
-        var color_sreds= false;
+        /*var color_sreds= false;
         var color_kart = false
         if (this.props.kat === 'Основные средства'){
             color_sreds = true;
         }
         if (this.props.kat === 'Картриджи'){
             color_kart = true;
-        }
+        }*/
         return (
                 <tr onClick={this.editEquip} className="data-table__row data-table__row_pos ">
                     <td className='data-table__cell data-table__cell_pos cell_1 '>{this.props.kat}</td> 

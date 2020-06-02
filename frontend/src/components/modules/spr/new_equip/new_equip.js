@@ -270,16 +270,16 @@ export default class New_equip extends Component {
         }else{
             //this.setState({error: null})
             if (!this.props.btn_stat){
-                var type = this.state.type;
+                var type = parseInt(this.state.type);
                 this.props.type_data.forEach(function(item) {
-                    if(item.te_id == type){
+                    if(item.te_id === type){
                         type = item.te_name
                     }
                 })
-                var marka = this.state.marka;
+                var marka = parseInt(this.state.marka);
                 this.props.marka_data.forEach(function(item) {
                     console.log(item)
-                    if(item.id == marka){
+                    if(item.id === marka){
                         marka = item.name
                     }
                 })

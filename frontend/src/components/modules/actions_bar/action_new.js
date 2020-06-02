@@ -6,8 +6,6 @@ import { NavLink } from 'react-router-dom';
 import { MdAddBox, MdCreateNewFolder, MdFolder } from 'react-icons/md';
 import { IconContext } from "react-icons";
 
-import InputForm from '../sklad_main/input_form/input_form';
-
 export default class Action_new extends Component{
     render (){
         return (

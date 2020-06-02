@@ -7,6 +7,7 @@ import SkladMain from '../pages/sklad_main/sklad_main';
 import SprForms from '../pages/spr/spr_forms.js';
 import NewEquip from '../modules/spr/new_equip/new_equip';
 import Relation from '../modules/spr/relation/relationContainer';
+import OtdelMain from '../pages/otdel/OtdelMain';
 import {Route} from 'react-router-dom';
 
 function Routs () {
@@ -16,7 +17,9 @@ function Routs () {
                 
                 <Route path='/sklad' component={SkladMain}/>
 
-                
+                <Route path='/otdel' component={OtdelMain}/>
+
+
                 <Route path='/spr' component={SprForms}/>
                 <Route path='/newequip' component={NewEquip}/>
                 <Route path='/rel' component={Relation}/>

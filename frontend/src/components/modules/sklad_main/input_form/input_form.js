@@ -344,6 +344,18 @@ export default class Input_form extends Component {
         });
     }
 
+    handleDownload = () => {
+        const data = {
+            user: 'admin',
+            test: 'asd'
+        }
+        const FileDownload = require('js-file-download');
+        
+        axio.post('/sklad/download', {data},  { responseType: 'arraybuffer' }).then(res => {
+            FileDownload(res.data, '14-23.xlsx');
+        });
+    }
+
     
 
 
@@ -375,6 +387,9 @@ export default class Input_form extends Component {
             <div className='background_modal background_modal_pos'>
                     <div className="modal modal_pos">
             <div className="input_form input_form_pos">
+            <button type='button' onClick={this.handleDownload} className="button">
+                            Загрузить файл
+                        </button>
                 <form onSubmit={this.handleSubmit}>
                     <table className='input_form__table input_form__table_pos'>
                         <thead>
