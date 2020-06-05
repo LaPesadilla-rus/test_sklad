@@ -1,32 +1,3 @@
-.otdel_main {
-    background-color: rgba(216, 216, 216, 0.718);
+.otdel_base {
     width: 100%;
-    min-height: 100px;
-
-    margin-top: 10px;
-    border-radius: 10px;
-
-    font-size: 17px;
-    color: black;
-}
-
-.otdel_workspace{
-    width: calc(100% - 20px);
-    min-height: 100px;
-
-    margin: 10px;
-
-    border: 1px solid black;
-
-    display: flex;
-}
-
-.otdel_workspace_equip{
-    display: flex;
-    flex-direction: column;
-}
-
-.combo_div{
-    display: flex;
-    flex-direction: row;
 }

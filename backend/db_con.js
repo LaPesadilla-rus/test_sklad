@@ -7,4 +7,10 @@ let conn_str =  ({
     max: 3
 });
 
+function test () {
+    
+}
+
 module.exports.conn_str = conn_str;
+
+module.exports.test = test;

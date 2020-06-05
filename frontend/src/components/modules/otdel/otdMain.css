@@ -1,0 +1,45 @@
+.otdel_main {
+    background-color: rgba(216, 216, 216, 0.718);
+    width: 100%;
+    min-height: 100px;
+
+    margin-top: 10px;
+    border-radius: 10px;
+
+    font-size: 17px;
+    color: black;
+}
+
+.otdel_workspace{
+    width: calc(100% - 21px);
+    margin-left: 10px;
+}
+
+.otdel_workspace_equip{
+    width: 100%;
+    display: flex;
+    flex-direction: column; 
+       
+}
+
+.otdel_workspace_mol{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+}
+
+.combo_div{
+    display: flex;
+    flex-direction: row;
+     
+}
+
+.mol_column {
+    width: 150px;
+    height: 80px;
+}
+
+.otdel_grow{
+    flex-grow: 2;
+}

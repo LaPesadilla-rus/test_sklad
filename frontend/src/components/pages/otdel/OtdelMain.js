@@ -1,85 +1,98 @@
 import React, {Component} from 'react';
 import './OtdelMain.css';
 import axio from 'axios';
+import UnicId from 'react-html-id';
+
+import OtdBlock from '../../modules/otdel/otdBlock.js';
+//import { otd_data } from '../../../../../backend/controllers/otdel';
 
 export default class OtdelMain extends Component{
     constructor() {
         super();
-        this.table = {
+        UnicId.enableUniqueIds(this);
+        this._isMounted = false;
+        this.arr = {
             otdel_data: [],
-        }
+        };
         this.state = {
+            otdel_data: [],
+            mol_data: [],
+            data: [],
+            separ_data: [],
         };
     }
 
     componentDidMount = () => {
+        this._isMounted = true;
         axio.get('/otdel/all').then(res=>{
-            //console.log(res.data);
-            this.setState({
-                otdel_data: res.data
-            });
+            if (this._isMounted){
+                this.setState({
+                    otdel_data: res.data.otd,
+                    mol_data: res.data.mol,
+                    data: res.data.data,
+                });
+            }
+            
+        });
+        axio.get('/otdel/data').then(res=>{
+            if (this._isMounted){
+                this.setState({
+                    separ_data: res.data,
+                });
+            }
+            
         });
     }
-            
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    onReboot = () => {
+        this.setState({
+            otdel_data: [],
+            mol_data: [],
+            data: [],
+            separ_data: [],
+        })
+        axio.get('/otdel/all').then(res=>{
+            if (this._isMounted){
+                this.setState({
+                    otdel_data: res.data.otd,
+                    mol_data: res.data.mol,
+                    data: res.data.data,
+                });
+            }
+            
+        });
+        axio.get('/otdel/data').then(res=>{
+            if (this._isMounted){
+                this.setState({
+                    separ_data: res.data,
+                });
+            }
+            
+        });
+    }
+
+
+            
+    Click = () => {
+        //console.log(this.state)
+        this.onReboot();
+    }
     render() {
         return (
-            <div className='otdel_main'>
-                <p>Отеделение: </p>
-                <div className='otdel_workspace'>
-                    <div>
-                        <button className='button'>MOL1</button>
-                    </div>
-                    <div className='otdel_workspace_equip'>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP1</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP2</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP3</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP4</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP5</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                    </div>
-                </div>
-                <div className='otdel_workspace'>
-                    <div>
-                        <button className='button'>MOL1</button>
-                    </div>
-                    <div className='otdel_workspace_equip'>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP1</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP2</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP3</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP4</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                        <div className='combo_div'>
-                            <div className='button button_green '>EQUIP5</div>
-                            <div className='button button_yellow'>Списать</div>
-                        </div>
-                    </div>
-                </div>
+            <div className='otdel_base'>
+                <button onClick={this.Click}>asdsad</button>
+                {this.state.otdel_data.map(row => <OtdBlock key={this.nextUniqueId()} 
+                                                            otdel_data={this.state.otdel_data}
+                                                            mol_data={this.state.mol_data}
+                                                            data={this.state.data}
+                                                            row={row}
+                                                            separ_data={this.state.separ_data}
+                                                            onReboot={this.onReboot} />)}
+                
             </div>
         );
     }

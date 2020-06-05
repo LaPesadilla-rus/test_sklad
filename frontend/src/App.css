@@ -125,6 +125,22 @@
     background-color: rgb(180, 178, 16);
 }
 
+.button_gray{
+    background-color: rgb(78, 78, 78);
+}
+
+.button_gray:hover{
+    background-color: rgb(78, 78, 78);
+}
+
+.button_item{
+    background-color: rgb(15, 128, 118);
+}
+
+.button_item:hover{
+    background-color: rgb(15, 165, 152);
+}
+
 .button_cancel{
     background-color: rgb(116, 11, 11);
     border: 1px solid #500e0e;
