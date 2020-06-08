@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './modalAct.css';
 
-import axio from 'axios';
-
 export default class ModalAct extends Component{
     constructor(){
         super();

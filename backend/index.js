@@ -108,6 +108,7 @@ app.delete('/spr/delete', sprController.spr_delete);
 //app.get('/otdel/all', async(req,res) =>{ return otdelController.all2(req,res)} );
 app.get('/otdel/all', otdelController.all);
 app.get('/otdel/data', otdelController.otd_data);
+app.get('/otdel/all2', otdelController.all2);
 
 app.post('/otdel/moveEQ', otdelController.moveEQ);
 //--------------------------------

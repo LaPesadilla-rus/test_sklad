@@ -112,3 +112,90 @@ exports.moveEQ = function (data, cb) {
         cb(err, res); 
     });
 };
+
+exports.otd_data_otd1 = async() => {
+    var docs = [];
+    await pool.query('SELECT * FROM otd_spr')
+        .then(
+            (res) => {
+                docs = res;
+            }
+        )
+        .catch(function(err) {
+            console.log(err)
+        });
+    return Promise.resolve(docs.rows);
+}
+
+exports.otd_data_mol1 = async(val) => {
+    var docs;
+    //docs = await pool.query('SELECT')
+    await pool.query(`SELECT * FROM mol_spr WHERE mo_otd_id = `+val+``).then ((res) =>{
+        docs = res;
+    }).catch( function(err) {
+        console.log(err)
+    });
+    return Promise.resolve(docs.rows);
+};
+
+exports.otd_data_equip1 = async(mo_id, otd_id, reg) => {
+    var docs;
+    //docs = await pool.query('SELECT')
+    if (reg === 'main'){
+        await pool.query(`SELECT bl.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name
+                            FROM balance bl
+                            inner join equip_spr eq
+                            on eq.eq_id = bl_eq_id
+
+                            inner join marka_equip_spr ma
+                            on ma.ma_id = eq.eq_mark_id
+                            
+                            inner join type_equip_spr te
+                            on te.te_id = eq_type_id  
+                            WHERE bl_mol_id = `+mo_id+` AND bl_otd_id = `+otd_id+``).then ((res) =>{
+            docs = res;
+        }).catch( function(err) {
+            console.log(err)
+        });
+    }
+    if (reg === 'out'){
+        await pool.query(`SELECT bl.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name
+                            FROM balance bl
+                            inner join equip_spr eq
+                            on eq.eq_id = bl_eq_id
+
+                            inner join marka_equip_spr ma
+                            on ma.ma_id = eq.eq_mark_id
+                            
+                            inner join type_equip_spr te
+                            on te.te_id = eq_type_id 
+                            WHERE bl_mol_id = `+mo_id+` AND bl_otd_id <> `+otd_id+``).then ((res) =>{
+            docs = res;
+        }).catch( function(err) {
+            console.log(err)
+        });
+    }
+    if (reg === 'otd'){
+        await pool.query(` SELECT bl.*, mo.mo_otd_id, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name FROM balance bl
+
+                            inner join mol_spr mo
+                            on mo.mo_id = bl.bl_mol_id
+
+                            inner join equip_spr eq
+                            on eq.eq_id = bl_eq_id
+                
+                            inner join marka_equip_spr ma
+                            on ma.ma_id = eq.eq_mark_id
+                            
+                            inner join type_equip_spr te
+                            on te.te_id = eq_type_id
+                        
+                            WHERE bl.bl_otd_id = `+otd_id+` AND mo.mo_otd_id <> `+otd_id+`
+        `).then((res) =>{
+            docs = res;
+        }).catch( function(err) {
+            console.log(err)
+        });
+    }
+    return Promise.resolve(docs.rows);
+};

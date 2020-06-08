@@ -111,4 +111,30 @@ exports.moveEQ = function(req, res) {
     });
 };
 
+exports.all2 = async function(req, res) {
+    var data = [];
+    var mol_data;
+    var equip_data;
+    var otd_equip;
+    var out_equip;
+    var docs = {}; 
+    data = await Otdel.otd_data_otd1();
+    docs.otd_data = data;
+    var arr;
+    for (var i = 0; i < data.length; i++){
+        mol_data = await Otdel.otd_data_mol1(data[i].ot_id);
+        for (var n = 0; n < mol_data.length; n++){
+            equip_data = await Otdel.otd_data_equip1(mol_data[n].mo_id, data[i].ot_id, 'main');
+            out_equip = await Otdel.otd_data_equip1(mol_data[n].mo_id, data[i].ot_id, 'out');
+            mol_data[n].equip_data = equip_data;
+            mol_data[n].out_equip = out_equip;
+        }
+        otd_equip = await Otdel.otd_data_equip1('', data[i].ot_id, 'otd');
+        data[i].otd_equip = otd_equip;
+        data[i].mol_data = mol_data;
+    }
+
+    res.send(docs);
+};
+
 

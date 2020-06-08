@@ -52,7 +52,7 @@
 }
 
 .data-table__row{
-    background-color: #0f8076;
+    background-color: #0b7970;
     border-radius: 4px;
     
     text-shadow: 0 2px 1px rgba(0, 0, 0, 0.075);
@@ -142,18 +142,18 @@
 }
 
 .kat_osn {
-    background-color: #2a6b13;
+    background-color: #0c2474;
 }
 
 .kat_osn:hover {
-    background-color: #2e9409;
+    background-color: #1d41b8;
 }
 
 .kat_kartr{
-    background-color: #944511;
+    background-color: #330c72;
 }
 
 
 .kat_kartr:hover{
-    background-color: #bb520d;
+    background-color: #5622aa;
 }

@@ -24,24 +24,23 @@ export default class OtdelMain extends Component{
 
     componentDidMount = () => {
         this._isMounted = true;
-        axio.get('/otdel/all').then(res=>{
+        axio.get('/otdel/all2').then(res=>{
             if (this._isMounted){
+                //console.log(res.data.otd_data);
                 this.setState({
-                    otdel_data: res.data.otd,
-                    mol_data: res.data.mol,
-                    data: res.data.data,
+                    data: res.data
                 });
             }
             
         });
-        axio.get('/otdel/data').then(res=>{
+        /*axio.get('/otdel/data1').then(res=>{
             if (this._isMounted){
                 this.setState({
                     separ_data: res.data,
                 });
             }
             
-        });
+        });*/
     }
 
     componentWillUnmount() {
@@ -49,7 +48,7 @@ export default class OtdelMain extends Component{
     }
 
     onReboot = () => {
-        this.setState({
+        /*this.setState({
             otdel_data: [],
             mol_data: [],
             data: [],
@@ -72,26 +71,33 @@ export default class OtdelMain extends Component{
                 });
             }
             
-        });
+        });*/
     }
 
 
             
     Click = () => {
-        //console.log(this.state)
+        //console.log(this.state.data.otd_data.length)
+        this.state.data.otd_data.map(row => {console.log(row)})
         this.onReboot();
     }
     render() {
         return (
             <div className='otdel_base'>
                 <button onClick={this.Click}>asdsad</button>
-                {this.state.otdel_data.map(row => <OtdBlock key={this.nextUniqueId()} 
+                {/*this.state.otdel_data.map(row => <OtdBlock key={this.nextUniqueId()} 
                                                             otdel_data={this.state.otdel_data}
                                                             mol_data={this.state.mol_data}
                                                             data={this.state.data}
                                                             row={row}
                                                             separ_data={this.state.separ_data}
-                                                            onReboot={this.onReboot} />)}
+        onReboot={this.onReboot} />)*/}
+        {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock key={this.nextUniqueId()} 
+                                                                                                otdel_data={this.state.otdel_data}
+                                                                                                mol_data={this.state.mol_data}
+                                                                                                data={this.state.data}
+                                                                                                row={row}
+                                                                                                separ_data={this.state.separ_data}/>) : ''}
                 
             </div>
         );
