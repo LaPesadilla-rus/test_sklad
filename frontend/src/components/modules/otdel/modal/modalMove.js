@@ -16,22 +16,31 @@ export default class ModalMove extends Component{
 
     componentDidMount = () =>{
         var arr = [];
-        this.props.separ_data.otd.forEach(row => {
+        //console.log(this.props)
+        this.props.data.otd_data.map(row => {
             arr.push(row);
-        })
+            return 0;
+        });
         this.setState({
             otd_data: arr,
-        })
+        });
+        /*var data = {target: { value: this.props.row.bl_otd_id}}
+        this.changeOtdel(data);*/
     }
 
     changeOtdel = (e) => {
         this.setState({ otd_sel: e.target.value});
         var arr = [];
         var val = parseInt(e.target.value);
-        this.props.separ_data.mol.forEach(row => {
-            if (val === row.mo_otd_id)
-            arr.push(row);
-        });
+        this.props.data.otd_data.map(row => {
+            if (val === row.ot_id){
+                row.mol_data.map(id => {
+                    arr.push(id);
+                    return(0);
+                })
+            }
+            return (row);
+        })
         if (arr.length === 0) {
             this.setState({
                 mol_sel: '',
@@ -57,14 +66,19 @@ export default class ModalMove extends Component{
             if(mol_id.length === 0 || mol_id === '-1'){
                 mol_id = '';
                 data= {
-                    bl_id: this.props.bl_id,
+                    bl_id: this.props.row.bl_id,
                     otd_id: otd_id
                 }
             }else{
                 data= {
-                    bl_id: this.props.bl_id,
+                    bl_id: this.props.row.bl_id,
                     otd_id: otd_id,
                     mol_id: mol_id,
+                    prim: this.props.row.equip_name,
+                    old_otd: this.props.row.bl_otd_id,
+                    old_mol: this.props.row.bl_mol_id,
+                    user: 'Admin',
+                    eq_id: this.props.row.bl_eq_id,
                 }
             }
             axio.post('/otdel/moveEQ', {data}).then(res=>{
@@ -86,7 +100,7 @@ export default class ModalMove extends Component{
                 <div className="modal modal_pos">
                     <form onSubmit={this.equipMove} className="otdel_modal">
                         <p>Перемещение</p>
-                            <label>Старый отдел: {this.props.oldOtd}</label>
+                            <label>Старый отдел: {this.props.row.otd_name}</label>
                         <div className='combo_div'>
                             <label>Новый отдел: </label>
                             <select onChange={this.changeOtdel} value={this.state.otd_sel}>
@@ -96,7 +110,7 @@ export default class ModalMove extends Component{
                         </div>
                         <p>Для неофициального перемещения 
                             МОЛ не выбирается</p>
-                            <label>Старый мол: {this.props.row.mo_name}</label>
+                            <label>Старый мол: {this.props.row.mol_name}</label>
                         <div className='combo_div'>
                             <label>Новый МОЛ: </label>
                             <select onChange={(e) => {this.setState({ mol_sel: e.target.value})}} value={this.state.mol_sel}>

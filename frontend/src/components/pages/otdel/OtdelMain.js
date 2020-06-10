@@ -10,94 +10,42 @@ export default class OtdelMain extends Component{
     constructor() {
         super();
         UnicId.enableUniqueIds(this);
-        this._isMounted = false;
-        this.arr = {
-            otdel_data: [],
-        };
         this.state = {
-            otdel_data: [],
-            mol_data: [],
             data: [],
-            separ_data: [],
         };
     }
 
     componentDidMount = () => {
-        this._isMounted = true;
         axio.get('/otdel/all2').then(res=>{
-            if (this._isMounted){
-                //console.log(res.data.otd_data);
-                this.setState({
-                    data: res.data
-                });
-            }
-            
+            this.setState({
+                data: res.data
+            });
         });
-        /*axio.get('/otdel/data1').then(res=>{
-            if (this._isMounted){
-                this.setState({
-                    separ_data: res.data,
-                });
-            }
-            
-        });*/
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
     }
 
     onReboot = () => {
-        /*this.setState({
-            otdel_data: [],
-            mol_data: [],
-            data: [],
-            separ_data: [],
-        })
-        axio.get('/otdel/all').then(res=>{
-            if (this._isMounted){
-                this.setState({
-                    otdel_data: res.data.otd,
-                    mol_data: res.data.mol,
-                    data: res.data.data,
-                });
-            }
-            
+        axio.get('/otdel/all2').then(res=>{
+            this.setState({
+                data: res.data
+            });
         });
-        axio.get('/otdel/data').then(res=>{
-            if (this._isMounted){
-                this.setState({
-                    separ_data: res.data,
-                });
-            }
-            
-        });*/
     }
 
 
             
     Click = () => {
         //console.log(this.state.data.otd_data.length)
-        this.state.data.otd_data.map(row => {console.log(row)})
+        this.state.data.otd_data.map(row => {console.log(row); return 0;})
         this.onReboot();
     }
     render() {
         return (
             <div className='otdel_base'>
                 <button onClick={this.Click}>asdsad</button>
-                {/*this.state.otdel_data.map(row => <OtdBlock key={this.nextUniqueId()} 
-                                                            otdel_data={this.state.otdel_data}
-                                                            mol_data={this.state.mol_data}
-                                                            data={this.state.data}
-                                                            row={row}
-                                                            separ_data={this.state.separ_data}
-        onReboot={this.onReboot} />)*/}
         {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock key={this.nextUniqueId()} 
-                                                                                                otdel_data={this.state.otdel_data}
-                                                                                                mol_data={this.state.mol_data}
                                                                                                 data={this.state.data}
                                                                                                 row={row}
-                                                                                                separ_data={this.state.separ_data}/>) : ''}
+                                                                                                onReboot={this.onReboot}/>) : ''}
                 
             </div>
         );

@@ -111,6 +111,7 @@ app.get('/otdel/data', otdelController.otd_data);
 app.get('/otdel/all2', otdelController.all2);
 
 app.post('/otdel/moveEQ', otdelController.moveEQ);
+app.post('/otdel/spisat', otdelController.spisat);
 //--------------------------------
 
 app.get('/', function(req, res) {

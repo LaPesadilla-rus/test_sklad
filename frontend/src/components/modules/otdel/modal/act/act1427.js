@@ -5,7 +5,7 @@ import axio from 'axios';
 
 import Column from './column1423';
 
-export default class Act1423 extends Component{
+export default class Act1427 extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
@@ -37,6 +37,8 @@ export default class Act1423 extends Component{
     }
 
     onSubmith = () => {
+        //console.log(this.props);
+        //console.log(this.state)
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.osn_upload,
@@ -54,9 +56,7 @@ export default class Act1423 extends Component{
         axio.post('/otdel/spisat', {data},  { responseType: 'arraybuffer' }).then(res=>{
             FileDownload(res.data, '14-23.xlsx');
         });
-        this.props.onClose();
-        this.props.modalActClose();
-        this.props.onReboot();
+        //this.props.onClose();
     }
 
     changeOsn = (e) => {
@@ -103,7 +103,7 @@ export default class Act1423 extends Component{
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
                 <div className="act_main">
-                    <p>Акт 14-23 </p>
+                    <p>Акт 14-27 </p>
                     <div className='act_container'>
                         <div className='combo_div'>
                             <label>Материально-ответственное лицо: </label>
