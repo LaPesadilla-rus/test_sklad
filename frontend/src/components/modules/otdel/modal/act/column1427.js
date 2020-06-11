@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import './act.css';
 
-export default class Column extends Component{
+export default class Column1427 extends Component{
 
     render() {
         return (
             <React.Fragment>
                 <tr>
                     <td>{this.props.indx}</td>
-                    <td>{this.props.data.equip_text}</td>
-                    <td>{this.props.data.bl_inv_num}</td>
+                    <td>{this.props.data.te_name}</td>
                     <td>{this.props.data.un_name}</td>
                     <td>1</td>
                 </tr>

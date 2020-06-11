@@ -1,4 +1,5 @@
 const Otdel = require('../models/otdel.js');
+const Hyst = require('../models/hyst.js');
 
 exports.all = function(req, res) {
     var data = [];
@@ -114,6 +115,12 @@ exports.moveEQ = async function(req, res) {
             return res.sendStatus(500);
         }
     });
+    Hyst.Move(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
     res.send('MOVE COMPLITE');
 };
 
@@ -143,7 +150,7 @@ exports.all2 = async function(req, res) {
     res.send(docs);
 };
 
-exports.spisat = async function(req, res) {
+exports.spisat14_23 = async function(req, res) {
     let docNum;
     var data = req.body.data;
     await Otdel.spisatDocNum(req.body.data, function (err, docs) {
@@ -151,25 +158,24 @@ exports.spisat = async function(req, res) {
             console.log(err);
             return res.sendStatus(500);
         }
-        if (docs.rows[0].max == null){
+        if (docs.rows[0].max == false){
             docNum = docs.rows[0].max;
         }else{
             docNum = docs.rows[0].max + 1;
         }
         
     });
-    console.log(docNum)
     await Otdel.spisatInsert(docNum, req.body.data, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        if (docs.rows.max == null){
-            docNum = 1;
-        }else{
-            docNum = docs.rows.max;
+    });
+    await Hyst.spisatHystory(docNum, req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
         }
-        
     });
     const Excel = require('exceljs');
     let rows;
@@ -178,7 +184,6 @@ exports.spisat = async function(req, res) {
         left: {style:'thin'},
         bottom: {style:'thin'},
         right: {style:'thin'},
-        height: 25,
     };
     const top = {
         top: {style:'thin'},
@@ -186,10 +191,19 @@ exports.spisat = async function(req, res) {
     const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
     var workbook = new Excel.Workbook();
-    workbook.xlsx.readFile('./docs/14-23.xlsx').then(function(){
+    workbook.xlsx.readFile('./docs/14-23_mk3.xlsx').then(function(){
         var ws = workbook.getWorksheet(1);
+        var n = 20;
         ws.getCell(11,6).value = req.body.data.mol_name;
         ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
+
+        rows = ws.getRow(n);
+        rows.height = 38;
+        rows.commit();
+
+        ws.mergeCells(n,2,n,4);
+        ws.mergeCells(n,5,n,6);
+        ws.mergeCells(n,7,n,8);
 
         ws.getCell(20,1).value = '1';
         ws.getCell(20,2).value = data.osn_upload[0].equip_text;
@@ -197,11 +211,23 @@ exports.spisat = async function(req, res) {
         ws.getCell(20,7).value = data.osn_upload[0].un_name;
         ws.getCell(20,9).value = '1';
 
-        var n = 25,
+        ws.getCell(20,1).border = border;
+        ws.getCell(20,2).border = border;
+        ws.getCell(20,5).border = border;
+        ws.getCell(20,7).border = border;
+        ws.getCell(20,9).border = border;
+
+        ws.getCell(20,1).alignment = alligment;
+        ws.getCell(20,2).alignment = alligment;
+        ws.getCell(20,5).alignment = alligment;
+        ws.getCell(20,7).alignment = alligment;
+        ws.getCell(20,9).alignment = alligment;
+
+        n = 25,
         i = 1;
         data.dop_upload.forEach(row => {
             rows = ws.getRow(n);
-            rows.height = 40;
+            rows.height = 38;
             rows.commit();
             ws.mergeCells(n,2,n,4);
             ws.mergeCells(n,5,n,6);
@@ -225,7 +251,6 @@ exports.spisat = async function(req, res) {
             ws.getCell(n,7).alignment = alligment;
             ws.getCell(n,9).alignment = alligment;
 
-            
             n ++;
             i++;
         });
@@ -235,30 +260,20 @@ exports.spisat = async function(req, res) {
 
         n = n + 2;
         for(var a = 0; a < 4; a++){
-            if (n === 38){
-                n++;
-            }
-            if (n === 37){
-                n++;
-            }
             ws.mergeCells(n,2,n,3);
             ws.mergeCells(n,7,n,8);
             ws.getCell(n,2).value = "____________";
             ws.getCell(n,7).value = "____________";
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
             n++;
             ws.mergeCells(n,2,n,3);
             ws.mergeCells(n,7,n,8);
             ws.getCell(n,2).value = "(подпись)";
             ws.getCell(n,7).value = "(ФИО)";
 
-            ws.getCell(n,1).alignment = alligment;
             ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,5).alignment = alligment;
             ws.getCell(n,7).alignment = alligment;
-            ws.getCell(n,9).alignment = alligment;
-
-            //ws.getCell(n,2).border = top;
-            //ws.getCell(n,7).border = top; //БАГАЕТ!!!!
             n++;
         }
         
@@ -272,4 +287,385 @@ exports.spisat = async function(req, res) {
     //res.send('Complite');
 }
 
+exports.spisat14_27 = async function(req, res) {
+    let docNum;
+    var data = req.body.data;
+    await Otdel.spisatDocNum(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows[0].max + ' max')
+        if (docs.rows[0].max == false){
+            docNum = docs.rows[0].max;
+        }else{
+            docNum = docs.rows[0].max + 1;
+        }
+        
+    });
+    await Otdel.spisatInsert(docNum, req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+    await Hyst.spisatHystory(docNum, req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+    const Excel = require('exceljs');
+    let rows;
+    const border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'},
+    };
+    const top = {
+        top: {style:'thin'},
+    }
+    const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+
+    var workbook = new Excel.Workbook();
+    workbook.xlsx.readFile('./docs/14-27.xlsx').then(function(){
+        var ws = workbook.getWorksheet(1);
+        var n = 20;
+        ws.getCell(11,6).value = req.body.data.mol_name;
+        ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
+
+        rows = ws.getRow(n);
+        rows.height = 38;
+        rows.commit();
+
+        ws.mergeCells(n,2,n,4);
+        ws.mergeCells(n,5,n,6);
+        ws.mergeCells(n,7,n,8);
+
+        ws.getCell(20,1).value = '1';
+        ws.getCell(20,2).value = data.osn_upload[0].equip_text;
+        ws.getCell(20,5).value = data.osn_upload[0].bl_inv_num;
+        ws.getCell(20,7).value = data.osn_upload[0].un_name;
+        ws.getCell(20,9).value = '1';
+
+        ws.getCell(20,1).border = border;
+        ws.getCell(20,2).border = border;
+        ws.getCell(20,5).border = border;
+        ws.getCell(20,7).border = border;
+        ws.getCell(20,9).border = border;
+
+        ws.getCell(20,1).alignment = alligment;
+        ws.getCell(20,2).alignment = alligment;
+        ws.getCell(20,5).alignment = alligment;
+        ws.getCell(20,7).alignment = alligment;
+        ws.getCell(20,9).alignment = alligment;
+
+        n = 25,
+        i = 1;
+        data.dop_upload.forEach(row => {
+            rows = ws.getRow(n);
+            rows.height = 38;
+            rows.commit();
+            ws.mergeCells(n,2,n,6);
+            ws.mergeCells(n,7,n,8);
+
+            ws.getCell(n,1).value = i;
+            ws.getCell(n,2).value = row.te_name;
+            ws.getCell(n,7).value = row.un_name;
+            ws.getCell(n,9).value = '1';
+
+            ws.getCell(n,1).border = border;
+            ws.getCell(n,2).border = border;
+            ws.getCell(n,7).border = border;
+            ws.getCell(n,9).border = border;
+
+            ws.getCell(n,1).alignment = alligment;
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            ws.getCell(n,9).alignment = alligment;
+
+            n ++;
+            i++;
+        });
+        n = n + 2;
+        ws.mergeCells(n,1,n,9);
+        ws.getCell(n,1).value = 'на следующую материальную ценность: ';
+        n++;
+
+        rows = ws.getRow(n);
+        rows.height = 38;
+        rows.commit();
+        ws.mergeCells(n,2,n,4);
+        ws.mergeCells(n,5,n,6);
+        ws.mergeCells(n,7,n,8);
+
+        ws.getCell(n,1).value = '№ п/п';
+        ws.getCell(n,2).value = 'Наименование МЦ';
+        ws.getCell(n,5).value = "Инвентарный номер";
+        ws.getCell(n,7).value = "Единицы измерения";
+        ws.getCell(n,9).value = "Количество";
+
+        ws.getCell(n,1).border = border;
+        ws.getCell(n,2).border = border;
+        ws.getCell(n,5).border = border;
+        ws.getCell(n,7).border = border;
+        ws.getCell(n,9).border = border;
+
+        ws.getCell(n,1).alignment = alligment;
+        ws.getCell(n,2).alignment = alligment;
+        ws.getCell(n,5).alignment = alligment;
+        ws.getCell(n,7).alignment = alligment;
+        ws.getCell(n,9).alignment = alligment;
+        n++;
+        i = 1;
+        //--
+        data.dop_upload.forEach(row => {
+            rows = ws.getRow(n);
+            rows.height = 38;
+            rows.commit();
+            ws.mergeCells(n,2,n,4);
+            ws.mergeCells(n,5,n,6);
+            ws.mergeCells(n,7,n,8);
+
+            ws.getCell(n,1).value = i;
+            ws.getCell(n,2).value =row.equip_text;
+            ws.getCell(n,5).value = row.bl_inv_num;
+            ws.getCell(n,7).value = row.un_name;
+            ws.getCell(n,9).value = '1';
+
+            ws.getCell(n,1).border = border;
+            ws.getCell(n,2).border = border;
+            ws.getCell(n,5).border = border;
+            ws.getCell(n,7).border = border;
+            ws.getCell(n,9).border = border;
+
+            ws.getCell(n,1).alignment = alligment;
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,5).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            ws.getCell(n,9).alignment = alligment;
+
+            n ++;
+            i++;
+        });
+        n = n +2;
+        ws.mergeCells(n,1,n,9);
+        ws.getCell(n,1).value = 'ФИО и подписи, ответственных за установку материальной ценности:';
+
+        n = n + 2;
+        for(var a = 0; a < 4; a++){
+            ws.mergeCells(n,2,n,3);
+            ws.mergeCells(n,7,n,8);
+            ws.getCell(n,2).value = "____________";
+            ws.getCell(n,7).value = "____________";
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            n++;
+            ws.mergeCells(n,2,n,3);
+            ws.mergeCells(n,7,n,8);
+            ws.getCell(n,2).value = "(подпись)";
+            ws.getCell(n,7).value = "(ФИО)";
+
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            n++;
+        }
+        
+        workbook.xlsx.writeFile('./docs/test20.xlsx').then(function(){
+            res.download('./docs/test20.xlsx');
+        });
+    });
+}
+
+exports.spisat14_29 = async function(req, res) {
+    let docNum;
+    var data = req.body.data;
+    await Otdel.spisatDocNum(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows[0].max + ' max')
+        if (docs.rows[0].max == false){
+            docNum = docs.rows[0].max;
+        }else{
+            docNum = docs.rows[0].max + 1;
+        }
+        
+    });
+    await Otdel.spisatInsert(docNum, req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+    await Hyst.spisatHystory(docNum, req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+    const Excel = require('exceljs');
+    let rows;
+    const border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'},
+    };
+    const top = {
+        top: {style:'thin'},
+    }
+    const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+
+    var workbook = new Excel.Workbook();
+    workbook.xlsx.readFile('./docs/14-29.xlsx').then(function(){
+        var ws = workbook.getWorksheet(1);
+        var n = 20;
+        ws.getCell(11,6).value = req.body.data.mol_name;
+        ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
+
+        rows = ws.getRow(n);
+        rows.height = 38;
+        rows.commit();
+
+        ws.mergeCells(n,2,n,4);
+        ws.mergeCells(n,5,n,6);
+        ws.mergeCells(n,7,n,8);
+
+        ws.getCell(20,1).value = '1';
+        ws.getCell(20,2).value = data.osn_upload[0].equip_text;
+        ws.getCell(20,5).value = data.osn_upload[0].bl_inv_num;
+        ws.getCell(20,7).value = data.osn_upload[0].un_name;
+        ws.getCell(20,9).value = '1';
+
+        ws.getCell(20,1).border = border;
+        ws.getCell(20,2).border = border;
+        ws.getCell(20,5).border = border;
+        ws.getCell(20,7).border = border;
+        ws.getCell(20,9).border = border;
+
+        ws.getCell(20,1).alignment = alligment;
+        ws.getCell(20,2).alignment = alligment;
+        ws.getCell(20,5).alignment = alligment;
+        ws.getCell(20,7).alignment = alligment;
+        ws.getCell(20,9).alignment = alligment;
+
+        n = 25,
+        i = 1;
+        data.dop_upload.forEach(row => {
+            rows = ws.getRow(n);
+            rows.height = 38;
+            rows.commit();
+            ws.mergeCells(n,2,n,6);
+            ws.mergeCells(n,7,n,8);
+
+            ws.getCell(n,1).value = i;
+            ws.getCell(n,2).value = row.te_name;
+            ws.getCell(n,7).value = row.un_name;
+            ws.getCell(n,9).value = '1';
+
+            ws.getCell(n,1).border = border;
+            ws.getCell(n,2).border = border;
+            ws.getCell(n,7).border = border;
+            ws.getCell(n,9).border = border;
+
+            ws.getCell(n,1).alignment = alligment;
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            ws.getCell(n,9).alignment = alligment;
+
+            n ++;
+            i++;
+        });
+        n = n + 2;
+        ws.mergeCells(n,1,n,9);
+        ws.getCell(n,1).value = 'на следующий элемент: ';
+        n++;
+
+        rows = ws.getRow(n);
+        rows.height = 38;
+        rows.commit();
+        ws.mergeCells(n,2,n,4);
+        ws.mergeCells(n,5,n,6);
+        ws.mergeCells(n,7,n,8);
+
+        ws.getCell(n,1).value = '№ п/п';
+        ws.getCell(n,2).value = 'Наименование МЦ';
+        ws.getCell(n,5).value = "Инвентарный номер";
+        ws.getCell(n,7).value = "Единицы измерения";
+        ws.getCell(n,9).value = "Количество";
+
+        ws.getCell(n,1).border = border;
+        ws.getCell(n,2).border = border;
+        ws.getCell(n,5).border = border;
+        ws.getCell(n,7).border = border;
+        ws.getCell(n,9).border = border;
+
+        ws.getCell(n,1).alignment = alligment;
+        ws.getCell(n,2).alignment = alligment;
+        ws.getCell(n,5).alignment = alligment;
+        ws.getCell(n,7).alignment = alligment;
+        ws.getCell(n,9).alignment = alligment;
+        n++;
+        i = 1;
+        //--
+        data.dop_upload.forEach(row => {
+            rows = ws.getRow(n);
+            rows.height = 38;
+            rows.commit();
+            ws.mergeCells(n,2,n,4);
+            ws.mergeCells(n,5,n,6);
+            ws.mergeCells(n,7,n,8);
+
+            ws.getCell(n,1).value = i;
+            ws.getCell(n,2).value =row.equip_text;
+            ws.getCell(n,5).value = row.bl_inv_num;
+            ws.getCell(n,7).value = row.un_name;
+            ws.getCell(n,9).value = '1';
+
+            ws.getCell(n,1).border = border;
+            ws.getCell(n,2).border = border;
+            ws.getCell(n,5).border = border;
+            ws.getCell(n,7).border = border;
+            ws.getCell(n,9).border = border;
+
+            ws.getCell(n,1).alignment = alligment;
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,5).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            ws.getCell(n,9).alignment = alligment;
+
+            n ++;
+            i++;
+        });
+        n = n +2;
+        ws.mergeCells(n,1,n,9);
+        ws.getCell(n,1).value = 'ФИО и подписи, ответственных за установку материальной ценности:';
+
+        n = n + 2;
+        for(var a = 0; a < 4; a++){
+            ws.mergeCells(n,2,n,3);
+            ws.mergeCells(n,7,n,8);
+            ws.getCell(n,2).value = "____________";
+            ws.getCell(n,7).value = "____________";
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            n++;
+            ws.mergeCells(n,2,n,3);
+            ws.mergeCells(n,7,n,8);
+            ws.getCell(n,2).value = "(подпись)";
+            ws.getCell(n,7).value = "(ФИО)";
+
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            n++;
+        }
+        
+        workbook.xlsx.writeFile('./docs/test30.xlsx').then(function(){
+            res.download('./docs/test30.xlsx');
+        });
+    });
+}
 

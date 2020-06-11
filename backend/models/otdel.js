@@ -159,7 +159,7 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg) => {
     var docs;
     //docs = await pool.query('SELECT')
     var sql = `SELECT bl.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name || ' Инв. ном.: ' || bl_inv_num) as equip_name, mo_name as mol_name, ot_name as otd_name,
-                un.un_name, eq.eq_kat_id, mo.mo_otd_id, ot_name, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name ) as equip_text
+                un.un_name, eq.eq_kat_id, mo.mo_otd_id, ot_name, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name ) as equip_text, te_name
                 FROM balance bl
 
                 inner join mol_spr mo
@@ -212,6 +212,7 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg) => {
 };
 
 exports.spisatDocNum = async function (data, cb) {
+    //console.log(data.act_id + ' act')
     var sql = `SELECT MAX(lb_act_num) FROM logbook WHERE lb_act_id = `+data.act_id+` `
     await pool.query(sql).then (
         (res) => {

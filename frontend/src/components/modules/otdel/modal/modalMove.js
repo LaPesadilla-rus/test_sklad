@@ -79,6 +79,7 @@ export default class ModalMove extends Component{
                     old_mol: this.props.row.bl_mol_id,
                     user: 'Admin',
                     eq_id: this.props.row.bl_eq_id,
+                    row: this.props.row,
                 }
             }
             axio.post('/otdel/moveEQ', {data}).then(res=>{

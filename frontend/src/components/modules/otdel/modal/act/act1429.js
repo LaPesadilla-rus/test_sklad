@@ -4,8 +4,9 @@ import './act.css';
 import axio from 'axios';
 
 import Column from './column1423';
+import Column1427 from './column1427';
 
-export default class Act1423 extends Component{
+export default class Act1429 extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
@@ -37,27 +38,26 @@ export default class Act1423 extends Component{
     }
 
     onSubmith = () => {
-        //console.log(this.props)
+        //console.log(this.props);
+        //console.log(this.state)
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.osn_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
-            act_id: 1,
+            act_id: 4,
             prim: '',
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
-        //console.log(data)
+        console.log(data)
         const FileDownload = require('js-file-download');
         
-        axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-23.xlsx');
+        axio.post('/otdel/spisat14_29', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            FileDownload(res.data, '14-29.xlsx');
         });
-        this.props.onClose();
-        this.props.modalActClose();
-        this.props.onReboot();
+        //this.props.onClose();
     }
 
     changeOsn = (e) => {
@@ -104,7 +104,7 @@ export default class Act1423 extends Component{
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
                 <div className="act_main">
-                    <p>Акт 14-23 </p>
+                    <p>Акт 14-29 </p>
                     <div className='act_container'>
                         <div className='combo_div'>
                             <label>Материально-ответственное лицо: </label>
@@ -130,7 +130,7 @@ export default class Act1423 extends Component{
                             <label className='act_container_text'>{this.props.row.mol_name}</label>
                         </div>
                         <div className='act_line_div'>
-                            <label>подтверждаем, что в следующем основном средстве: </label>
+                            <label>подтверждаем, что при ремонте основного средства: </label>
                             <select onChange={this.changeOsn} value={this.state.osn_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.osn_equip.map( id => <option key={id.bl_id} value={id.bl_id}>{id.equip_name}</option>)}
@@ -158,8 +158,26 @@ export default class Act1423 extends Component{
                                 </tbody>
                             </table>
                         </div>
+                        <div className='combo_div'>
+                            <label>была произведена замена вышедшего из строя элемента: </label>
+                        </div>
+                        <div className='combo_div'>
+                            <table className='act_table'>
+                                <thead>
+                                    <tr>
+                                        <th>№ п/п</th>
+                                        <th>Наименование запчасти ОС</th>
+                                        <th>Единица измерения</th>
+                                        <th>Количество</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    { this.state.dop_upload.map(row => <Column1427 key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                </tbody>
+                            </table>
+                        </div>
                         <div className='act_line_div'>
-                            <label>были установлены следующие материальные ценности: </label>
+                            <label>на следующий элемент: </label>
                             <select onChange={this.changeDop} value={this.state.dop_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
@@ -167,7 +185,7 @@ export default class Act1423 extends Component{
                             <button className='button'>Добавить</button>
                         </div>
                         <div className='combo_div'>
-                            <table className='act_table'>
+                            <table className='act_table'> 
                                 <thead>
                                     <tr>
                                         <th>№ п/п</th>

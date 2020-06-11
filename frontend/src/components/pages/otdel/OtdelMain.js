@@ -41,7 +41,7 @@ export default class OtdelMain extends Component{
     render() {
         return (
             <div className='otdel_base'>
-                <button onClick={this.Click}>asdsad</button>
+                
         {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock key={this.nextUniqueId()} 
                                                                                                 data={this.state.data}
                                                                                                 row={row}
@@ -51,4 +51,7 @@ export default class OtdelMain extends Component{
         );
     }
 }
+/**
+ * <button onClick={this.Click}>asdsad</button>
+ */
 

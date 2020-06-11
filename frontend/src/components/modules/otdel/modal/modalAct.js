@@ -16,7 +16,7 @@ export default class ModalAct extends Component{
                             <button className='button' onClick={this.clickAct} value='1'>Акт 14-23</button>
                             <button className='button'>Акт 14-25</button>
                             <button className='button' onClick={this.clickAct} value='3'>Акт 14-27</button>
-                            <button className='button'>Акт 14-29</button>
+                            <button className='button' onClick={this.clickAct} value='4'>Акт 14-29</button>
                             <button className='button'>Акт 14-31</button>
                             <button className='button'>Акт 14-33</button>
                         </div>;

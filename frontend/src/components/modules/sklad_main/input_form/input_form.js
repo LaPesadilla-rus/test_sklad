@@ -418,39 +418,38 @@ export default class Input_form extends Component {
                     </table>
                     <table className='input_form__table input_form__table_pos'>
                         <tbody>
-                        <tr>
-                            <td className='cell_name' ><p>Поиск оборудования</p></td>
-                            <td ><Autocomplite modelText={this.state.equip_name} items_arr={this.state.full_name} setText={this.setText}/></td>
-                        </tr>
-                        <tr>
-                            <td><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></td>
-                            <td><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></td>
-                        </tr>
-                        <tr>
-                            <td className='cell_name'><p>Инвентарный номер</p></td>
-                            <td><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></td>
-                        </tr>
-                        <tr>
-                            <td className='cell_name'><p>Ед. измерения</p></td>
-                            <td><select id="elem_type" name='e_type' onChange={(e) => { console.log(e.target.text); this.setState({units: e.target.value})}} value={this.state.units}>
-                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
-                            </select></td>
-                        </tr>
-                        <tr>
-                            <td className='cell_name'><p>Количество</p></td>
-                            <td><input name='kol' type='number' onChange={this.ChangeKol} value={this.state.kol}></input></td>
-                        </tr>
-                        <tr>
-                            <td className='cell_name'><p>Примечание</p></td>
-                            <td><textarea name='prim' onChange={this.ChangePrim} value={this.state.prim}></textarea></td>
-                        </tr>
-                        {id_item ? <tr>
-                            <td className='cell_name'><p>МОЛ</p></td>
-                            <td><select onChange={(e) => { console.log(e.target.text); this.setState({mol: e.target.value})}} value={this.state.mol}>
-                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
-                            </select></td>
-                        </tr> : ''}
-                        
+                            <tr>
+                                <td className='cell_name' ><p>Поиск оборудования</p></td>
+                                <td ><Autocomplite modelText={this.state.equip_name} items_arr={this.state.full_name} setText={this.setText}/></td>
+                            </tr>
+                            <tr>
+                                <td><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></td>
+                                <td><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></td>
+                            </tr>
+                            <tr>
+                                <td className='cell_name'><p>Инвентарный номер</p></td>
+                                <td><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></td>
+                            </tr>
+                            <tr>
+                                <td className='cell_name'><p>Ед. измерения</p></td>
+                                <td><select id="elem_type" name='e_type' onChange={(e) => { console.log(e.target.text); this.setState({units: e.target.value})}} value={this.state.units}>
+                                    {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <td className='cell_name'><p>Количество</p></td>
+                                <td><input name='kol' type='number' onChange={this.ChangeKol} value={this.state.kol}></input></td>
+                            </tr>
+                            <tr>
+                                <td className='cell_name'><p>Примечание</p></td>
+                                <td><textarea name='prim' onChange={this.ChangePrim} value={this.state.prim}></textarea></td>
+                            </tr>
+                            {id_item && <tr>
+                                            <td className='cell_name'><p>МОЛ</p></td>
+                                            <td><select onChange={(e) => { console.log(e.target.text); this.setState({mol: e.target.value})}} value={this.state.mol}>
+                                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
+                                            </select></td>
+                                        </tr> }
                         </tbody>
                     </table>
                     {id_item ? redactItem : newItem}

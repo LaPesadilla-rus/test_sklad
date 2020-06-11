@@ -43,3 +43,7 @@
 .otdel_grow{
     flex-grow: 2;
 }
+
+.act_disable_button{
+    width: 80%;
+}

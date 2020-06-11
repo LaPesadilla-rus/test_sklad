@@ -5,3 +5,24 @@
 .act_container_text{
     margin-left: 10px;
 }
+
+.act_table {
+    width: 100%;
+    border: 1px solid black;
+}
+
+.act_table thead {
+    background-color: #818181;
+}
+
+.act_table td {
+    border: 1px solid black;
+}
+
+.act_line_div{
+    display: flex;
+    align-items: center;
+}
+.act_line_div select {
+    width: 250px;
+}

@@ -9,6 +9,7 @@ import ModalAct from './modal/modalAct';
 
 import Act1423 from './modal/act/act1423';
 import Act1427 from './modal/act/act1427';
+import Act1429 from './modal/act/act1429';
 
 
 export default class OtdBlock extends Component{
@@ -20,6 +21,7 @@ export default class OtdBlock extends Component{
             isModalActOpen: false,
             isAct1423Open: false,
             isAct1427Open: false,
+            isAct1429Open: false,
             selEquip: [],
             act_data: [],
             osn_equip: [],
@@ -43,7 +45,11 @@ export default class OtdBlock extends Component{
     changeAct1427 = () =>{
         this.setState(state => ({ isAct1427Open: !state.isAct1427Open}));
         this.sortDopOsn();
+    }
 
+    changeAct1429 = () =>{
+        this.setState(state => ({ isAct1429Open: !state.isAct1429Open}));
+        this.sortDopOsn();
     }
 
     changeAct1423 = () => {
@@ -118,6 +124,9 @@ export default class OtdBlock extends Component{
         if (reg === '3'){
             this.changeAct1427();
         }
+        if (reg === '4'){
+            this.changeAct1429();
+        }
     }
             
     render() {
@@ -176,6 +185,17 @@ export default class OtdBlock extends Component{
                 {this.state.isAct1427Open &&
                     <Act1427 key={this.nextUniqueId()}
                                 onClose={this.changeAct1427}
+                                modalActClose={this.changeModalAct}
+                                onReboot={this.props.onReboot}
+                                row={this.state.act_data}
+                                actUser='Admin'
+                                data={this.props.row}
+                                osn_equip={this.state.osn_equip}
+                                dop_equip={this.state.dop_equip} />
+                }
+                {this.state.isAct1429Open &&
+                    <Act1429 key={this.nextUniqueId()}
+                                onClose={this.changeAct1429}
                                 modalActClose={this.changeModalAct}
                                 onReboot={this.props.onReboot}
                                 row={this.state.act_data}
