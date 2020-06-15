@@ -78,6 +78,7 @@ app.get('/sklad/kat', skladController.kat2);
 app.post('/sklad/download', skladController.sklad_download);
 
 app.post('/sklad/new/save', skladController.sklad_save);
+app.post('/sklad/new/update', skladController.sklad_update);
 app.post('/sklad/new/type', skladController.type_post);
 app.post('/sklad/out', skladController.sklad_out);
 
@@ -109,6 +110,7 @@ app.delete('/spr/delete', sprController.spr_delete);
 app.get('/otdel/all', otdelController.all);
 app.get('/otdel/data', otdelController.otd_data);
 app.get('/otdel/all2', otdelController.all2);
+//app.get('/otdel/filter', otdelController.filter);
 
 app.post('/otdel/moveEQ', otdelController.moveEQ);
 app.post('/otdel/spisat14_23', otdelController.spisat14_23);

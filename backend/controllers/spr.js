@@ -54,7 +54,7 @@ exports.spr_delete = function(req, res) {
     Spr.spr_delete(req, function(err,docs){
         if (err) {
             console.log(err);
-            return res.sendStatus(500);
+            res.send(err);
         }
         res.send(docs);
     })

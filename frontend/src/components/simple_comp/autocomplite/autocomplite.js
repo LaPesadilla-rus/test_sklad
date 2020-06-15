@@ -50,7 +50,7 @@ export default class Autocomplite extends Component {
             const regex = new RegExp(`${value}`, 'i');
             suggestions = this.props.items_arr.sort().filter(v => regex.test(v));
         }
-        this.setState({suggestions: suggestions});
+        this.setState({suggestions: suggestions, txt: e.target.value});
         this.searchWord(e.target.value);
     }
 
@@ -93,6 +93,9 @@ export default class Autocomplite extends Component {
 
     componentDidMount() {
         document.addEventListener('click', this.handleClickOutside, false);  
+        this.setState({
+            txt: this.props.modelText
+        })
     }
 
     handleClickOutside =(e) => {
@@ -123,7 +126,7 @@ export default class Autocomplite extends Component {
                  <div className='autocomplite_column'>
                     <input onClick={this.renderZeroSuggestions} ref={(input) => { this.nameInput = input; }} 
                         className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  
-                        type='text' onChange={this.setModelText} value={this.props.modelText} >
+                        type='text' onChange={this.setModelText} value={this.state.txt} >
                     </input></div>
                  <div className='autocomplite_column'>{this.renderSuggestions()}{window}</div>
             </div>

@@ -126,6 +126,22 @@ exports.sklad_save = function(req,cb) {
     });
 }
 
+exports.sklad_update = function(req,cb) {
+    //console.log(req.body.data)
+    if(!req.body.data) return res.sendStatus(400);
+    var sql = `UPDATE public.storage 
+                SET st_pr_id = `+req.body.data.provider_id+`, st_un_id=`+req.body.data.units_id+`, st_inv_num='`+req.body.data.inv_num+`', st_amount=`+req.body.data.kol+`,
+                st_contr_date='`+req.body.data.date+`', st_contr_num='`+req.body.data.dogvr_num+`', st_upd_usr='`+req.body.data.user+`'
+                WHERE st_id=`+req.body.data.st_id+`
+                `
+    //console.log(sql)
+    pool.query(sql
+    , (err,res)=>{
+        cb(err,'POST COMPLITE');
+    });
+    
+}
+
 exports.sklad_out = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
     var sql = '';

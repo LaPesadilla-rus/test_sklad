@@ -40,13 +40,18 @@ export default class OtdelMain extends Component{
     }
     render() {
         return (
-            <div className='otdel_base'>
-                
-        {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock key={this.nextUniqueId()} 
+            <div className='otdel_base'>   
+            <div className='otdel_main'>
+                <select>otd</select>
+                <select>mol</select>
+                <input></input>
+                <button className='button'>Применить фильтр</button>
+                <button className='button'>Сбросить фильтр</button>
+            </div>
+                {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock key={this.nextUniqueId()} 
                                                                                                 data={this.state.data}
                                                                                                 row={row}
-                                                                                                onReboot={this.onReboot}/>) : ''}
-                
+                                                                                                onReboot={this.onReboot}/>) : ''}  
             </div>
         );
     }

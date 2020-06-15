@@ -52,7 +52,7 @@
 }
 
 .data-table__row{
-    background-color: #0b7970;
+    background-color: #76b884;
     border-radius: 4px;
     
     text-shadow: 0 2px 1px rgba(0, 0, 0, 0.075);
@@ -62,7 +62,10 @@
     
     text-decoration: none;
    
-    color: white;
+    color: black;
+    font-size: 17px;
+    /*font-weight: 700;*/
+    font-family: 'Times New Roman', Times, serif; 
     text-align: left;
 
     border-collapse: collapse;
@@ -77,7 +80,7 @@
 }
 
 .data-table__row_pos:hover {
-    background-color: #12a599;
+    background-color: #41724c;
     box-shadow: 0 0 10px rgb(10, 103, 165);
     transition: all 1s;
 }
@@ -124,6 +127,7 @@
 .cell_3 {
     width: 600px;
     /*min-width: 300px;*/
+    text-align: left;
 }
 
 .cell_4 {
@@ -139,21 +143,22 @@
 .cell_6 {
     width: 30%;
     min-width: 300px;
+    text-align: left;
 }
 
 .kat_osn {
-    background-color: #0c2474;
+    background-color: #d88585;
 }
 
 .kat_osn:hover {
-    background-color: #1d41b8;
+    background-color: #af5353;
 }
 
 .kat_kartr{
-    background-color: #330c72;
+    background-color: #89b9c5;
 }
 
 
 .kat_kartr:hover{
-    background-color: #5622aa;
+    background-color: #53757e;
 }

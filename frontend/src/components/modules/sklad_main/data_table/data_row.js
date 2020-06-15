@@ -25,27 +25,28 @@ export default class DataRow extends Component{
     }
 
     editEquip = () =>{
-        console.log('edit' + this.props.id)
-        this.props.changeEdit(this.props.id);
+        //console.log('edit' + this.props.id)
+        this.props.changeEdit(this.props.row);
     }
 
     render() {
+        //console.log(this.props.row)
         var color_sreds= false;
         var color_kart = false
-        if (this.props.kat === 'Основные средства'){
+        if (this.props.row.kat_name === 'Основные средства'){
             color_sreds = true;
         }
-        if (this.props.kat === 'Картриджи'){
+        if (this.props.row.kat_name === 'Картриджи'){
             color_kart = true;
         }
         return (
                 <tr onClick={this.editEquip} className= {'data-table__row data-table__row_pos '+(color_sreds ? 'kat_osn' : '') + (color_kart ? 'kat_kartr' : '' )}>
-                    <td className='data-table__cell data-table__cell_pos cell_1 '>{this.props.kat}</td> 
-                    <td className='data-table__cell data-table__cell_pos cell_2'>{this.props.kod}</td> 
-                    <td className='data-table__cell data-table__cell_pos cell_3'>{this.props.name}</td>
-                    <td className='data-table__cell data-table__cell_pos cell_4'>{this.props.units}</td>
-                    <td className='data-table__cell data-table__cell_pos cell_5'>{this.props.kol}</td>
-                    <td className='data-table__cell data-table__cell_pos cell_6'>{this.props.prim}</td>
+                    <td className='data-table__cell data-table__cell_pos cell_1 '>{this.props.row.kat_name}</td> 
+                    <td className='data-table__cell data-table__cell_pos cell_2'>{this.props.row.st_inv_num}</td> 
+                    <td className='data-table__cell data-table__cell_pos cell_3'>{this.props.row.te_name + ' ' + this.props.row.eq_name}</td>
+                    <td className='data-table__cell data-table__cell_pos cell_4'>{this.props.row.un_name}</td>
+                    <td className='data-table__cell data-table__cell_pos cell_5'>{this.props.row.st_amount}</td>
+                    <td className='data-table__cell data-table__cell_pos cell_6'>{this.props.row.st_prim}</td>
                 </tr>
                 
         );

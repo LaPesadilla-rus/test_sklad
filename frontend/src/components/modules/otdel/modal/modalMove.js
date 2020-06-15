@@ -101,8 +101,8 @@ export default class ModalMove extends Component{
                 <div className="modal modal_pos">
                     <form onSubmit={this.equipMove} className="otdel_modal">
                         <p>Перемещение</p>
-                            <label>Старый отдел: {this.props.row.otd_name}</label>
-                        <div className='combo_div'>
+                        <label>Старый отдел: {this.props.row.otd_name}</label>
+                        <div className='modal_move_div'>
                             <label>Новый отдел: </label>
                             <select onChange={this.changeOtdel} value={this.state.otd_sel}>
                                 <option placeholder='----' value='-1'></option>
@@ -111,8 +111,8 @@ export default class ModalMove extends Component{
                         </div>
                         <p>Для неофициального перемещения 
                             МОЛ не выбирается</p>
-                            <label>Старый мол: {this.props.row.mol_name}</label>
-                        <div className='combo_div'>
+                        <label>Старый мол: {this.props.row.mol_name}</label>
+                        <div className='modal_move_div'>
                             <label>Новый МОЛ: </label>
                             <select onChange={(e) => {this.setState({ mol_sel: e.target.value})}} value={this.state.mol_sel}>
                                 <option placeholder='----' value='-1'></option>

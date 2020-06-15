@@ -150,6 +150,19 @@ exports.all2 = async function(req, res) {
     res.send(docs);
 };
 
+exports.filter1 = async function(req, res) {
+    var data = [];
+    var docs = {}; 
+
+    data = await Otdel.otd_data_otd1();
+    docs.otd_data = data;
+    data = await Otdel.otd_data_mol_all(data[i].ot_id);
+    docs.mol_data = data;
+    data = await Otdel.otd_data_equip_all(data[i].ot_id);
+    docs.equip_data = data;
+    res.send(docs);
+};
+
 exports.spisat14_23 = async function(req, res) {
     let docNum;
     var data = req.body.data;

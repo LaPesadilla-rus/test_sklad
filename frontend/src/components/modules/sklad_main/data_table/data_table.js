@@ -10,7 +10,7 @@ export default class Data extends Component{
     constructor() {
         super();
         this.table = {
-            id: '',
+            row: [],
         }
         this.state = {
             equips: [],
@@ -49,9 +49,18 @@ export default class Data extends Component{
         });
     }
 
-    changeEdit = (val) => {
-        this.setState({ id_item: val })
-        this.table.id = val;
+    onReboot = () => {
+        axio.get('./all').then(res=>{
+            //console.log(res.data);
+            this.setState({
+                equips: res.data
+            });
+        });
+    }
+
+    changeEdit = (row) => {
+        //this.setState({ id_item: val })
+        this.table.data = row;
         this.setState(state => ({ isEditOpen: !state.isEditOpen}))
     }
 
@@ -78,17 +87,17 @@ export default class Data extends Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.equips.map( id => <DataRow key={id.st_id} kol={id.st_amount} date={id.to_char} 
-                                                                kod={id.st_inv_num} kat={id.kat_name} id={id.st_id} units={id.un_name} 
-                                                                name={id.te_name + ' ' + id.eq_name} prim={id.st_prim} changeEdit={this.changeEdit} />)}
+                        {this.state.equips.map( id => <DataRow key={id.st_id} 
+                                                                changeEdit={this.changeEdit}
+                                                                row={id} />)}
                     </tbody>
                 </table>
             </form>
             {this.state.isEditOpen &&
-                    <InputForm id_item={this.table.id} equips_arr={this.state.equips}  onClose={this.changeEdit}/>
+                    <InputForm row={this.table.data} equips_arr={this.state.equips}  onClose={this.changeEdit} onReboot={this.onReboot}/>
                 }
             {this.state.isNewOpen &&
-                    <InputForm id_item=''  onClose={this.changeNew}/>
+                    <InputForm id_item=''  onClose={this.changeNew} onReboot={this.onReboot}/>
                 }
             </div>
         );

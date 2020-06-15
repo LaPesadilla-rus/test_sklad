@@ -85,21 +85,25 @@ export default class Input_form extends Component {
                 equip_arr: res.data,
             });
         });
-        
-        if (this.props.id_item){
-            var id_item = this.props.id_item;
-            console.log(this.props.equips_arr.find(items => items.st_id === id_item).to_char)
+        if (this.props.row){
+            //var id_item = this.props.row.st_id;
+            //console.log(this.props.row)
             this.setState({
-                provider: this.props.equips_arr.find(items => items.st_id === id_item).st_pr_id,
-                units: this.props.equips_arr.find(items => items.st_id === id_item).st_un_id,
-                f_name: '1',
-                kol: this.props.equips_arr.find(items => items.st_id === id_item).st_amount,
-                date: this.props.equips_arr.find(items => items.st_id === id_item).to_char,
-                //prim: this.props.equips_arr.find(items => items.st_id === id_item).st_prim,
-                inv_num: this.props.equips_arr.find(items => items.st_id === id_item).st_inv_num,
-                dogvr_num: this.props.equips_arr.find(items => items.st_id === id_item).st_contr_num,
-            })
+                provider: this.props.row.st_pr_id,
+                units: this.props.row.st_un_id,
+                kol: this.props.row.st_amount,
+                date: this.props.row.to_char,
+                inv_num: this.props.row.st_inv_num,
+                dogvr_num: this.props.row.st_contr_num,
+                equip_name: this.props.row.te_name + ' ' + this.props.row.eq_name,
+            });
+            if (this.props.row.st_prim) {
+                this.setState({
+                    prim: this.props.row.st_prim
+                })
+            }
         }
+        //console.log(this.props)
         /*console.log(this.props)
         if (isEmpty(this.props.id_item)) {
             const id_item = this.props.id_item;
@@ -171,7 +175,7 @@ export default class Input_form extends Component {
 
     saveDB = (data) => {
         var err = '';
-        console.log(data)
+        //console.log(data)
         var stat = false
         if (data.inv_num === ''){
             err = err + 'Инвентарный номер не введен! ';
@@ -204,7 +208,6 @@ export default class Input_form extends Component {
                 }
             });
         }
-        //console.log(err)
         return stat;
     }
 
@@ -249,6 +252,64 @@ export default class Input_form extends Component {
                 dogvr_num: '',
             });
             this.ChangeProvider({target: {value: '-1'}});
+        }
+    }
+
+    handleUpdate = event => {
+        if(this.state.provider === '-1' || this.state.provider.length === 0){
+            alert("Поставщик не выбран!")
+            return;
+        }
+        const data = {
+            equip_name: this.state.equip_name,
+            equip_id: this.props.row.eq_id,
+            units_name: this.props.row.un_name,
+            units_id: this.state.units,
+            f_name: this.state.f_name,
+            kol: this.state.kol,
+            date: this.state.date,
+            prim: this.state.prim,
+            inv_num: this.state.inv_num,
+            provider: this.props.row.pr_name,
+            provider_id: this.state.provider,
+            dogvr_num: this.state.dogvr_num,
+            st_id: this.props.row.st_id,
+            user: 'Admin',
+            row: this.props.row,
+        };
+        var err = '';
+        //console.log(data)
+        if (data.inv_num === ''){
+            err = err + 'Инвентарный номер не введен! ';
+        }
+        if (data.dogvr_num === ''){
+            err = err + 'Номер договора не введен! ';
+        }
+        if (data.equip_name === ''){
+            err = err + 'Оборудование не выбрано! ';
+        }
+        if (data.provider === ''){
+            err = err + 'Поставщик не выбран! ';
+        }
+        if (data.kol === ''){
+            err = err + 'Количество не введено! ';
+        }
+        if (data.date === ''){
+            err = err + 'Дата не введена! ';
+        }
+        if (err !== ''){
+            alert(err);
+        }else{
+            axio.post('/sklad/new/update', {data}).then(res => {
+                console.log(res.data);
+                if (res.data === 'POST COMPLITE') {
+                    //alert('Update успешно');
+                    this.props.onClose();
+                    this.props.onReboot();
+                }else{
+                    alert('Данные не удалось сохранить');
+                }
+            });
         }
     }
 
@@ -343,8 +404,8 @@ export default class Input_form extends Component {
             }
         });
     }
-
-    handleDownload = () => {
+    // Загрузка файла!!!!
+    /*handleDownload = () => {
         const data = {
             user: 'admin',
             test: 'asd'
@@ -354,20 +415,23 @@ export default class Input_form extends Component {
         axio.post('/sklad/download', {data},  { responseType: 'arraybuffer' }).then(res => {
             FileDownload(res.data, '14-23.xlsx');
         });
-    }
+    }*/
 
     
 
 
     render () {
-        let id_item = this.props.id_item;
-        let redactItem = <div className='input_form__bb input_form__bb_pos'>
-                        <button type='button' onClick={this.handleSubmit} className="button">
-                            Редактировать
-                        </button>
-                        <button type='button' onClick={this.handleOut} className="button" >
+        //let id_item = this.props.row.st_id;
+        /**
+         * <button type='button' onClick={this.handleOut} className="button" >
                             Выписать
                         </button>
+         */
+        let redactItem = <div className='input_form__bb input_form__bb_pos'>
+                        <button type='button' onClick={this.handleUpdate} className="button">
+                            Редактировать
+                        </button>
+                        
                         <button type='button' onClick={this.props.onClose} className="button button_red" >
                             Отмена
                         </button>
@@ -383,13 +447,18 @@ export default class Input_form extends Component {
                             Отмена
                         </button>
                     </div>;
+        let oldEquip = <tr>
+                            <td className='cell_name' ><p>Оборудование:  </p></td>
+                            <td ><label>{this.state.equip_name}</label></td>
+                        </tr>;
+        let newEquip = <tr>
+                            <td className='cell_name' ><p>Поиск оборудования</p></td>
+                            <td ><Autocomplite modelText={this.state.equip_name} items_arr={this.state.full_name} setText={this.setText}/></td>
+                        </tr>;
         return (
             <div className='background_modal background_modal_pos'>
                     <div className="modal modal_pos">
             <div className="input_form input_form_pos">
-            <button type='button' onClick={this.handleDownload} className="button">
-                            Загрузить файл
-                        </button>
                 <form onSubmit={this.handleSubmit}>
                     <table className='input_form__table input_form__table_pos'>
                         <thead>
@@ -418,14 +487,11 @@ export default class Input_form extends Component {
                     </table>
                     <table className='input_form__table input_form__table_pos'>
                         <tbody>
-                            <tr>
-                                <td className='cell_name' ><p>Поиск оборудования</p></td>
-                                <td ><Autocomplite modelText={this.state.equip_name} items_arr={this.state.full_name} setText={this.setText}/></td>
-                            </tr>
-                            <tr>
-                                <td><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></td>
-                                <td><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></td>
-                            </tr>
+                            {this.props.row ? oldEquip : newEquip}
+                            {!this.props.row && <tr>
+                                                    <td><button type='button' className='button' onClick={this.changeSelectEquip}>Выбрать оборудование</button></td>
+                                                    <td><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></td>
+                                                </tr>}
                             <tr>
                                 <td className='cell_name'><p>Инвентарный номер</p></td>
                                 <td><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></td>
@@ -444,17 +510,12 @@ export default class Input_form extends Component {
                                 <td className='cell_name'><p>Примечание</p></td>
                                 <td><textarea name='prim' onChange={this.ChangePrim} value={this.state.prim}></textarea></td>
                             </tr>
-                            {id_item && <tr>
-                                            <td className='cell_name'><p>МОЛ</p></td>
-                                            <td><select onChange={(e) => { console.log(e.target.text); this.setState({mol: e.target.value})}} value={this.state.mol}>
-                                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
-                                            </select></td>
-                                        </tr> }
+
                         </tbody>
                     </table>
-                    {id_item ? redactItem : newItem}
+                    {this.props.row ? redactItem : newItem}
                 </form>
-                {id_item ? '' : <table className="data-table data-table_pos">
+                {!this.props.row && <table className="data-table data-table_pos">
                     <thead>
                         <tr className="data-table__head data-table__body_pos" onClick={this.handleSubmit} id='123'>
                             <th className='data-table__cell data-table__cell_pos cell_1'>Номер договора</th> 
@@ -502,6 +563,15 @@ export default class Input_form extends Component {
 BlockItem.propTypes = {
     id_item: PropTypes.string
   };
+
+/**
+ *                             {id_item && <tr>
+                                            <td className='cell_name'><p>МОЛ</p></td>
+                                            <td><select onChange={(e) => { console.log(e.target.text); this.setState({mol: e.target.value})}} value={this.state.mol}>
+                                                {this.state.units_data.map( id => <option key={this.nextUniqueId()} title={id.un_name} value={id.un_id}>{id.un_name}</option>)}  
+                                            </select></td>
+                                        </tr> }
+ */
 
 /**
  *  <div className='background_modal background_modal_pos'>

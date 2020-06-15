@@ -16,10 +16,10 @@ exports.all = function (cb) {
         errm = {err: err};
         mas = [{item: res.rows, name: 'Категория', table:'kategor_spr'}];
     });
-    client.query(`SELECT te_id as id, te_name as item FROM type_equip_spr  order by item`
+    client.query(`SELECT te_id as id, te_name as item, te_kat_id as kat_id FROM type_equip_spr  order by item`
     , (err, res) => {
-        errm = {...errm, err: err};
-        mas = [...mas, {item: res.rows, name: 'Тип обоудования', table:'type_equip_spr'}];
+        errm = {err: err};
+        mas = [{item: res.rows, name: 'Тип обоудования', table:'type_equip_spr', type:'type_equip'}];
     });
     client.query(`SELECT ma_id as id, ma_name as item FROM marka_equip_spr  order by item`
     , (err, res) => {
@@ -47,7 +47,7 @@ exports.all = function (cb) {
         mas = [...mas,{item: res.rows, name: 'МОЛ', table:'mol_spr'}];
     });
     client.query(`SELECT eq.eq_id as id,
-                (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item
+                (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item, eq.eq_name as equip_name
                 FROM equip_spr eq
                 
                 inner join marka_equip_spr ma
@@ -97,6 +97,7 @@ exports.equip_name = function (cb) {
 }
 
 exports.spr_save = function(req,cb) {
+    //console.log(req.body.data)
     if(!req.body.data) return res.sendStatus(400);
     var sql = `INSERT INTO public.units_spr (un_name)
                 VALUES ('`+req.body.data.item+`');`;
@@ -119,14 +120,15 @@ exports.spr_save = function(req,cb) {
         case 'otd_spr': sql =  `INSERT INTO public.otd_spr (ot_name)
                                     VALUES ('`+req.body.data.item+`')`;
                                     break;
-        case 'type_equip_spr': sql =  `INSERT INTO public.type_equip_spr (te_name)
-                                    VALUES ('`+req.body.data.item+`')`;
+        case 'type_equip_spr': sql =  `INSERT INTO public.type_equip_spr (te_name, te_kat_id)
+                                    VALUES ('`+req.body.data.item+`', `+req.body.data.kat_id+`)`;
                                     break;
         case 'mol_spr': sql =  `INSERT INTO public.mol_spr (mo_name)
                                     VALUES ('`+req.body.data.item+`')`;
                                     break;
         default: res.send('INSERT COMPLITE');
     }
+    console.log(sql)
     if (sql){
         pool.query(sql
             , (err,res)=>{
@@ -168,7 +170,7 @@ exports.spr_update = function(req,cb) {
                                     WHERE ot_id = `+req.body.data.id_item+``;
                                     break;
         case 'type_equip_spr': sql =  `UPDATE public.type_equip_spr
-                                    SET te_name ='`+req.body.data.item+`'
+                                    SET te_name ='`+req.body.data.item+`', te_kat_id = `+req.body.data.kat_id+`
                                     WHERE te_id = `+req.body.data.id_item+``;
                                     break;
         case 'mol_spr': sql =  `UPDATE public.mol_spr
@@ -177,6 +179,7 @@ exports.spr_update = function(req,cb) {
                                     break;
         default: cb('','POST COMPLITE');
     }
+    //console.log(sql)
     if (sql){
         pool.query(sql
             , (err,res)=>{
@@ -225,11 +228,7 @@ exports.spr_delete = function(req,cb) {
     if (sql){
         pool.query(sql
             , (err,res)=>{
-                if (err) {
-                    console.log("Postgres DELETE error:", err);
-                }else{
-                    cb(err, 'DELETE COMPLITE');
-                }
+                cb(err, 'DELETE COMPLITE');
             });
     }
 }
@@ -283,6 +282,7 @@ exports.equip_update = function(req, cb) {
                     eq_mark_id = `+req.body.data.marka+`,
                     eq_kat_id =  `+req.body.data.kat+`
                 WHERE eq_id = `+req.body.data.id_item+``;
+    //console.log(sql)
     pool.query(sql 
         ,(err,res)=>{
             cb(err,'UPDATE COMPLITE');

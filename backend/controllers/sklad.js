@@ -1,4 +1,5 @@
 const Sklad = require('../models/sklad.js');
+const Hyst = require('../models/hyst.js');
 
 exports.all = function(req, res) {
     Sklad.all(function(err, docs){
@@ -108,6 +109,23 @@ exports.sklad_save = function(req, res) {
         }
         res.send(docs);
     })
+}
+
+exports.sklad_update = async function(req, res) {
+    await Sklad.sklad_update(req ,function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+
+    await Hyst.StorageUpdate(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+    res.send('POST COMPLITE');
 }
 
 exports.sklad_out = function(req, res) {
