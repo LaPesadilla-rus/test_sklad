@@ -163,3 +163,36 @@ exports.sklad_download = function(req,res){
         });
     });
 }
+
+exports.out_data = async function(req, res) {
+    var data = {};
+    await Sklad.out_data_otd(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.otd_data = docs.rows;
+    });
+    await Sklad.out_data_mol(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.mol_data = docs.rows;
+    });
+    await Sklad.out_data_kat(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.kat_data = docs.rows;
+    });
+    await Sklad.out_data_equip(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.equip_data = docs.rows;
+    });
+    res.send(data);
+}

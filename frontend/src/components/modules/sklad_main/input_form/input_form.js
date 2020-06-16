@@ -301,7 +301,7 @@ export default class Input_form extends Component {
             alert(err);
         }else{
             axio.post('/sklad/new/update', {data}).then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 if (res.data === 'POST COMPLITE') {
                     //alert('Update успешно');
                     this.props.onClose();

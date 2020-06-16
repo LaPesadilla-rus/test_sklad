@@ -74,6 +74,7 @@ app.get('/sklad/new/marka', skladController.marka);
 app.get('/sklad/new/units', skladController.units);
 app.get('/sklad/new/kat', skladController.kat);
 app.get('/sklad/kat', skladController.kat2);
+app.get('/sklad/out_data', skladController.out_data);
 
 app.post('/sklad/download', skladController.sklad_download);
 
@@ -110,12 +111,13 @@ app.delete('/spr/delete', sprController.spr_delete);
 app.get('/otdel/all', otdelController.all);
 app.get('/otdel/data', otdelController.otd_data);
 app.get('/otdel/all2', otdelController.all2);
-//app.get('/otdel/filter', otdelController.filter);
+app.get('/otdel/filter_data', otdelController.filter_data);
 
 app.post('/otdel/moveEQ', otdelController.moveEQ);
 app.post('/otdel/spisat14_23', otdelController.spisat14_23);
 app.post('/otdel/spisat14_27', otdelController.spisat14_27);
 app.post('/otdel/spisat14_29', otdelController.spisat14_29);
+app.post('/otdel/all_filter', otdelController.all_filter);
 //--------------------------------
 
 app.get('/', function(req, res) {

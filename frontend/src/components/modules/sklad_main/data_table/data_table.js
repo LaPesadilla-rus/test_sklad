@@ -5,6 +5,7 @@ import axio from 'axios';
 import Actions from '../../actions_bar/action_new';
 import DataRow from './data_row';
 import InputForm from '../input_form/input_form';
+import OutForm from '../out_form/out_form';
 
 export default class Data extends Component{
     constructor() {
@@ -16,6 +17,7 @@ export default class Data extends Component{
             equips: [],
             isEditOpen: false,
             isNewOpen: false,
+            isOutOpen: false,
             id_item: '',
         };
     }
@@ -61,11 +63,15 @@ export default class Data extends Component{
     changeEdit = (row) => {
         //this.setState({ id_item: val })
         this.table.data = row;
-        this.setState(state => ({ isEditOpen: !state.isEditOpen}))
+        this.setState(state => ({ isEditOpen: !state.isEditOpen}));
     }
 
-    changeNew = () => {
-        this.setState(state => ({ isNewOpen: !state.isNewOpen}))
+    changeNew = (val) => {
+        this.setState(state => ({ isNewOpen: !state.isNewOpen}));
+    }
+
+    changeOutForm = () => {
+        this.setState(state => ({ isOutOpen: !state.isOutOpen}));
     }
     //{this.state.equips.map( e_id => <NavLink className="Block" to='./edit/block/'>{e_id}</NavLink>)}
             
@@ -73,7 +79,7 @@ export default class Data extends Component{
     render() {
         return (
             <div>
-                {<Actions changeEdit={this.changeNew} />}
+                {<Actions changeNew={this.changeNew} changeOut={this.changeOutForm} />}
             <form onSubmit={this.handleSubmit}>
                 <table className="data-table data-table_pos">
                     <thead>
@@ -98,6 +104,9 @@ export default class Data extends Component{
                 }
             {this.state.isNewOpen &&
                     <InputForm id_item=''  onClose={this.changeNew} onReboot={this.onReboot}/>
+                }
+            {this.state.isOutOpen &&
+                    <OutForm onClose={this.changeOutForm} onReboot={this.onReboot}/>
                 }
             </div>
         );

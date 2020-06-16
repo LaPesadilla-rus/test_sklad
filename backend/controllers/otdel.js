@@ -150,16 +150,67 @@ exports.all2 = async function(req, res) {
     res.send(docs);
 };
 
-exports.filter1 = async function(req, res) {
-    var data = [];
-    var docs = {}; 
+exports.filter_data = async function(req, res) {
+    var out_data = {}; 
+    await Otdel.filter_data_otd(function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        out_data.otd_data = docs.rows;
+    });
+    await Otdel.filter_data_mol(function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        out_data.mol_data = docs.rows;
+    });
+    await Otdel.filter_data_eq(function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        out_data.eq_data = docs.rows;
+    });
+    res.send(out_data);
+};
 
-    data = await Otdel.otd_data_otd1();
+exports.all_filter = async function(req, res) {
+    var data = [];
+    var mol_data;
+    var equip_data;
+    var otd_equip;
+    var out_equip,
+    eq_id = req.body.data.eq_id;
+    var docs = {};
+    if (req.body.data.mo_id !== ''){
+        mol_data = await Otdel.otd_data_mol_filter2(req.body.data.mo_id);
+        data = await Otdel.otd_data_otd_filter(mol_data[0].mo_otd_id);
+    }else{
+        data = await Otdel.otd_data_otd_filter(req.body.data.ot_id);
+    } 
     docs.otd_data = data;
-    data = await Otdel.otd_data_mol_all(data[i].ot_id);
-    docs.mol_data = data;
-    data = await Otdel.otd_data_equip_all(data[i].ot_id);
-    docs.equip_data = data;
+    for (var i = 0; i < data.length; i++){
+        mol_data = await Otdel.otd_data_mol_filter(data[i].ot_id, req.body.data.mo_id);
+        for (var n = 0; n < mol_data.length; n++){
+            equip_data = await Otdel.otd_data_equip1(mol_data[n].mo_id, data[i].ot_id, 'main',eq_id);
+            out_equip = await Otdel.otd_data_equip1(mol_data[n].mo_id, data[i].ot_id, 'out',eq_id);
+            mol_data[n].equip_data = equip_data;
+            mol_data[n].out_equip = out_equip;
+        }
+        otd_equip = await Otdel.otd_data_equip1('', data[i].ot_id, 'otd',eq_id);
+        data[i].otd_equip = otd_equip;
+        data[i].mol_data = mol_data;
+    }
+    //console.log(mol_data);
+    /*for(var i = 0; i < docs.otd_data.length; i++){
+        //console.log(docs.otd_data[i])
+        if (docs.otd_data[i].otd_equip.length === 0){
+            
+        }
+    }*/
+    //docs.otd_data[1].splice(i,1);
     res.send(docs);
 };
 

@@ -144,6 +144,26 @@ exports.otd_data_otd1 = async() => {
     return Promise.resolve(docs.rows);
 }
 
+exports.otd_data_otd_filter = async(val) => {
+    var docs = [];
+    var sql = '';
+    if (val !== ''){
+        sql = `SELECT * FROM otd_spr WHERE ot_id = `+val+` ORDER BY ot_name`;
+    }else{
+        sql = `SELECT * FROM otd_spr ORDER BY ot_name`;
+    }
+    await pool.query(sql)
+        .then(
+            (res) => {
+                docs = res;
+            }
+        )
+        .catch(function(err) {
+            console.log(err)
+        });
+    return Promise.resolve(docs.rows);
+}
+
 exports.otd_data_mol1 = async(val) => {
     var docs;
     //docs = await pool.query('SELECT')
@@ -155,7 +175,35 @@ exports.otd_data_mol1 = async(val) => {
     return Promise.resolve(docs.rows);
 };
 
-exports.otd_data_equip1 = async(mo_id, otd_id, reg) => {
+exports.otd_data_mol_filter = async(mo_otd_id,mo_id) => {
+    var docs;
+    var sql = '';
+    if (mo_id !== ''){
+        sql = `SELECT * FROM mol_spr WHERE mo_otd_id = `+mo_otd_id+` and mo_id = `+mo_id+` ORDER BY mo_name`;
+    }else{
+        sql = `SELECT * FROM mol_spr WHERE mo_otd_id = `+mo_otd_id+` ORDER BY mo_name`;
+    }
+    await pool.query(sql).then ((res) =>{
+        docs = res;
+    }).catch( function(err) {
+        console.log(err)
+    });
+    return Promise.resolve(docs.rows);
+};
+
+exports.otd_data_mol_filter2 = async(mo_id) => {
+    var docs;
+    var sql = '';
+    sql = `SELECT * FROM mol_spr WHERE mo_id = `+mo_id+` ORDER BY mo_name`;
+    await pool.query(sql).then ((res) =>{
+        docs = res;
+    }).catch( function(err) {
+        console.log(err)
+    });
+    return Promise.resolve(docs.rows);
+};
+
+exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
     var docs;
     //docs = await pool.query('SELECT')
     var sql = `SELECT bl.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name || ' Инв. ном.: ' || bl_inv_num) as equip_name, mo_name as mol_name, ot_name as otd_name,
@@ -182,32 +230,25 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg) => {
                 on un.un_id = bl.bl_un_id
     `;
     if (reg === 'main'){
-        sql = sql + ` WHERE bl_mol_id = `+mo_id+` AND bl_otd_id = `+otd_id+`
-                      ORDER BY equip_name`;
-        await pool.query(sql).then ((res) =>{
-            docs = res;
-        }).catch( function(err) {
-            console.log(err)
-        });
+        sql = sql + ` WHERE bl_mol_id = `+mo_id+` AND bl_otd_id = `+otd_id+``; 
     }
     if (reg === 'out'){
-        sql = sql + ` WHERE bl_mol_id = `+mo_id+` AND bl_otd_id <> `+otd_id+`
-                    ORDER BY equip_name`;
-        await pool.query(sql).then ((res) =>{
-            docs = res;
-        }).catch( function(err) {
-            console.log(err)
-        });
+        sql = sql + ` WHERE bl_mol_id = `+mo_id+` AND bl_otd_id <> `+otd_id+``;
     }
     if (reg === 'otd'){
-        sql = sql + `  WHERE bl.bl_otd_id = `+otd_id+` AND mo.mo_otd_id <> `+otd_id+`
-                       ORDER BY equip_name`;
-        await pool.query(sql).then((res) =>{
-            docs = res;
-        }).catch( function(err) {
-            console.log(err)
-        });
+        sql = sql + `  WHERE bl.bl_otd_id = `+otd_id+` AND mo.mo_otd_id <> `+otd_id+``;
     }
+    if (eq_id && eq_id !== ''){
+        sql = sql + ` AND eq.eq_id = `+eq_id+``
+    }
+
+    sql = sql + ` ORDER BY equip_name`
+    //console.log(sql)
+    await pool.query(sql).then ((res) =>{
+        docs = res;
+    }).catch( function(err) {
+        console.log(err)
+    });
     return Promise.resolve(docs.rows);
 };
 
@@ -227,6 +268,50 @@ exports.spisatInsert = async function (docNum,data, cb) {
     var sql = ` INSERT INTO public.logbook (lb_mol_name, lb_isp_name, lb_prim, lb_act_id, lb_act_num)
                 VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`);
      `;
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+}
+
+exports.filter_data_otd = async function (cb) {
+    var docs = [];
+    var sql = `SELECT * FROM otd_spr `
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+}
+
+exports.filter_data_mol = async function (cb) {
+    var docs = [];
+    var sql = `SELECT * FROM mol_spr `
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+}
+
+exports.filter_data_eq = async function (cb) {
+    var docs = [];
+    var sql = `SELECT eq.*, (te.te_name || ' ' || ma.ma_name || ' ' || eq.eq_name) as equip_name 
+                FROM equip_spr  eq
+
+                inner join type_equip_spr te
+                on te.te_id = eq.eq_type_id
+
+                inner join marka_equip_spr ma
+                on ma.ma_id = eq.eq_mark_id
+    `
     await pool.query(sql).then (
         (res) => {
             cb('',res);

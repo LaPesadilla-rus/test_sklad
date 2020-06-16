@@ -131,7 +131,7 @@ exports.sklad_update = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
     var sql = `UPDATE public.storage 
                 SET st_pr_id = `+req.body.data.provider_id+`, st_un_id=`+req.body.data.units_id+`, st_inv_num='`+req.body.data.inv_num+`', st_amount=`+req.body.data.kol+`,
-                st_contr_date='`+req.body.data.date+`', st_contr_num='`+req.body.data.dogvr_num+`', st_upd_usr='`+req.body.data.user+`'
+                st_contr_date='`+req.body.data.date+`', st_contr_num='`+req.body.data.dogvr_num+`', st_upd_usr='`+req.body.data.user+`', st_prim='`+req.body.data.prim+`'
                 WHERE st_id=`+req.body.data.st_id+`
                 `
     //console.log(sql)
@@ -189,3 +189,58 @@ exports.sklad_out_midl2 = function(data, req,cb) {
             }
     });
 }
+
+exports.out_data_otd = async(cb) => {
+    var sql = '';
+    sql = `SELECT * FROM otd_spr ORDER BY ot_name`;
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+};
+exports.out_data_mol = async(cb) => {
+    var sql = '';
+    sql = `SELECT * FROM mol_spr ORDER BY mo_name`;
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+};
+exports.out_data_kat = async(cb) => {
+    var sql = '';
+    sql = `SELECT * FROM kategor_spr ORDER BY kat_name`;
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+};
+exports.out_data_equip = async(cb) => {
+    var sql = '';
+    sql = `SELECT st.*, (te.te_name || ' ' || ma.ma_name || ' ' || eq.eq_name) as equip_name 
+            FROM storage  st
+
+            inner join equip_spr eq
+            on eq.eq_id = st.st_eq_id
+
+            inner join type_equip_spr te
+            on te.te_id = eq.eq_type_id
+
+            inner join marka_equip_spr ma
+            on ma.ma_id = eq.eq_mark_id`;
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+};

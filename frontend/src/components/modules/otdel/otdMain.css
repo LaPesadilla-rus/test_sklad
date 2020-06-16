@@ -1,13 +1,17 @@
 .otdel_main {
     background-color: rgba(216, 216, 216, 0.718);
     width: 100%;
-    min-height: 100px;
+    min-height: 50px;
 
     margin-top: 10px;
     border-radius: 10px;
 
     font-size: 17px;
     color: black;
+}
+
+.otdel_main select {
+    margin-right: 10px;
 }
 
 .otdel_workspace{

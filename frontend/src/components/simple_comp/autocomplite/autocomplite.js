@@ -126,7 +126,7 @@ export default class Autocomplite extends Component {
                  <div className='autocomplite_column'>
                     <input onClick={this.renderZeroSuggestions} ref={(input) => { this.nameInput = input; }} 
                         className={'input '+(!this.state.err ? 'input_red' : 'input_green')}  
-                        type='text' onChange={this.setModelText} value={this.state.txt} >
+                        type='text' onChange={this.setModelText} value={this.props.modelText} >
                     </input></div>
                  <div className='autocomplite_column'>{this.renderSuggestions()}{window}</div>
             </div>
