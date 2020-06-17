@@ -7,32 +7,34 @@
     align-items: center;
 }
 
-.out_form_div{
-    border: 1px solid black;
-    display: flex;
+.out_form_td{
+    height: 30px;
+    width: 320px;
+}
+
+.out_form_td1{
+    height: 30px;
+    width: 100px;
+}
+
+.out_form_td select{
+    width: 200px;
+}
+
+.out_form_td input{
+    width: 200px;
+}
+
+.out_form_bottom_table{
     width: 100%;
 }
 
-.out_form_div select {
-    margin-left: 10px;
-    width: 250px;
-    align-self: baseline;
+.out_form_bottom_table td{
+    border: 1px solid black;
 }
 
-
-
-.combo_div{
+.out_form_bottom_table th {
     border: 1px solid black;
-    height: 60px;
-    margin-top: -10px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-}
-.out_form_autoc{
-    border: 1px solid black;
-    height: 50px;
+    background-color: darkgrey;
 }
 

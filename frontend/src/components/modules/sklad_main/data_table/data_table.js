@@ -53,7 +53,6 @@ export default class Data extends Component{
 
     onReboot = () => {
         axio.get('./all').then(res=>{
-            //console.log(res.data);
             this.setState({
                 equips: res.data
             });

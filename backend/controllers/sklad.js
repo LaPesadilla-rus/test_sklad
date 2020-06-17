@@ -130,7 +130,8 @@ exports.sklad_update = async function(req, res) {
 
 exports.sklad_out = function(req, res) {
     var data = [];
-    Sklad.sklad_out(req ,function(err,docs){
+    console.log(req.body.data)
+    /*Sklad.sklad_out(req ,function(err,docs){
         if (err) {
             return res.sendStatus(500);
         }
@@ -146,7 +147,8 @@ exports.sklad_out = function(req, res) {
                 res.send(docs);
             })
         })
-    }); 
+    }); */
+    res.sendStatus(200);
 }
 
 exports.sklad_download = function(req,res){
