@@ -211,7 +211,7 @@ export default class Input_form extends Component {
         return stat;
     }
 
-    handleSubmit = event => {
+    handleSubmit = () => {
         //event.preventDefault();
         var units = parseInt(this.state.units);
         var prov = parseInt(this.state.provider);

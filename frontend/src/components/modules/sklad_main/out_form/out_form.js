@@ -207,7 +207,10 @@ export default class OutForm extends Component{
         //console.log(data)
         axio.post('/sklad/out', {data},  { responseType: 'arraybuffer' }).then(res=>{
             const FileDownload = require('js-file-download');
-            console.log(res.data)
+            
+            //var decodedString = String.fromCharCode.apply(null, new Uint16Array(res.data));
+            //var obj = JSON.parse(decodedString);
+            console.log(res);
             //FileDownload(res.data, 'Trebovanie.xlsx');
             //console.log(res.data)
            /*if (res.data !== 'OK'){

@@ -158,17 +158,26 @@ exports.sklad_out = async function(req, res) {
             });*/
         }else{
             errMes.txt = 'Ошибка выписки на позиции: ' + (i + 1);
-            res.send(errMes);
+            let buffer = new ArrayBuffer(100);
+            let view = new Uint16Array(buffer);
+
+            //view[0] = charCodeat('sadasd');
+            var enc = new TextEncoder(); // always utf-8
+            view = enc.encode("Error message");
+            //console.log(enc.encode("This is a string converted to a Uint8Array"));
+            console.log(view);
+            //var arrayBuffer = new Uint16Array(errMes)
+            res.send(view);
             i = 100;
         } 
-        Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
+        /*Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
             if (err) {
                 console.log(err);
                 //errMes.row = err;
                 //errMes.txt = 'Ошибка выписки!';
                 //return res.send(errMes);
             }
-        });
+        });*/
     }
 
     /*const Excel = require('exceljs');
