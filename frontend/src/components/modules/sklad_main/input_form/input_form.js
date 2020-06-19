@@ -251,6 +251,7 @@ export default class Input_form extends Component {
                 date: '',
                 dogvr_num: '',
             });
+            this.props.onReboot();
             this.ChangeProvider({target: {value: '-1'}});
         }
     }

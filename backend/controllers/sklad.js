@@ -128,27 +128,81 @@ exports.sklad_update = async function(req, res) {
     res.send('POST COMPLITE');
 }
 
-exports.sklad_out = function(req, res) {
-    var data = [];
-    console.log(req.body.data)
-    /*Sklad.sklad_out(req ,function(err,docs){
-        if (err) {
-            return res.sendStatus(500);
-        }
-        data = docs;
-        Sklad.sklad_out_midl1(data, req, function(err,docs){
-            if (err) {
-                return res.sendStatus(500);
-            }
-            Sklad.sklad_out_midl2(data,req, function(err,docs){
+exports.sklad_out = async function(req, res) {
+    //console.log(req.body.data);
+    var arr = [];
+    var a = [],
+    errMes = [];
+    arr = req.body.data.equip;
+
+    //console.log(arr)
+    for(var i = 0; i < arr.length; i++){
+        a = await Sklad.sklad_out_midl3(arr[i]);
+        //console.log(a)
+        if (a.length > 0){
+            /*await Sklad.sklad_out_midl2(arr[i],a, function(err,docs){
                 if (err) {
-                    return res.sendStatus(500);
+                    console.log(err);
+                    errMes.row = err;
+                    errMes.txt = 'Ошибка выписки!';
+                    return res.send(errMes);
                 }
-                res.send(docs);
-            })
-        })
-    }); */
-    res.sendStatus(200);
+            });
+            await Sklad.sklad_out_midl1(arr[i],req.body.data.mol_id,req.body.data.otd_id, function(err,docs){
+                if (err) {
+                    console.log(err);
+                    errMes.row = err;
+                    errMes.txt = 'Ошибка выписки!';
+                    return res.send(errMes);
+                }
+            });*/
+        }else{
+            errMes.txt = 'Ошибка выписки на позиции: ' + (i + 1);
+            res.send(errMes);
+            i = 100;
+        } 
+        Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
+            if (err) {
+                console.log(err);
+                //errMes.row = err;
+                //errMes.txt = 'Ошибка выписки!';
+                //return res.send(errMes);
+            }
+        });
+    }
+
+    /*const Excel = require('exceljs');
+    var workbook = new Excel.Workbook();
+    workbook.xlsx.readFile('./docs/TR.xlsx').then(function(){
+        //console.log(workbook.worksheets.id + ' ' + workbook.worksheets.name)
+        var ws = workbook.getWorksheet(7);
+        var n = 12;
+        ws.getCell(9,3).value = req.body.data.user + ' отд' + req.body.data.otd_id;
+        ws.getCell(9,13).value = req.body.data.user + ' отд' + req.body.data.otd_id;
+
+        for(var i = 0; i < arr.length; i++){
+            ws.getCell(n,2).value = i+1;
+            ws.getCell(n,12).value = i+1;
+
+            ws.getCell(n,3).value = arr[i].equip_name;
+            ws.getCell(n,4).value = arr[i].st_un_id;
+            ws.getCell(n,5).value = arr[i].kol;
+            ws.getCell(n,13).value = arr[i].equip_name;
+            ws.getCell(n,14).value = arr[i].st_un_id;
+            ws.getCell(n,15).value = arr[i].kol;
+            n++;
+            ws.getCell(n,3).value = arr[i].st_inv_num;
+            ws.getCell(n,13).value = arr[i].st_inv_num;
+            n++;
+        }
+
+        workbook.xlsx.writeFile('./docs/test100.xlsx').then(function(){
+            res.download('./docs/test100.xlsx');
+        });
+    });*/
+
+
+    //res.send('OK');
 }
 
 exports.sklad_download = function(req,res){

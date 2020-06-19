@@ -102,6 +102,7 @@ exports.otd_data = function(req, res) {
 };
 
 exports.moveEQ = async function(req, res) {
+    console.log(req.body.data)
     var data = [];
     await Otdel.moveEQ(req.body.data, function (err, docs) {
         if (err) {

@@ -159,35 +159,45 @@ exports.sklad_out = function(req,cb) {
 
 }
 
-exports.sklad_out_midl1 = function(data, req,cb) {
+exports.sklad_out_midl1 = async function(data, mol_id, otd_id,cb) {
     var sql = `INSERT INTO public.balance(
-                    bl_eq_id, bl_pr_id, bl_un_id, bl_amount, bl_inv_num, bl_contr_num,  bl_inp_usr, bl_prim, bl_mol_id)
-                    VALUES (`+data.st_eq_id+`, `+data.st_pr_id+`, `+data.st_un_id+`, `+req.body.data.kol+`, '`+data.st_inv_num+`',
-                    '`+data.st_contr_num+`','`+data.st_inp_usr+`', '`+data.st_prim+`', `+req.body.data.mol+`);`;
+                    bl_eq_id, bl_pr_id, bl_un_id, bl_amount, bl_inv_num, bl_contr_num,  bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id)
+                    VALUES (`+data.st_eq_id+`, `+data.st_pr_id+`, `+data.st_un_id+`, `+data.kol+`, '`+data.st_inv_num+`',
+                    '`+data.st_contr_num+`','`+data.st_inp_usr+`', '`+data.st_prim+`', `+mol_id+`, `+otd_id+`);`;
     //console.log(sql)
-    pool.query(sql
-        , (err,res)=>{
-            if (err) {
-                console.log("Postgres INSERT error:", err);
-            }else{
-                //data = res.rows[0];
-               cb(err,'INSERT COMPLITE');
-            }
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
     });
 }
 
-exports.sklad_out_midl2 = function(data, req,cb) {
-    var a = (data.st_amount - req.body.data.kol);
-    var sql = `UPDATE public.storage SET st_amount = `+a+` WHERE st_id = `+req.body.data.id_item+``;
+exports.sklad_out_midl2 = async function(data,a,cb) {
+    //console.log(a[0].st_amount)
+    var val = (a[0].st_amount - data.kol);
+    sql = `UPDATE public.storage SET st_amount = `+val+` WHERE st_id = `+data.st_id+``;
     //console.log(sql)
-    pool.query(sql
-        , (err,res)=>{
-            if (err) {
-                console.log("Postgres INSERT error:", err);
-            }else{
-               cb(err,'UPDATE COMPLITE');
-            }
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
     });
+}
+
+exports.sklad_out_midl3 = async function(data,cb) {
+    var sql = '';
+    data.st_id = 2000;
+    sql = `SELECT * FROM storage WHERE st_id = `+data.st_id+``;
+    await pool.query(sql).then ((res) =>{
+        docs = res;
+    }).catch( function(err) {
+        console.log(err)
+    });
+    return Promise.resolve(docs.rows);
 }
 
 exports.out_data_otd = async(cb) => {

@@ -67,7 +67,9 @@ export default class ModalMove extends Component{
                 mol_id = '';
                 data= {
                     bl_id: this.props.row.bl_id,
-                    otd_id: otd_id
+                    otd_id: otd_id,
+                    row: this.props.row,
+                    user: 'Admin'
                 }
             }else{
                 data= {

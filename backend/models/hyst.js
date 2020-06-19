@@ -35,6 +35,9 @@ exports.spisatHystory = async function (docNum,data, cb) {
 }
 
 exports.Move = async function (data, cb) {
+    if (!data.mol_id){
+        data.mol_id = data.row.bl_mol_id
+    }
     var  sql = `INSERT INTO public.history(
                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
@@ -44,7 +47,7 @@ exports.Move = async function (data, cb) {
                                 '`+data.row.bl_inv_num+`', '`+data.row.bl_contr_num+`', '`+data.row.bl_prim+`', '`+data.row.bl_inp_usr+`', 
                                 `+data.row.bl_mol_id+`, `+data.row.bl_otd_id+`, `+data.mol_id+`, `+data.otd_id+`, 
                                 '`+data.user+`', 'Движение');
-                `;  
+                `; 
     pool.query(sql).then (
         (res) => {
             //cb('',res);
@@ -63,6 +66,29 @@ exports.StorageUpdate = async function (data, cb) {
                     VALUES ( `+data.equip_id+`, `+data.provider_id+`, `+data.units_id+`, `+data.kol+`, 
                                 '`+data.inv_num+`', '`+data.dogovor_num+`', '`+data.prim+`', '`+data.row.st_inp_usr+`', 
                                 '`+data.user+`', 'Обновление хранилища');
+                `;  
+    //console.log(sql);
+    //cb('','');
+    pool.query(sql).then (
+        (res) => {
+            //cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+}
+
+exports.StorageOut = async function ( data, mol_id, otd_id, kol, user, cb) {
+    //console.log(data)
+    var  sql = `INSERT INTO public.history(
+                    hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
+                    hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr,
+                    hy_otd_id1, hy_mol_id1,
+                    hy_user, hy_poyasn)
+                    VALUES ( `+data.st_eq_id+`, `+data.st_pr_id+`, `+data.st_un_id+`, `+kol+`, 
+                                '`+data.st_inv_num+`', '`+data.st_contr_num+`', '`+data.st_prim+`', '`+data.st_inp_usr+`', 
+                                `+otd_id+`, `+mol_id+`,
+                                '`+user+`', 'Выписано');
                 `;  
     //console.log(sql);
     //cb('','');

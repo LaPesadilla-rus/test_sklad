@@ -172,6 +172,7 @@ export default class OutForm extends Component{
                 row.push(act_row);
             }else{
                 row.push(act_row);
+                row.old_kol = act_row.st_amount;
             }
             arr.equip = this.state.out_arr;
             arr.otd_id = this.state.otd_id;
@@ -203,10 +204,19 @@ export default class OutForm extends Component{
 
         var data = this.state.out_arr;
         data.user = 'admin';
-
-        axio.post('/sklad/out', {data}).then(res=>{
-           
-            console.log(res.data);
+        //console.log(data)
+        axio.post('/sklad/out', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            const FileDownload = require('js-file-download');
+            console.log(res.data)
+            //FileDownload(res.data, 'Trebovanie.xlsx');
+            //console.log(res.data)
+           /*if (res.data !== 'OK'){
+            alert(res.data);
+            this.props.onReboot();
+           }else{
+            this.props.onReboot();
+            this.props.onClose();
+           }*/
         });
 
     }
