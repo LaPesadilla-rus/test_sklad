@@ -132,7 +132,7 @@ exports.sklad_out = async function(req, res) {
     //console.log(req.body.data);
     var arr = [];
     var a = [],
-    errMes = [];
+    errMes = {};
     arr = req.body.data.equip;
 
     //console.log(arr)
@@ -157,17 +157,19 @@ exports.sklad_out = async function(req, res) {
                 }
             });*/
         }else{
-            errMes.txt = 'Ошибка выписки на позиции: ' + (i + 1);
-            let buffer = new ArrayBuffer(100);
+            errMes.errTxt = 'Ошибка выписки на позиции: ' + (i + 1);
+            errMes.errPos = i;
+            /*let buffer = new ArrayBuffer(100);
             let view = new Uint16Array(buffer);
 
             //view[0] = charCodeat('sadasd');
             var enc = new TextEncoder(); // always utf-8
             view = enc.encode("Error message");
             //console.log(enc.encode("This is a string converted to a Uint8Array"));
-            console.log(view);
+            console.log(view);*/
             //var arrayBuffer = new Uint16Array(errMes)
-            res.send(view);
+            console.log(errMes)
+            res.send(errMes)
             i = 100;
         } 
         /*Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
@@ -179,8 +181,11 @@ exports.sklad_out = async function(req, res) {
             }
         });*/
     }
+    //res.send('OK');
+}
 
-    /*const Excel = require('exceljs');
+exports.out_sklad = function (req, res){
+    const Excel = require('exceljs');
     var workbook = new Excel.Workbook();
     workbook.xlsx.readFile('./docs/TR.xlsx').then(function(){
         //console.log(workbook.worksheets.id + ' ' + workbook.worksheets.name)
@@ -208,10 +213,7 @@ exports.sklad_out = async function(req, res) {
         workbook.xlsx.writeFile('./docs/test100.xlsx').then(function(){
             res.download('./docs/test100.xlsx');
         });
-    });*/
-
-
-    //res.send('OK');
+    });
 }
 
 exports.sklad_download = function(req,res){

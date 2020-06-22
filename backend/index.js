@@ -82,6 +82,7 @@ app.post('/sklad/new/save', skladController.sklad_save);
 app.post('/sklad/new/update', skladController.sklad_update);
 app.post('/sklad/new/type', skladController.type_post);
 app.post('/sklad/out', skladController.sklad_out);
+//app.post('/sklad/out_file', skladController.out_file);
 
 //------------------------------
 app.post('/equip/save', skladController.equip_save);
@@ -131,4 +132,53 @@ app.get('/local', function(req, res) {
 app.listen(4000, function() {
     console.log('SKLAD SERVER IS RUNNING');
 });
+
+//-----------------------------------------------------
+//var arr = [0, 12, 8, 1, 6, 2, 7]
+arr = [1, 20, 4, 8, 3, 0, 5];
+
+function convert(mas){
+  var ret_arr = [];
+  ret_arr = mas.sort((a,b)=>a-b);
+  return (ret_arr)
+}
+
+function rev(mas){
+    var ret_arr = [],                                   // возвращаемый массив
+    val = 0,                                            // промежуточная переменная
+    del = 0;
+    var prom_arr = mas.slice();                         //записываем в prom_arr переданный массив
+
+    var n = 0;                                          // переменная счетчик
+    while (prom_arr.length > 0) {                       // гоняем массив
+        val = prom_arr[0];
+        del = 0;
+        n = 0;
+        while (n < prom_arr.length){                    // ищем максимальное число из оставшихся
+            if(val < prom_arr[n]){
+                
+                val = prom_arr[n];
+                del = n;
+            }
+            n++;
+        }
+        prom_arr.splice(del,1);                         // удаляем максимальное число из prom_arr
+        ret_arr.push(val)                               // записываем полученное число в возвращаемый массив
+    }
+    return(ret_arr);
+}
+
+
+function plus(mas){
+  var ret_arr_pl = arr;
+  ret_arr_pl[7] = 42
+  return (ret_arr_pl)
+}
+
+/*console.log(arr)
+console.log(rev(arr))
+console.log(convert(arr))
+console.log(plus(arr))
+console.log(arr.length)*/
+
 

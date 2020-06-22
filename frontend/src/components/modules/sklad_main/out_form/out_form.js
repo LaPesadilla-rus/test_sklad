@@ -204,13 +204,27 @@ export default class OutForm extends Component{
 
         var data = this.state.out_arr;
         data.user = 'admin';
+        console.log(data);
         //console.log(data)
-        axio.post('/sklad/out', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            const FileDownload = require('js-file-download');
+        //axio.post('/sklad/out', {data},  { responseType: 'arraybuffer' }).then(res=>{
+        axio.post('/sklad/out', {data}).then(res=>{
+
+            if (res.data.errTxt) {
+                console.log(res.data);
+                console.log(this.state.out_arr.equip[res.data.errPos]);
+                var arr = this.state.out_arr;
+                arr.equip[res.data.errPos].error = true;
+                this.setState({
+                    out_arr: arr 
+                })
+                return 0;
+            }
+
+            //const FileDownload = require('js-file-download');
             
             //var decodedString = String.fromCharCode.apply(null, new Uint16Array(res.data));
             //var obj = JSON.parse(decodedString);
-            console.log(res);
+            console.log('True');
             //FileDownload(res.data, 'Trebovanie.xlsx');
             //console.log(res.data)
            /*if (res.data !== 'OK'){
