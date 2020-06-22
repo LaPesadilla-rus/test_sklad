@@ -1,8 +1,6 @@
 .autocomplite{
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    /*margin-left: -10px;*/
 }
 
 .autocomplite_column {
@@ -11,9 +9,8 @@
 
 .autocomplite input{
     width: 100%;
-    height: 25px;
+    outline:none;
     
-    outline:none
 }
 
 .autocomplite ul {

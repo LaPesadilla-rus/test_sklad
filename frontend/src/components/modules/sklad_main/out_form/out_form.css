@@ -1,0 +1,44 @@
+.out_form{
+    display: flex;
+    flex-direction: column;
+
+    width: 450px;
+
+    align-items: center;
+}
+
+.out_form_td{
+    height: 30px;
+    width: 320px;
+}
+
+.out_form_td1{
+    height: 30px;
+    width: 100px;
+}
+
+.out_form_td select{
+    width: 200px;
+}
+
+.out_form_td input{
+    width: 200px;
+}
+
+.out_form_bottom_table{
+    width: 100%;
+}
+
+.out_form_bottom_table td{
+    border: 1px solid black;
+}
+
+.out_form_bottom_table th {
+    border: 1px solid black;
+    background-color: darkgrey;
+}
+
+.out_err_row {
+    border: 1px solid #800f07
+}
+

@@ -1,0 +1,13 @@
+.otdel_modal {
+    width: 250px;
+}
+
+.modal_move_div{
+    display: flex;
+    width: 100%;
+}
+
+.modal_move_div select {
+    margin-left: 10px;
+    min-width: 100px;
+}

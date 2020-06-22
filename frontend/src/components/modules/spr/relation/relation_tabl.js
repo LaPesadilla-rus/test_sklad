@@ -37,7 +37,7 @@ export default class Relation_tabl extends Component {
 
     componentDidMount = () =>{
         //console.log(store.getState())
-        
+        var data = {};
         axio.get('/spr/equip_name').then(res=>{
             var mas = []
             for (let n = 0; n < res.data.length; n++){
@@ -68,7 +68,7 @@ export default class Relation_tabl extends Component {
             })
         });
         if (this.props.id_item){
-            var data = { id: this.props.id_item};
+            data = { id: this.props.id_item};
             axio.post('/spr/equip', data).then(res=>{
                 this.setState({
                     model: res.data[0].eq_name,
@@ -79,7 +79,7 @@ export default class Relation_tabl extends Component {
                 this.ChangeKategor({target: {value: res.data[0].eq_kat_id}});
             });
         }else{
-            var data = { kat: '0'};
+            data = { kat: '0'};
             axio.post('/sklad/new/type', data).then(res=>{
                 this.setState({
                     type_data: res.data,
@@ -238,15 +238,15 @@ export default class Relation_tabl extends Component {
             this.setState({error: null})
             
             if (!this.props.btn_stat){
-                var type = this.props.typeText;
+                var type = parseInt(this.props.typeText);
                 this.state.type_data.forEach(function(item) {
-                    if(item.id == type){
+                    if(item.id === type){
                         type = item.name
                     }
                 })
-                var marka = this.props.markaText;
+                var marka = parseInt(this.props.markaText);
                 this.state.mark_data.forEach(function(item) {
-                    if(item.id == marka){
+                    if(item.id === marka){
                         marka = item.name
                     }
                 })

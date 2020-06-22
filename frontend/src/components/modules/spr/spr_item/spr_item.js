@@ -79,6 +79,7 @@ export default class Spr_units extends Component {
     }
 
     componentDidMount = event => {
+        //console.log(this.props)
         if (this.props.item){
             this.setState({
                 item_name: this.props.item,
@@ -99,7 +100,7 @@ export default class Spr_units extends Component {
     }
 
     render () {
-        let form
+        let form;
         if (this.props.act === 'update'){
             form = <form onSubmit={this.handleUpdate}>
                         <div>

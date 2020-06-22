@@ -33,6 +33,7 @@ export default class New_equip extends Component {
     }
 
     componentDidMount = () =>{
+        //console.log(this.props)
         axio.get('/sklad/kat').then(res=>{
             this.setState({
                 kat_data: res.data,
@@ -61,8 +62,10 @@ export default class New_equip extends Component {
                 this.setState({
                     type_data: res.data,
                 })
+                
             });
         }
+        console.log(this.props)
         /*axio.post('/spr/equip').then(res=>{
             var mas = []
             for (let n = 0; n < res.data.length; n++){
@@ -191,6 +194,7 @@ export default class New_equip extends Component {
             axio.post('/equip/save', {data}).then(res => {
                 if (res.data === 'INSERT COMPLITE') {
                     this.onClose();
+                    this.props.onReboot();
                 }else{
                     alert('Данные не удалось сохранить');
                 }
@@ -200,13 +204,13 @@ export default class New_equip extends Component {
 
     handleUpdate = event => {
         event.preventDefault();
-        console.log('Update event')
+        //console.log('Update event')
         const data = {
             kat: this.state.kat,
             type: this.state.type,
             marka: this.state.marka,
             name: this.state.model,
-            id_item: 1,
+            id_item: this.props.id_item,
             table: 'equip_spr',
         }      
         var err = '';
@@ -226,9 +230,10 @@ export default class New_equip extends Component {
             alert(err);
         }else{
             axio.post('/equip/update', {data}).then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 if (res.data === 'UPDATE COMPLITE') {
                     this.onClose();
+                    this.props.onReboot();
                 }else{
                     alert('Данные не удалось сохранить');
                 }
@@ -270,16 +275,16 @@ export default class New_equip extends Component {
         }else{
             //this.setState({error: null})
             if (!this.props.btn_stat){
-                var type = this.state.type;
+                var type = parseInt(this.state.type);
                 this.props.type_data.forEach(function(item) {
-                    if(item.te_id == type){
+                    if(item.te_id === type){
                         type = item.te_name
                     }
                 })
-                var marka = this.state.marka;
+                var marka = parseInt(this.state.marka);
                 this.props.marka_data.forEach(function(item) {
                     console.log(item)
-                    if(item.id == marka){
+                    if(item.id === marka){
                         marka = item.name
                     }
                 })
@@ -309,12 +314,13 @@ export default class New_equip extends Component {
             kat: this.container.kat,
             type: this.container.type
         }
-        //console.log('---')
+        
         axio.post('/spr/equip', data).then(res=>{
             var mas = []
             for (let n = 0; n < res.data.length; n++){
                 mas[n] = res.data[n].item;
             }
+            console.log(res.data)
             this.setState({
                 equip_arr: mas,
                 items: res.data,
@@ -373,7 +379,7 @@ export default class New_equip extends Component {
                                 data={this.state.mark_data} id_val={this.state.marka} />
                             <div className='new_eq_sel'>
                                 <div className='new_eq_sel_col1'>Введите модель </div>
-                                <div className='new_eq_sel_col2'><Autocomplite modelText={this.props.equip_name} items_arr={['asd','ddfas']} setText={this.props.setText}/></div>
+                                <div className='new_eq_sel_col2'><input className='input' onChange={this.ChangeModelInp} value={this.state.model}></input></div>
                                 <div className='new_eq_sel_col3'></div>
                             </div>
                         </div>

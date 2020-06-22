@@ -7,16 +7,17 @@ import { MdAddBox, MdCreateNewFolder, MdFolder } from 'react-icons/md';
 import { IconContext } from "react-icons";
 
 export default class Action_new extends Component{
+
     render (){
         return (
                 <div className = 'Action_new'>
                     <IconContext.Provider value={{size: "25"}}>
-                        <NavLink className="action__button actions__button_pos new_button" to="./new">
+                        <button onClick={this.props.changeNew} className="action__button actions__button_pos new_button" >
                         <MdCreateNewFolder /> <label>Поступление</label>
-                        </NavLink>
-                        <NavLink className="action__button actions__button_pos" to="/sklad/out">
+                        </button>
+                        <button className="action__button actions__button_pos" onClick={this.props.changeOut}>
                             <MdAddBox /> <label>Выписка</label>
-                        </NavLink>
+                        </button>
                         <NavLink className="action__button actions__button_pos out_button" to="./new">
                             <MdAddBox /> <label>Просмотр движений</label>
                         </NavLink>

@@ -1,8 +1,8 @@
 .App {
     text-align: center;
-    /*background-image: url(background-texture.jpg);*/
-    background-color: #b3b3b3;
-    background-size: cover;
+    background-image: url(background-texture.jpg);
+    /*background-color: #b3b3b3;*/
+    /*background-size: cover;*/
     /*width: 100vw;*/
     min-height: 100vh;
     min-width: 1000px;
@@ -123,6 +123,22 @@
 
 .button_yellow.active{
     background-color: rgb(180, 178, 16);
+}
+
+.button_gray{
+    background-color: rgb(78, 78, 78);
+}
+
+.button_gray:hover{
+    background-color: rgb(78, 78, 78);
+}
+
+.button_item{
+    background-color: rgb(15, 128, 118);
+}
+
+.button_item:hover{
+    background-color: rgb(15, 165, 152);
 }
 
 .button_cancel{

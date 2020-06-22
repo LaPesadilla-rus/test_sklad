@@ -1,0 +1,16 @@
+.otdel_base {
+    width: 100%;
+}
+
+.filter_input{
+    width: 250px;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.filter_div {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
