@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { NavLink } from 'react-router-dom';
 import './l_menu.css';
-import { MdAssignment, MdPersonPin, MdDvr, MdExitToApp } from "react-icons/md";
+import { MdAssignment, MdPersonPin, MdDvr, MdExitToApp, MdFilterFrames } from "react-icons/md";
 
 export default class Menu extends Component{
     render (){
@@ -13,6 +13,9 @@ export default class Menu extends Component{
                 </NavLink> 
                 <NavLink className="button_block" activeClassName="act" to="/otdel">
                     <MdPersonPin/><label>Отделение</label>
+                </NavLink>
+                <NavLink className="button_block" activeClassName="act" to="/zurnal">
+                    <MdFilterFrames/><label>Журналы</label>
                 </NavLink>
                 <NavLink className="button_block" activeClassName="act" to="/reports/all">
                     <MdDvr/><label>Заявки</label>

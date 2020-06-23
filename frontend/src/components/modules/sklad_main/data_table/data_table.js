@@ -27,7 +27,7 @@ export default class Data extends Component{
         const a = event.target.parentElement.attributes[1].value;
         //console.log(event.target.parentElement.attributes[1].value);
         this.props.history.push('/sklad/edit/' + a);
-
+        //console.log(this.table.data)
         const data = {
             id: a
         }

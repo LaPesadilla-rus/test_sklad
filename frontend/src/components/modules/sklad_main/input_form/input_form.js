@@ -261,6 +261,7 @@ export default class Input_form extends Component {
             alert("Поставщик не выбран!")
             return;
         }
+        console.log(this.state.inv_num)
         const data = {
             equip_name: this.state.equip_name,
             equip_id: this.props.row.eq_id,

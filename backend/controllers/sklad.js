@@ -129,7 +129,7 @@ exports.sklad_update = async function(req, res) {
 }
 
 exports.sklad_out = async function(req, res) {
-    //console.log(req.body.data);
+    console.log(req.body.data);
     var arr = [];
     var a = [],
     errMes = {};
@@ -140,7 +140,7 @@ exports.sklad_out = async function(req, res) {
         a = await Sklad.sklad_out_midl3(arr[i]);
         //console.log(a)
         if (a.length > 0){
-            /*await Sklad.sklad_out_midl2(arr[i],a, function(err,docs){
+            await Sklad.sklad_out_midl2(arr[i],a, function(err,docs){
                 if (err) {
                     console.log(err);
                     errMes.row = err;
@@ -155,54 +155,50 @@ exports.sklad_out = async function(req, res) {
                     errMes.txt = 'Ошибка выписки!';
                     return res.send(errMes);
                 }
-            });*/
+            });
         }else{
             errMes.errTxt = 'Ошибка выписки на позиции: ' + (i + 1);
             errMes.errPos = i;
-            /*let buffer = new ArrayBuffer(100);
-            let view = new Uint16Array(buffer);
-
-            //view[0] = charCodeat('sadasd');
-            var enc = new TextEncoder(); // always utf-8
-            view = enc.encode("Error message");
-            //console.log(enc.encode("This is a string converted to a Uint8Array"));
-            console.log(view);*/
-            //var arrayBuffer = new Uint16Array(errMes)
-            console.log(errMes)
-            res.send(errMes)
-            i = 100;
+            //console.log(errMes)
+            return res.send(errMes)
         } 
-        /*Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
+        //console.log('sadasd')
+        Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
             if (err) {
                 console.log(err);
                 //errMes.row = err;
                 //errMes.txt = 'Ошибка выписки!';
                 //return res.send(errMes);
             }
-        });*/
+        });
     }
-    //res.send('OK');
+    res.send('OK');
 }
 
-exports.out_sklad = function (req, res){
+exports.out_file = async function (req, res){
+    var arr = [];
+    arr = req.body.data.equip;
     const Excel = require('exceljs');
+    
     var workbook = new Excel.Workbook();
-    workbook.xlsx.readFile('./docs/TR.xlsx').then(function(){
+    var randVal = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
+    console.log(randVal)
+    await workbook.xlsx.readFile('./docs/TR.xlsx').then( async function(){
         //console.log(workbook.worksheets.id + ' ' + workbook.worksheets.name)
         var ws = workbook.getWorksheet(7);
         var n = 12;
-        ws.getCell(9,3).value = req.body.data.user + ' отд' + req.body.data.otd_id;
-        ws.getCell(9,13).value = req.body.data.user + ' отд' + req.body.data.otd_id;
+        ws.getCell(9,3).value = req.body.data.mol_name + ' отд. ' + req.body.data.otd_name;
+        ws.getCell(9,13).value = req.body.data.mol_name + ' отд. ' + req.body.data.otd_name;
 
         for(var i = 0; i < arr.length; i++){
             ws.getCell(n,2).value = i+1;
             ws.getCell(n,12).value = i+1;
 
             ws.getCell(n,3).value = arr[i].equip_name;
-            ws.getCell(n,4).value = arr[i].st_un_id;
+            ws.getCell(n,4).value = arr[i].un_name;
             ws.getCell(n,5).value = arr[i].kol;
             ws.getCell(n,13).value = arr[i].equip_name;
-            ws.getCell(n,14).value = arr[i].st_un_id;
+            ws.getCell(n,14).value = arr[i].un_name;
             ws.getCell(n,15).value = arr[i].kol;
             n++;
             ws.getCell(n,3).value = arr[i].st_inv_num;
@@ -210,10 +206,21 @@ exports.out_sklad = function (req, res){
             n++;
         }
 
-        workbook.xlsx.writeFile('./docs/test100.xlsx').then(function(){
-            res.download('./docs/test100.xlsx');
+        await workbook.xlsx.writeFile('./docs/test100_T.xlsx').then(function(){
+            res.download('./docs/test100_T.xlsx');
+           
         });
+        
     });
+    //await delFile(randVal);
+}
+
+delFile = (val) => {
+    const fs = require("fs");
+    const path = require('path')
+    var filepath = path.dirname(__dirname)
+    filepath = filepath.replace(/\\/g, "/");
+    fs.unlinkSync(filepath + `/docs/test`+val+`_T.xlsx`);
 }
 
 exports.sklad_download = function(req,res){

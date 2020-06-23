@@ -64,7 +64,7 @@ exports.StorageUpdate = async function (data, cb) {
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
                     hy_user, hy_poyasn)
                     VALUES ( `+data.equip_id+`, `+data.provider_id+`, `+data.units_id+`, `+data.kol+`, 
-                                '`+data.inv_num+`', '`+data.dogovor_num+`', '`+data.prim+`', '`+data.row.st_inp_usr+`', 
+                                '`+data.inv_num+`', '`+data.dogovr_num+`', '`+data.prim+`', '`+data.row.st_inp_usr+`', 
                                 '`+data.user+`', 'Обновление хранилища');
                 `;  
     //console.log(sql);

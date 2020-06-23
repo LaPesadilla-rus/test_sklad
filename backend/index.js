@@ -82,7 +82,7 @@ app.post('/sklad/new/save', skladController.sklad_save);
 app.post('/sklad/new/update', skladController.sklad_update);
 app.post('/sklad/new/type', skladController.type_post);
 app.post('/sklad/out', skladController.sklad_out);
-//app.post('/sklad/out_file', skladController.out_file);
+app.post('/sklad/out_file', skladController.out_file);
 
 //------------------------------
 app.post('/equip/save', skladController.equip_save);
@@ -104,7 +104,9 @@ app.post('/spr/relation/add', sprController.relation_add)
 
 app.delete('/spr/delete', sprController.spr_delete);
 
-
+const path = require('path')
+var str = path.dirname(__dirname)
+console.log(__dirname)
 //------------------------------
 //OTDEL
 

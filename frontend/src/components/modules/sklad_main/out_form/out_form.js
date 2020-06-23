@@ -9,6 +9,7 @@ export default class OutForm extends Component{
     constructor() {
         super();
         UnicId.enableUniqueIds(this);
+        this.err_id = '';
         this.state = {
             data: [],
             kat_id: '',
@@ -23,6 +24,8 @@ export default class OutForm extends Component{
             amount: '',
             kol: '',
             out_arr: [],
+            otd_name: '',
+            mol_name: '',
             selDis: false,
 
         };
@@ -42,7 +45,25 @@ export default class OutForm extends Component{
                 eq_data: arr,
                 inv_data: arr_inv,
             });
-            console.log(res.data);
+            //console.log(res.data);
+        });
+    }
+
+    onReboot () {
+        var arr = [];
+        var arr_inv = [];
+        axio.get('/sklad/out_data').then(res=>{
+            res.data.equip_data.map(row => {
+                arr.push(row.equip_name);
+                arr_inv.push(row.st_inv_num)
+                return 0;
+            })
+            this.setState({
+                data: res.data,
+                eq_data: arr,
+                inv_data: arr_inv,
+            });
+            //console.log(res.data);
         });
     }
 
@@ -58,9 +79,29 @@ export default class OutForm extends Component{
             }
             return 0;
         });
+        this.state.data.otd_data.map( row => {
+            if (row.ot_id === parseInt(e.target.value)){
+                this.setState({
+                    otd_name: row.ot_name //нужно отвязать от state
+                })
+            }
+            return 0;
+        })
         this.setState ({ 
             otd_id: e.target.value,
             mol_data: arr,
+        });
+    }
+
+    changeMol = (e) => {
+        this.state.data.mol_data.map(row => {
+            if(row.mo_id === parseInt(e.target.value)){
+                this.setState({
+                    mol_name: row.mo_name,
+                    mol_id: e.target.value
+                })
+            }
+            return 0;
         });
     }
 
@@ -87,7 +128,7 @@ export default class OutForm extends Component{
     setInvText = (val) => {
         var row = this.findRowEquip('', val);
         //console.log(row)
-        console.log(this.state.data)
+        //console.log(this.state.data)
         if (row.equip_name){
             this.setState({
                 inv_num: val,
@@ -110,44 +151,31 @@ export default class OutForm extends Component{
     findRowEquip = (eq_val, inv_val) => {
         var arr = [];
         var data = this.state.data.equip_data;
-        //console.log(data.length)
+        var inv = inv_val + '',
+        eq = eq_val + '';
         data.forEach( (row, index) => {
             if (eq_val !== ''){
-                if (row.equip_name === eq_val){
+                if (row.equip_name === eq){
                     arr.push(row.st_inv_num); 
                 }
             }else if (inv_val !== ''){
-                if (row.st_inv_num === inv_val){
+                //console.log(row.st_inv_num + ' : ' + inv) 
+                if (row.st_inv_num === inv){
                    arr = row;
                    arr.index = index;
                    //data.splice(index, 1);
+                   //console.log('TRUE')
+                   //console.log(arr)
                 }
             }
-            return 0;
         });
-        //console.log(data.length)
-        /*var data = this.state.data.equip_data
-        console.log(data.length)
-        data.forEach(function(row, index, object) {
-            if (eq_val !== ''){
-                if (row.equip_name === eq_val){
-                    arr = row;
-                    data.splice(index, 1); 
-                }
-            }else if (inv_val !== ''){
-                if (row.st_inv_num === inv_val){
-                   arr = row;
-                   data.splice(index, 1); 
-                }
-            }
-        })
-        console.log(data.length)*/
         return (arr);
     }
 
     outAdd = () => {
         var err = '';
-        if (!this.state.act_row.st_id){
+        //console.log(this.state.out_arr.length)
+        if (!this.state.act_row.st_inv_num){
             err = 'Не выбран выписываемый элемент!;';
         }
         if (this.state.kol === '' || parseInt(this.state.kol) <= 0 || this.state.kol > this.state.amount){
@@ -158,6 +186,9 @@ export default class OutForm extends Component{
         }
         if (this.state.mol_id === ''){
             err = err + '  Мол не выбран!;';
+        }
+        if (this.state.out_arr.length === 13){
+            err = err + '  Достигнут максимум оборудования для выписки за 1 раз';
         }
         if (err !== ''){
             alert (err);
@@ -177,6 +208,8 @@ export default class OutForm extends Component{
             arr.equip = this.state.out_arr;
             arr.otd_id = this.state.otd_id;
             arr.mol_id = this.state.mol_id;
+            arr.otd_name = this.state.otd_name;
+            arr.mol_name = this.state.mol_name;
             arr.equip = row;
             this.setState({
                 out_arr: arr,
@@ -201,30 +234,35 @@ export default class OutForm extends Component{
             alert('Заполните все поля! ');
             return 0;
         }
-
         var data = this.state.out_arr;
         data.user = 'admin';
-        console.log(data);
-        //console.log(data)
-        //axio.post('/sklad/out', {data},  { responseType: 'arraybuffer' }).then(res=>{
         axio.post('/sklad/out', {data}).then(res=>{
-
+            console.log(res.data)
             if (res.data.errTxt) {
-                console.log(res.data);
-                console.log(this.state.out_arr.equip[res.data.errPos]);
+                //console.log(this.state.out_arr.equip[res.data.errPos]);
                 var arr = this.state.out_arr;
                 arr.equip[res.data.errPos].error = true;
+                this.err_id = arr.equip[res.data.errPos].st_id;
                 this.setState({
                     out_arr: arr 
-                })
+                });
+                this.onReboot();
+                this.props.onReboot();
                 return 0;
+            }else{
+                axio.post('/sklad/out_file', {data},  { responseType: 'arraybuffer' }).then(res=>{
+                    const FileDownload = require('js-file-download');
+                    FileDownload(res.data, 'Trebovanie.xlsx');
+                });
+                this.props.onReboot();
+                this.props.onClose();
             }
 
             //const FileDownload = require('js-file-download');
             
             //var decodedString = String.fromCharCode.apply(null, new Uint16Array(res.data));
             //var obj = JSON.parse(decodedString);
-            console.log('True');
+            //console.log('True');
             //FileDownload(res.data, 'Trebovanie.xlsx');
             //console.log(res.data)
            /*if (res.data !== 'OK'){
@@ -235,7 +273,32 @@ export default class OutForm extends Component{
             this.props.onClose();
            }*/
         });
+    }
 
+    delRow = (row) => {
+        var arr = this.state.out_arr;
+        for (var i = 0; i < arr.equip.length; i++){
+            if (arr.equip[i].st_id === row.st_id){
+                arr.equip.splice(i, 1);
+                i = arr.equip.length + 1;
+            }
+        }
+        this.setState({
+            out_arr: arr 
+        });
+        arr = this.state.data;
+        for (i = 0; i < arr.equip_data.length; i++){
+            if (arr.equip_data[i].st_id === row.st_id && this.err_id !== row.st_id){
+                arr.equip_data[i].st_amount = arr.equip_data[i].st_amount + parseInt(row.kol);
+            }
+        }
+        this.setState({
+            data: arr 
+        });
+        if (row.st_id === this.err_id){
+            this.err_id = '';
+        }
+        
     }
 
     render() {
@@ -246,7 +309,7 @@ export default class OutForm extends Component{
                         <p>Выписка</p>
                         <table>
                             <tbody>
-                                <tr>
+                                {/*<tr>
                                 <td className='out_form_td1'>
                                     <label>Категория: </label>
                                 </td>
@@ -256,7 +319,7 @@ export default class OutForm extends Component{
                                         {this.state.data.kat_data && this.state.data.kat_data.map( row => <option key={this.nextUniqueId()} value={row.kat_id}>{row.kat_name}</option>)}     
                                     </select>
                                 </td>
-                                </tr>
+                                </tr>*/}
                                 <tr>
                                 <td className='out_form_td1'>
                                     <label>Номенклатура: </label>
@@ -291,7 +354,7 @@ export default class OutForm extends Component{
                                     <label>МОЛ: </label>
                                 </td>
                                 <td className='out_form_td'>
-                                    <select onChange={(e) => { this.setState ({ mol_id: e.target.value})}} value={this.state.mol_id} disabled={this.state.selDis}>
+                                    <select onChange={this.changeMol} value={this.state.mol_id} disabled={this.state.selDis}>
                                         <option key={this.nextUniqueId()} value='-1'></option>
                                         {this.state.mol_data && this.state.mol_data.map( row => <option key={this.nextUniqueId()} value={row.mo_id}>{row.mo_name}</option>)}     
                                     </select>
@@ -313,7 +376,7 @@ export default class OutForm extends Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.out_arr.equip && this.state.out_arr.equip.map( row => <OutFromRow row={row} key={this.nextUniqueId()} /> )}
+                                {this.state.out_arr.equip && this.state.out_arr.equip.map( row => <OutFromRow row={row} key={this.nextUniqueId()} delRow={this.delRow} /> )}
                             </tbody>
                         </table>
                     </div>

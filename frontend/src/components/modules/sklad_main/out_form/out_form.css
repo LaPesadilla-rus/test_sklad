@@ -7,6 +7,8 @@
     align-items: center;
 }
 
+
+
 .out_form_td{
     height: 30px;
     width: 320px;
@@ -27,9 +29,10 @@
 
 .out_form_bottom_table{
     width: 100%;
+    border-collapse: collapse;
 }
 
-.out_form_bottom_table td{
+.out_form_bottom_table_td{
     border: 1px solid black;
 }
 
@@ -39,6 +42,7 @@
 }
 
 .out_err_row {
-    border: 1px solid #800f07
+    border: 2px solid #851810
 }
+
 

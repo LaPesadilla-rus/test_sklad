@@ -190,9 +190,10 @@ exports.sklad_out_midl2 = async function(data,a,cb) {
 
 exports.sklad_out_midl3 = async function(data,cb) {
     var sql = '';
-    data.st_id = 2000;
+    //data.st_id = 2000;
     sql = `SELECT * FROM storage WHERE st_id = `+data.st_id+``;
     await pool.query(sql).then ((res) =>{
+        //console.log(res.rows)
         docs = res;
     }).catch( function(err) {
         console.log(err)
@@ -235,7 +236,7 @@ exports.out_data_kat = async(cb) => {
 };
 exports.out_data_equip = async(cb) => {
     var sql = '';
-    sql = `SELECT st.*, (te.te_name || ' ' || ma.ma_name || ' ' || eq.eq_name) as equip_name 
+    sql = `SELECT st.*, (te.te_name || ' ' || ma.ma_name || ' ' || eq.eq_name) as equip_name, un.un_name , eq.eq_kat_id
             FROM storage  st
 
             inner join equip_spr eq
@@ -245,7 +246,13 @@ exports.out_data_equip = async(cb) => {
             on te.te_id = eq.eq_type_id
 
             inner join marka_equip_spr ma
-            on ma.ma_id = eq.eq_mark_id`;
+            on ma.ma_id = eq.eq_mark_id
+
+            inner join units_spr un
+            on un.un_id = st.st_un_id
+
+            order by st.st_id
+            `;
     await pool.query(sql).then (
         (res) => {
             cb('',res);
