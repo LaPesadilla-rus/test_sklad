@@ -91,10 +91,29 @@ exports.StorageOut = async function ( data, mol_id, otd_id, kol, user, cb) {
                                 '`+user+`', 'Выписано');
                 `;  
     //console.log(sql);
-    //cb('','');
     pool.query(sql).then (
         (res) => {
-            //cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+}
+
+exports.StorageIn = async function ( data,cb) {
+    //console.log(data)
+    var  sql = `INSERT INTO public.history(
+                    hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
+                    hy_inv_num, hy_contr_num, hy_prim,
+                    
+                    hy_user, hy_poyasn)
+                    VALUES ( `+data.equip_id+`, `+data.provider_id+`, `+data.units_id+`, `+data.kol+`, 
+                                '`+data.inv_num+`', '`+data.dogvr_num+`', '`+data.prim+`', 
+                                
+                                '`+data.user+`', 'Поступило');
+                `;  
+    //.log(sql);
+    pool.query(sql).then (
+        (res) => {
         }
     ).catch(function(err) {
         cb(err,'');

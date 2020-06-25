@@ -14,6 +14,7 @@ client.connect();*/
 const skladController = require('./controllers/sklad.js');
 const sprController = require('./controllers/spr.js');
 const otdelController = require('./controllers/otdel.js');
+const authController = require('./controllers/auth.js');
 
 
 
@@ -63,6 +64,10 @@ spr.getData();*/
 //test 22.05.2020
 app.use(express.json());
 
+//---------------------------------------- AUTH
+
+app.post('/auth/login', authController.login);
+
 //----------------------------------------
 app.get('/sklad/all', skladController.all);
 
@@ -104,9 +109,9 @@ app.post('/spr/relation/add', sprController.relation_add)
 
 app.delete('/spr/delete', sprController.spr_delete);
 
-const path = require('path')
+/*const path = require('path')
 var str = path.dirname(__dirname)
-console.log(__dirname)
+console.log(__dirname)*/
 //------------------------------
 //OTDEL
 
@@ -183,4 +188,10 @@ console.log(convert(arr))
 console.log(plus(arr))
 console.log(arr.length)*/
 
+function testStr(a, b) {
+    a1=(a.toUpperCase())
+    b1=(b.toLowerCase())
+    z=a1.concat(b1)
+    return(z)
+    }
 

@@ -1,16 +1,20 @@
-let conn_str =  ({
+const conn_str =  ({
     user: 'postgres',
     host: 'localhost',
     database: 'sklad',
-    password: 'masterpas',
+    password: 'masterkey',
     port: 5432,
     max: 3
 });
 
-function test () {
+module.exports.conn_str = conn_str;
+
+
+
+/*function test () {
     
 }
 
-module.exports.conn_str = conn_str;
 
-module.exports.test = test;
+
+module.exports.test = test;*/

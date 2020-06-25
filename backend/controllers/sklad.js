@@ -108,7 +108,13 @@ exports.sklad_save = function(req, res) {
             return res.sendStatus(500);
         }
         res.send(docs);
-    })
+    });
+    Hyst.StorageIn(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
 }
 
 exports.sklad_update = async function(req, res) {
@@ -129,41 +135,63 @@ exports.sklad_update = async function(req, res) {
 }
 
 exports.sklad_out = async function(req, res) {
-    console.log(req.body.data);
+    //console.log(req.body.data);
     var arr = [];
-    var a = [],
+    var mas1 = [],
+    item_arr = [],
     errMes = {};
     arr = req.body.data.equip;
 
     //console.log(arr)
+    // проверка на доступность, НЕ ОПТИМИЗИРОВАННО!
     for(var i = 0; i < arr.length; i++){
-        a = await Sklad.sklad_out_midl3(arr[i]);
-        //console.log(a)
-        if (a.length > 0){
-            await Sklad.sklad_out_midl2(arr[i],a, function(err,docs){
-                if (err) {
-                    console.log(err);
-                    errMes.row = err;
-                    errMes.txt = 'Ошибка выписки!';
-                    return res.send(errMes);
-                }
-            });
-            await Sklad.sklad_out_midl1(arr[i],req.body.data.mol_id,req.body.data.otd_id, function(err,docs){
-                if (err) {
-                    console.log(err);
-                    errMes.row = err;
-                    errMes.txt = 'Ошибка выписки!';
-                    return res.send(errMes);
-                }
-            });
-        }else{
+        let mas = await Sklad.sklad_out_midl3(arr[i]);
+        //console.log(mas)
+        item_arr.push(mas[0])
+        if (mas.length = 0){
             errMes.errTxt = 'Ошибка выписки на позиции: ' + (i + 1);
             errMes.errPos = i;
             //console.log(errMes)
             return res.send(errMes)
-        } 
+        }
+        //item_arr[i] = mas.slice();
+    }
+    //console.log(arr)
+    for(var i = 0; i < arr.length; i++){
+        //mas = await Sklad.sklad_out_midl3(arr[i]);
+        let mas = item_arr[i];
+        //console.log(arr[i].eq_kat_id)
+        await Sklad.sklad_out_midl2(arr[i],mas, function(err,docs){
+            if (err) {
+                console.log(err);
+                errMes.row = err;
+                errMes.errTxt = 'Ошибка выписки!';
+                errMes.errPos = i;
+                return res.send(errMes);
+            }
+        });
+        if (arr[i].eq_kat_id !== 2){
+            await Sklad.sklad_out_midl1(arr[i],req.body.data.mol_id,req.body.data.otd_id, function(err,docs){
+                if (err) {
+                    console.log(err);
+                    errMes.row = err;
+                    errMes.errTxt = 'Ошибка выписки!';
+                    errMes.errPos = i;
+                    return res.send(errMes);
+                }
+            });
+        }
+        await Sklad.sklad_out_midl0(arr[i],req.body.data.mol_id,req.body.data.otd_id, req.body.data.user, function(err,docs){
+            if (err) {
+                console.log(err);
+                errMes.row = err;
+                errMes.errTxt = 'Ошибка выписки!';
+                errMes.errPos = i;
+                return res.send(errMes);
+            }
+        }); 
         //console.log('sadasd')
-        Hyst.StorageOut(a[0], req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
+        Hyst.StorageOut(mas, req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
             if (err) {
                 console.log(err);
                 //errMes.row = err;
@@ -182,7 +210,7 @@ exports.out_file = async function (req, res){
     
     var workbook = new Excel.Workbook();
     var randVal = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
-    console.log(randVal)
+    //console.log(randVal)
     await workbook.xlsx.readFile('./docs/TR.xlsx').then( async function(){
         //console.log(workbook.worksheets.id + ' ' + workbook.worksheets.name)
         var ws = workbook.getWorksheet(7);
