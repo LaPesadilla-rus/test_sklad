@@ -126,6 +126,24 @@ exports.sklad_save = function(req,cb) {
     });
 }
 
+exports.sklad_save_in = function(req,cb) {
+    if(!req.body.data) return res.sendStatus(400);
+    /*let date = new Date();
+    let dateNow = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();*/
+    var sql = `INSERT INTO public.storage_in (si_eq_id, si_pr_id, si_un_id, si_inv_num, si_amount, si_contr_date, si_contr_num, si_usr_id)
+    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`,'`+req.body.data.date+`',
+    '`+req.body.data.dogvr_num+`', 0);`;
+    //console.log(sql)
+    pool.query(sql
+    , (err,res)=>{
+        if (err !== undefined) {
+            console.log("Postgres INSERT error:", err);
+        }else{
+            cb(err,'POST COMPLITE');
+        }
+    });
+}
+
 exports.sklad_update = function(req,cb) {
     //console.log(req.body.data)
     if(!req.body.data) return res.sendStatus(400);

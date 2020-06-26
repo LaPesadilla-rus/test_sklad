@@ -7,22 +7,24 @@ export default class Menu extends Component{
     render (){
         return (
             <div className="Menu">
-                <p>Меню</p>
-                <NavLink className="button_block" activeClassName="act" to="/sklad/all">
-                    <MdAssignment/><label>Склад</label>
-                </NavLink> 
-                <NavLink className="button_block" activeClassName="act" to="/otdel">
-                    <MdPersonPin/><label>Отделение</label>
-                </NavLink>
-                <NavLink className="button_block" activeClassName="act" to="/zurnal">
-                    <MdFilterFrames/><label>Журналы</label>
-                </NavLink>
-                <NavLink className="button_block" activeClassName="act" to="/reports/all">
-                    <MdDvr/><label>Заявки</label>
-                </NavLink> 
-                <NavLink className="button_block" activeClassName="ext" to="/exit">
-                    <MdExitToApp/><label>Выход</label>
-                </NavLink> 
+                <div className="absolute_block">
+                    <p>Меню</p>
+                    <NavLink className="button_block" activeClassName="act" to="/sklad/all">
+                        <MdAssignment/><label>Склад</label>
+                    </NavLink> 
+                    <NavLink className="button_block" activeClassName="act" to="/otdel">
+                        <MdPersonPin/><label>Отделение</label>
+                    </NavLink>
+                    <NavLink className="button_block" activeClassName="act" to="/zurnal">
+                        <MdFilterFrames/><label>Журналы</label>
+                    </NavLink>
+                    <NavLink className="button_block" activeClassName="act" to="/reports/all">
+                        <MdDvr/><label>Заявки</label>
+                    </NavLink> 
+                    <NavLink className="button_block" activeClassName="ext" to="/exit">
+                        <MdExitToApp/><label>Выход</label>
+                    </NavLink> 
+                </div>
             </div>
         );
     }

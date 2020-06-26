@@ -109,6 +109,13 @@ exports.sklad_save = function(req, res) {
         }
         res.send(docs);
     });
+    Sklad.sklad_save_in(req ,function(err,docs){
+        if (err) {
+            //console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs);
+    });
     Hyst.StorageIn(req.body.data, function (err, docs) {
         if (err) {
             console.log(err);
