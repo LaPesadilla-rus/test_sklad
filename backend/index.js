@@ -15,6 +15,7 @@ const skladController = require('./controllers/sklad.js');
 const sprController = require('./controllers/spr.js');
 const otdelController = require('./controllers/otdel.js');
 const authController = require('./controllers/auth.js');
+const zurnalController = require('./controllers/zurnal.js');
 
 
 
@@ -128,13 +129,17 @@ app.post('/otdel/spisat14_29', otdelController.spisat14_29);
 app.post('/otdel/all_filter', otdelController.all_filter);
 //--------------------------------
 
-app.get('/', function(req, res) {
+///---------------------------------------------
+app.post('/zurnal/postupl', zurnalController.postupl);
+//----------------------------------------------
+
+/*app.get('/', function(req, res) {
     res.send('SKALD SERVER');
 });
 
 app.get('/local', function(req, res) {
     res.send('local');   
-});
+});*/
 
 app.listen(4000, function() {
     console.log('SKLAD SERVER IS RUNNING');
@@ -143,12 +148,6 @@ app.listen(4000, function() {
 //-----------------------------------------------------
 //var arr = [0, 12, 8, 1, 6, 2, 7]
 arr = [1, 20, 4, 8, 3, 0, 5];
-
-function convert(mas){
-  var ret_arr = [];
-  ret_arr = mas.sort((a,b)=>a-b);
-  return (ret_arr)
-}
 
 function rev(mas){
     var ret_arr = [],                                   // возвращаемый массив
@@ -174,24 +173,34 @@ function rev(mas){
     }
     return(ret_arr);
 }
+//console.log(rev(arr))
+/*var arr=[5, 9, 6, 3, 8,1,5,23,8,10,20,30]
+arr.sort(function(a,b){ 
+    return a - b})
 
+console.log(arr)*/
 
-function plus(mas){
-  var ret_arr_pl = arr;
-  ret_arr_pl[7] = 42
-  return (ret_arr_pl)
-}
+var cust = [[1,3],[2,3],[3,3],[1,1],[2,3],[2,1],[3,3]]; 
+var etalon = [3,3];
+var etalon_vedro = [];
 
-/*console.log(arr)
-console.log(rev(arr))
-console.log(convert(arr))
-console.log(plus(arr))
-console.log(arr.length)*/
+/*etalon_vedro = sravn(cust,etalon)
+console.log(etalon_vedro);
+console.log("В ведре с образцовыми ягодами лежит " + etalon_vedro.length + " ягод")*/
 
-function testStr(a, b) {
-    a1=(a.toUpperCase())
-    b1=(b.toLowerCase())
-    z=a1.concat(b1)
-    return(z)
+function sravn(osn_mas, etl_mas){
+    let ret_arr = [],
+    err = false;
+    for(i = 0; i < osn_mas.length; i++){
+        err = false;
+        for(n = 0; n < osn_mas[i].length; n++){
+            if (osn_mas[i][n] !== etl_mas[n]){
+                err = true;
+            }
+        }
+        if(!err){
+            ret_arr.push(osn_mas[i]);
+        }
     }
-
+    return(ret_arr);
+}
