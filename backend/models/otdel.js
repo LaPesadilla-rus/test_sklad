@@ -268,8 +268,8 @@ exports.spisatDocNum = async function (data, cb) {
 }
 
 exports.spisatInsert = async function (docNum,data, cb) {
-    var sql = ` INSERT INTO public.logbook (lb_mol_name, lb_isp_name, lb_prim, lb_act_id, lb_act_num)
-                VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`);
+    var sql = ` INSERT INTO public.logbook (lb_mol_name, lb_isp_name, lb_prim, lb_act_id, lb_act_num, lb_usr_id)
+                VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`, 0);
      `;
     await pool.query(sql).then (
         (res) => {

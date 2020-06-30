@@ -77,7 +77,7 @@ export default class Data extends Component{
 
     render() {
         return (
-            <div>
+            <div className='sklad_main_div'>
                 {<Actions changeNew={this.changeNew} changeOut={this.changeOutForm} />}
             <form onSubmit={this.handleSubmit}>
                 <table className="data-table data-table_pos">

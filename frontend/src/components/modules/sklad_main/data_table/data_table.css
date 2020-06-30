@@ -1,3 +1,7 @@
+.sklad_main_div{
+    min-width: 900px;
+}
+
 .data-table {
     background-color: #f1f0f0;
     border-radius: 10px;

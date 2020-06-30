@@ -4,6 +4,7 @@ import axio from 'axios';
 import UnicId from 'react-html-id';
 
 import Postupl from './vkladki/postupl.js';
+import Vipiska from './vkladki/vipiska';
 
 
 export default class Zurnal extends Component{
@@ -13,6 +14,13 @@ export default class Zurnal extends Component{
         this.state = {
             buttonStatus: 0,
             data: [],
+            flDate1: '',
+            flDate2: '',
+            flDate3: '',
+            flDate4: '',
+            invNum: '',
+            contrNum: '',
+            txt: ''
         };
     }
 
@@ -24,10 +32,58 @@ export default class Zurnal extends Component{
 
     postupl = () => {
         var data = {
+            flDate1: this.state.flDate1,
+            flDate2: this.state.flDate2,
+            flDate3: this.state.flDate3,
+            flDate4: this.state.flDate4,
+            invNum: this.state.invNum,
+            contrNum: this.state.contrNum,
+        }
+        axio.post('/zurnal/postupl', {data}).then(res=>{
+            console.log(res.data)
+            this.setState({
+                data: res.data
+            })
+        });
+        this.setState({
+            buttonStatus: 0,
+            txt: 'Поступления'
+        });
+    }
+    vipiska = () => {
+        var data = {
+            flDate1: this.state.flDate1,
+            flDate2: this.state.flDate2,
+            invNum: this.state.invNum,
+            contrNum: this.state.contrNum,
+        }
+        axio.post('/zurnal/vipiska', {data}).then(res=>{
+            console.log(res.data)
+            this.setState({
+                data: res.data
+            })
+        });
+        this.setState({
+            buttonStatus: 1,
+            txt: "Выписка"
+        });
+    }
+
+    sbrosFiltr = () => {
+        this.setState({
             flDate1: '',
             flDate2: '',
             invNum: '',
-            contNum: '',
+            contrNum: ''
+        })
+    }
+
+    primFiltr = () => {
+        var data = {
+            flDate1: this.state.flDate1,
+            flDate2: this.state.flDate2,
+            invNum: this.state.invNum,
+            contrNum: this.state.contrNum,
         }
         axio.post('/zurnal/postupl', {data}).then(res=>{
             console.log(res.data)
@@ -42,24 +98,50 @@ export default class Zurnal extends Component{
         return (
             <div className='zurnal_fon'>
                 <button className='button' onClick={this.postupl}>Поступления</button>
-                <button className='button' onClick={(e) => {this.setState({buttonStatus: 1})}}>Выписка</button>
+                <button className='button' onClick={this.vipiska}>Выписка</button>
                 <button className='button' onClick={(e) => {this.setState({buttonStatus: 2})}}>Списано</button>
-
-                <div className='zurnal_block'> 
-                    <label>С </label>
-                    <input type='date'></input>
-                    <label>По</label>
-                    <input type='date'></input>    
-                    <label>Инвентарный номер:</label>
-                    <input ></input>
-                    <label>Номер договора:</label>
-                    <input></input>
-                    <button className='button button_green'>Применить</button>
+                <div className='zurnal_block'>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label>Дата поступления</label>
+                                </td>
+                                <td>
+                                    <label>С </label>
+                                    <input type='date' onChange={(e) => {this.setState({flDate1: e.target.value})}} value={this.state.flDate1}></input>
+                                    <label>По</label>
+                                    <input type='date' onChange={(e) => {this.setState({flDate2: e.target.value})}} value={this.state.flDate2}></input>
+                                </td>
+                                <td>
+                                    <label>Инвентарный номер:</label>
+                                    <input onChange={(e) => {this.setState({invNum: e.target.value})}} value={this.state.invNum}></input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Дата контракта</label>
+                                </td>
+                                <td>
+                                    <label>С </label>
+                                    <input type='date' onChange={(e) => {this.setState({flDate3: e.target.value})}} value={this.state.flDate3}></input>
+                                    <label>По</label>
+                                    <input type='date' onChange={(e) => {this.setState({flDate4: e.target.value})}} value={this.state.flDate4}></input>
+                                </td>
+                                <td>
+                                    <label>Номер договора:</label>
+                                    <input onChange={(e) => {this.setState({contrNum: e.target.value})}} value={this.state.contrNum}></input>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button className='button button_red' onClick={this.sbrosFiltr}>Сбросить</button>
                 </div>
 
                 <div className='zurnal_block'>    
 
-                    {(this.state.buttonStatus === 0) ? <Postupl data={this.state.data} /> : null}
+                    {(this.state.buttonStatus === 0) ? <Postupl data={this.state.data} txt={this.state.txt} /> : null}
+                    {(this.state.buttonStatus === 1) ? <Vipiska data={this.state.data} txt={this.state.txt} /> : null}
 
                 </div> 
                 {/*<div className='zurnal_block'>    

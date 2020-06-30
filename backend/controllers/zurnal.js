@@ -10,7 +10,9 @@ exports.postupl = function(req,res) {
         name: []
     };
     i = 0;
+    //console.log(req.body.data);
     Zurnal.postupl(req.body.data,function(err,docs){
+        
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -23,7 +25,29 @@ exports.postupl = function(req,res) {
         out_arr.param = ['Дата', 'Наименование'];
         out_arr.data.push(arr.date);
         out_arr.data.push(arr.name)
-        console.log(out_arr);
+        //console.log(docs.rows);
+        res.send(docs.rows);
+    })
+}
+
+exports.vipiska = function(req,res) {
+    Zurnal.vipiska(req.body.data,function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows);
+        res.send(docs.rows);
+    })
+}
+
+exports.spisano = function(req,res) {
+    Zurnal.spisano(req.body.data,function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows);
         res.send(docs.rows);
     })
 }

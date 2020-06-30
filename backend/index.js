@@ -131,6 +131,8 @@ app.post('/otdel/all_filter', otdelController.all_filter);
 
 ///---------------------------------------------
 app.post('/zurnal/postupl', zurnalController.postupl);
+app.post('/zurnal/vipiska', zurnalController.vipiska);
+app.post('/zurnal/spisano', zurnalController.spisano);
 //----------------------------------------------
 
 /*app.get('/', function(req, res) {

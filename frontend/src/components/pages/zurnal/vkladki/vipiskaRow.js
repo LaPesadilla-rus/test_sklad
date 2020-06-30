@@ -4,7 +4,7 @@ import '../zurnal.css';
 import UnicId from 'react-html-id';
 
 
-export default class PostuplRow extends Component{
+export default class VipiskaRow extends Component{
     constructor() {
         super();
         UnicId.enableUniqueIds(this);
@@ -18,14 +18,14 @@ export default class PostuplRow extends Component{
         return (
                 
                 <tr>
-                    <td>{this.props.row.si_date}</td>
-                    <td>{this.props.row.si_inv_num}</td>
+                    <td>{this.props.row.so_date}</td>
                     <td>{this.props.row.equip_name}</td>
+                    <td>{this.props.row.so_inv_num}</td>
                     <td>{this.props.row.un_name}</td>
-                    <td>{this.props.row.si_amount}</td>
+                    <td>{this.props.row.so_amount}</td>
                     <td>{this.props.row.us_name}</td>
-                    <td>{this.props.row.si_contr_num}</td>
-                    <td>{this.props.row.si_contr_date}</td>
+                    <td>{this.props.row.mo_name}</td>
+                    <td>{this.props.row.ot_name}</td>
                 </tr>
                          
         );
