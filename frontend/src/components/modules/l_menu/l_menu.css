@@ -2,10 +2,12 @@
     background-color: #2e2e2e;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
-    width: 280px;
+    width: 220px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-
+    position: fixed;
+    z-index: 101;
     /*position: absolute;
     top: 0;
     bottom: 0;
@@ -13,8 +15,8 @@
 }
 
 .absolute_block{
-    width: 210px;
-    position: fixed;
+    /*width: 210px;
+    position: fixed;*/
 }
 
 .button_block {

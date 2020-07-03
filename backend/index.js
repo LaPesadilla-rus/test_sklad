@@ -206,3 +206,51 @@ function sravn(osn_mas, etl_mas){
     }
     return(ret_arr);
 }
+
+var data = [],
+arr=[
+{x: 4, y: 4},
+{x: 5, y: 15},
+{x: 3, y: 3},
+{x: 1, y:8}
+]; 
+function naim(arr){
+var tre=[]
+var d1=Math.sqrt(Math.pow((arr[1].x-arr[0].x),2)+Math.pow((arr[1].y-arr[0].y),2))
+var d2=Math.sqrt(Math.pow((arr[2].x-arr[0].x),2)+Math.pow((arr[2].y-arr[0].y),2))
+var d3=Math.sqrt(Math.pow((arr[3].x-arr[0].x),2)+Math.pow((arr[3].y-arr[0].y),2))
+var d4=Math.sqrt(Math.pow((arr[2].x-arr[1].x),2)+Math.pow((arr[2].y-arr[1].y),2))
+var d5=Math.sqrt(Math.pow((arr[3].x-arr[1].x),2)+Math.pow((arr[3].y-arr[1].y),2))
+var d6=Math.sqrt(Math.pow((arr[3].x-arr[2].x),2)+Math.pow((arr[3].y-arr[2].y),2))
+var d_mas = [],
+    point1 = {},
+    point2 = {};
+for(i = 0; i < arr.length; i++){
+    point1 = arr[i];
+    for(n = 0; n < arr.length; n++){
+        point2 = arr[n];
+        if (n !== i){
+            let str = {};
+            str.a = i;
+            str.b = n;
+            str.range = Math.sqrt(Math.pow((point1.x-point2.x),2)+Math.pow((point1.y-point2.y),2));
+            d_mas.push(str)
+        }
+    }
+}
+
+/*(i = 0; i < arr.length; i++){
+    console.log(arr[i]);
+    console.log('-----')
+    for(n = 0; n < arr.length; n++){
+        console.log(arr[n])
+    }
+    console.log('|||||||')
+}*/
+console.log(d_mas)
+tre =[d1,d2,d3,d4,d5,d6]
+data=tre.sort((a,b)=>a-b)
+return data
+}
+
+console.log(naim(arr))

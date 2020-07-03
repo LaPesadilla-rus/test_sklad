@@ -5,8 +5,10 @@
 
 .body_pos {
     /*float: left;*/
-    /*width: calc(100% - 270px);*/
+    /*width: calc(100% - 220px);*/
+    margin-left: 220px;
     width: 100%;
+    /*min-width: 700px;*/
     min-height: 100vh;
     /*overflow: auto;
 
