@@ -3,6 +3,7 @@ import './App.css';
 import Menu from './components/modules/l_menu/l_menu.js';
 //import Body from './components/body/body.js';
 import Routs from './components/routs/routs';
+import {AuthProvider} from "./Auth";
 
 import {BrowserRouter} from 'react-router-dom';
 

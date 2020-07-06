@@ -1,0 +1,25 @@
+.auth{
+    width: calc(100% + 20px);
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: #d8d8d8;
+}
+
+.auth_form{
+
+    width: 350px;
+    border: 1px solid #525252;
+    background-color: rgba(175, 175, 175, 0.747);
+    
+    color: black;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+}

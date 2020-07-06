@@ -238,19 +238,10 @@ for(i = 0; i < arr.length; i++){
         }
     }
 }
-
-/*(i = 0; i < arr.length; i++){
-    console.log(arr[i]);
-    console.log('-----')
-    for(n = 0; n < arr.length; n++){
-        console.log(arr[n])
-    }
-    console.log('|||||||')
-}*/
-console.log(d_mas)
+//console.log(d_mas)
 tre =[d1,d2,d3,d4,d5,d6]
 data=tre.sort((a,b)=>a-b)
 return data
 }
 
-console.log(naim(arr))
+//console.log(naim(arr))
