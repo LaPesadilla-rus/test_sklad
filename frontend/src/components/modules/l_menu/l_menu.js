@@ -4,6 +4,17 @@ import './l_menu.css';
 import { MdAssignment, MdPersonPin, MdDvr, MdExitToApp, MdFilterFrames } from "react-icons/md";
 
 export default class Menu extends Component{
+
+    exitButton = () =>{
+        this.props.setAuthorize(false);
+        localStorage.setItem('user', '');
+        localStorage.setItem('at', '');
+        localStorage.setItem('rt', '');
+        this.props.setUserId('');
+        this.props.setAt('');
+        this.props.setRt('');
+    }
+
     render (){
         return (
             <div className="Menu">
@@ -21,9 +32,9 @@ export default class Menu extends Component{
                     <NavLink className="button_block" activeClassName="act" to="/reports/all">
                         <MdDvr/><label>Заявки</label>
                     </NavLink> 
-                    <NavLink className="button_block" activeClassName="ext" to="/exit">
+                    <div className="button_block" onClick={this.exitButton}>
                         <MdExitToApp/><label>Выход</label>
-                    </NavLink> 
+                    </div> 
                 </div>
             </div>
         );

@@ -114,9 +114,9 @@ exports.sklad_save = function(req, res) {
             //console.log(err);
             return res.sendStatus(500);
         }
-        res.send(docs);
+        //res.send(docs);
     });
-    Hyst.StorageIn(req.body.data, function (err, docs) {
+    Hyst.StorageIn(req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -132,7 +132,7 @@ exports.sklad_update = async function(req, res) {
         }
     });
 
-    await Hyst.StorageUpdate(req.body.data, function (err, docs) {
+    await Hyst.StorageUpdate(req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -198,7 +198,7 @@ exports.sklad_out = async function(req, res) {
             }
         }); 
         //console.log('sadasd')
-        Hyst.StorageOut(mas, req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, function(err,docs){
+        Hyst.StorageOut(mas, req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, req.headers.us_id, function(err,docs){
             if (err) {
                 console.log(err);
                 //errMes.row = err;

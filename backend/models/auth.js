@@ -10,11 +10,22 @@ exports.login = async(data,cb) => {
     console.log(sql)
     await pool.query(sql).then (
         (res) => {
-            console.log(res.data)
             cb('',res);
         }
     ).catch(function(err) {
-        console.log(err)
+        cb(err,'');
+    });
+};
+
+exports.loginRT = async(rt, id, cb) => {
+    var sql = '';
+    sql = `UPDATE users SET us_rt = '`+rt+`' WHERE us_id = `+id+``;
+    console.log(sql)
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
         cb(err,'');
     });
 };

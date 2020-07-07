@@ -6,7 +6,7 @@ export default class Header extends Component{
         return (
             <div className="header header_pos">
                 <div className="nameSite"> Склад </div>
-                <div className="login"> Пользователь: Пользователь</div>
+                <div className="login"> Пользователь: {this.props.userName}</div>
             </div>
         );
     }

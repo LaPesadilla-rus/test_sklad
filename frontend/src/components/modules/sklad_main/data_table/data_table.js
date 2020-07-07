@@ -1,18 +1,22 @@
 import React, {Component} from 'react';
 import './data_table.css';
 import axio from 'axios';
+import { connect } from 'react-redux';
 
 import Actions from '../../actions_bar/action_new';
 import DataRow from './data_row';
 import InputForm from '../input_form/input_form';
 import OutForm from '../out_form/out_form';
 
-export default class Data extends Component{
+
+
+class Data extends Component{
     constructor() {
         super();
         this.table = {
             row: [],
         }
+        
         this.state = {
             equips: [],
             isEditOpen: false,
@@ -43,16 +47,20 @@ export default class Data extends Component{
     }
 
     componentDidMount = () => {
-        axio.get('./all').then(res=>{
+        
+        let data = this.props.authStore.auth;
+        console.log(data)
+        axio.get('/sklad/all').then(res=>{
             //console.log(res.data);
             this.setState({
                 equips: res.data
             });
         });
+        console.log(this.props)
     }
 
     onReboot = () => {
-        axio.get('./all').then(res=>{
+        axio.get('/sklad/all').then(res=>{
             this.setState({
                 equips: res.data
             });
@@ -76,6 +84,7 @@ export default class Data extends Component{
             
 
     render() {
+        //console.log(this.props.authStore.auth)
         return (
             <div className='sklad_main_div'>
                 {<Actions changeNew={this.changeNew} changeOut={this.changeOutForm} />}
@@ -111,6 +120,16 @@ export default class Data extends Component{
         );
     }
 }
+
+export default connect(
+    state => ({
+        authStore: state
+    }),
+    dispatch => ({
+        testDispatch: dispatch
+    }),
+
+)(Data)
 
 /**
  * <tr className="data-table__body data-table__body_pos">

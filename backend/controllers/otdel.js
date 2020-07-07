@@ -116,7 +116,7 @@ exports.moveEQ = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    Hyst.Move(req.body.data, function (err, docs) {
+    Hyst.Move(req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -236,7 +236,7 @@ exports.spisat14_23 = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    await Hyst.spisatHystory(docNum, req.body.data, function (err, docs) {
+    await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -374,7 +374,7 @@ exports.spisat14_27 = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    await Hyst.spisatHystory(docNum, req.body.data, function (err, docs) {
+    await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -565,7 +565,7 @@ exports.spisat14_29 = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    await Hyst.spisatHystory(docNum, req.body.data, function (err, docs) {
+    await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);

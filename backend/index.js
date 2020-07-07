@@ -65,9 +65,22 @@ spr.getData();*/
 //test 22.05.2020
 app.use(express.json());
 
+app.use(function (req, res, next) {
+    //console.log('Time:', Date.now());
+    //console.log(req.headers)
+    if (req.headers.at){
+        next()
+    }else{
+        console.log('ALERT');
+        res.sendStatus(500)
+    }
+    //next();
+  });
+
 //---------------------------------------- AUTH
 
 app.post('/auth/login', authController.login);
+//app.post('auth/out', authController.authOut);
 
 //----------------------------------------
 app.get('/sklad/all', skladController.all);

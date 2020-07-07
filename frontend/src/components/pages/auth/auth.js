@@ -1,8 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './auth.css';
 import axio from 'axios';
+import {Redirect} from 'react-router-dom';
+//import {withAuth} from '../../../Auth/index'
 
-export default class Auth extends Component{
+//import AuthForm from './AuthForm';
+
+export default class Auth extends React.Component{
     constructor() {
         super();
         this.state = {
@@ -11,23 +15,27 @@ export default class Auth extends Component{
         };
     }
 
-    primFiltr = () => {
-        var data = {
-            flDate1: this.state.flDate1,
-            flDate2: this.state.flDate2,
-            invNum: this.state.invNum,
-            contrNum: this.state.contrNum,
+    componentDidMount () {
+        this.props.setUserId(localStorage.getItem('user'));
+        this.props.setAt(localStorage.getItem('at'));
+        this.props.setRt(localStorage.getItem('rt'));
+        console.log(this.props.isAuthorize);
+        
+        if (localStorage.getItem('at') === ''){
+            localStorage.setItem('at', 'asdf');
         }
-        axio.post('/zurnal/postupl', {data}).then(res=>{
-            console.log(res.data)
-            this.setState({
-                data: res.data
-            })
-        });
-        this.setState({buttonStatus: 0});
+        axio.defaults.headers.common['at'] = localStorage.getItem('at');
+        axio.defaults.headers.common['rt'] = localStorage.getItem('rt');
+        axio.defaults.headers.common['us_id'] = localStorage.getItem('user');
     }
 
+    //static contextType = ThemeContext;
+
     sendAuth = () => {
+        /*localStorage.setItem('user', 'res.data.user');
+        localStorage.setItem('at',' res.data.token');
+        localStorage.setItem('rt', 'res.data.refreshToken');
+        localStorage.setItem('userName', 'res.data.us_name');*/
         console.log(this.state.login + ' ' + this.state.password);
         if (this.state.login === ''){
             alert('Не веден логин');
@@ -43,7 +51,23 @@ export default class Auth extends Component{
         }
         axio.post('/auth/login', {data}).then(res=>{
             console.log(res.data)
+            this.props.setUserId(res.data.user);
+            this.props.setAt(res.data.token);
+            this.props.setRt(res.data.refreshToken);
+            localStorage.setItem('user', res.data.user);
+            localStorage.setItem('at', res.data.token);
+            localStorage.setItem('rt', res.data.refreshToken);
+            localStorage.setItem('userName', res.data.us_name);
+            this.props.setAuthorize(true);
+            this.props.setUserName(res.data.us_name);
+            console.log(res.data.us_name)
+            axio.defaults.headers.common['at'] = res.data.token;
+            axio.defaults.headers.common['rt'] = res.data.refreshToken;
+            axio.defaults.headers.common['us_id'] = res.data.user;
+            
         });
+        
+        console.log(this.props)
     }
 
     render() {
@@ -54,9 +78,12 @@ export default class Auth extends Component{
                     Проль:<input type='password' onChange={(e) => {this.setState({password: e.target.value})}} value={this.state.password}></input>
                     <button onClick={this.sendAuth} className='button'>Авторизоваться</button>
                 </div>
+                {this.props.isAutorize ? <Redirect to='/'/> : null}
             </div>
     
         );
     }
 }
+
+//Auth.contextType = ThemeContext;
 

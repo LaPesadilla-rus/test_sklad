@@ -1,6 +1,6 @@
 .auth{
-    width: calc(100% + 20px);
-    height: 100%;
+    /*width: calc(100% + 20px);
+    height: 100%;*/
 
     display: flex;
 
@@ -8,6 +8,12 @@
     justify-content: center;
 
     background-color: #d8d8d8;
+
+    position:absolute;
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 150;
 }
 
 .auth_form{
