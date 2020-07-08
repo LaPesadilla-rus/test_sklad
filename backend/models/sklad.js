@@ -37,6 +37,66 @@ exports.all = function (cb) {
     });
 };
 
+exports.filterAll = function (data, cb) {
+    //console.log(data)
+    let sql = `SELECT st.st_id, st.st_amount, st.st_prim, te.te_name, eq.eq_name, pr.pr_name, st.st_inv_num, kat.kat_name,
+                    un.un_name, to_char(st.st_inp_date, 'YYYY-MM-DD'), st.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name
+                    
+                    FROM storage st
+                    
+                    inner join equip_spr eq
+                    on eq.eq_id = st.st_eq_id
+
+                    inner join type_equip_spr te
+                    on te.te_id = eq.eq_type_id
+                    
+                    inner join provider_spr pr
+                    on pr.pr_id = st.st_pr_id
+                    
+                    inner join kategor_spr kat
+                    on kat.kat_id = eq.eq_kat_id
+                    
+                    inner join units_spr un
+                    on un.un_id = st.st_un_id
+
+                    inner join marka_equip_spr ma
+                    on ma.ma_id = eq.eq_mark_id
+    `;
+    let where = ``,
+    a = 0;
+    if (data.kat_id){
+        where += ` kat.kat_id = `+data.kat_id+``;
+        a++;
+    }
+    if (data.inv_txt){
+        if ( a > 0){
+            where += ` AND st_inv_num LIKE '%`+data.inv_txt+`%'`;
+        }else{
+            where += ` st_inv_num LIKE '%`+data.inv_txt+`%'`;
+        }
+        a++;
+    }
+    if (data.name){
+        if (a > 0){
+            where += ` AND eq_name LIKE '%`+data.name+`%'`
+        }else{
+            where += ` eq_name LIKE '%`+data.name+`%'`
+        }
+        a++;
+    }
+    if (a > 0){
+        where = ` WHERE ` + where;
+        sql += where;
+    }
+    sql += ` order by st.st_id `;
+    //console.log(sql)
+    pool.query(sql
+    , (err,res)=>{
+        cb(err, res); 
+        //console.log(res.rows)
+    });
+};
+
 exports.provider = function (cb) {
     pool.query(`SELECT * FROM provider_spr ORDER BY pr_name`
     , (err,res)=>{

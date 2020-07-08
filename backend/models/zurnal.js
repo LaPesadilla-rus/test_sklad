@@ -75,7 +75,7 @@ exports.postupl = function(data, cb) {
         sql = sql + ' WHERE ' + sql_where;
     }
     sql = sql + ` ORDER BY si_id`;
-    console.log(sql)
+    //console.log(sql)
     pool.query(sql
     , (err,res)=>{
         cb(err,res);
@@ -155,52 +155,65 @@ exports.spisano = function(data, cb) {
     //console.log(data)
     let wh = 0,
         sql_where = '';
-    let sql = `SELECT lo.*,to_char(lo.lo_date, 'DD.MM.YYYY') as lo_date, mo.mo_name, otd.ot_name,
-                us.us_name
+    let sql = `SELECT lo.*,to_char(lo.lb_date, 'DD.MM.YYYY') as lo_date, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name,
+                --mo.mo_name, otd.ot_name,
+                us.us_name, ac.ac_name
                 FROM logbook lo  
 
                 inner join users us
                 on us.us_id = lb_usr_id
 
-                inner join mol_spr mo
-                on mo.mo_id = so.so_mol_id
+                inner join equip_spr eq
+                on eq.eq_id = lo.lb_eq_id
+
+                inner join marka_equip_spr ma
+                on ma.ma_id = eq.eq_mark_id
+                
+                inner join type_equip_spr te
+                on te.te_id = eq_type_id
+
+                inner join act_spr ac
+                on ac.ac_id = lb_act_id
+
+                /*inner join mol_spr mo
+                on mo.mo_id = lo.lb_mol_id
 
                 inner join otd_spr otd
-                on otd.ot_id = so.so_otd_id
+                on otd.ot_id = lo.lb_otd_id*/
 
     `;
     if ( data.flDate1 !== ''){
-        sql_where = sql_where + ` so_date >= `+data.flDate1+``;
+        sql_where = sql_where + ` lo.lb_date >= '`+data.flDate1+`'`;
         wh++;
     }
     if (data.flDate2 !== ''){
         if (wh !== 0){
-            sql_where = sql_where + ` AND so_date <= `+data.flDate1+``;
+            sql_where = sql_where + ` AND lo.lb_date <= '`+data.flDate1+`'`;
         }else{
-            sql_where = sql_where + ` so_date <= `+data.flDate1+``;
+            sql_where = sql_where + ` lo.lb_date <= '`+data.flDate1+`'`;
         }
         wh++;
     }
     if (data.invNum !== ''){
         if (wh !== 0){
-            sql_where = sql_where + ` AND so_inv_num LIKE '%`+data.invNum+`%'`;
+            sql_where = sql_where + ` AND lo.lb_inv_num LIKE '%`+data.invNum+`%'`;
         }else{
-            sql_where = sql_where + ` so_inv_num LIKE '%`+data.invNum+`%'`;
+            sql_where = sql_where + ` lo.lb_inv_num LIKE '%`+data.invNum+`%'`;
         }
         wh++;
     }
-    if (data.contrNum !== ''){
+    /*if (data.contrNum !== ''){
         if (wh !== 0){
-            sql_where = sql_where + ` AND so_contr_num LIKE '%`+data.contrNum+`%'`;
+            sql_where = sql_where + ` AND lo_contr_num LIKE '%`+data.contrNum+`%'`;
         }else{
-            sql_where = sql_where + ` so_contr_num LIKE '%`+data.contrNum+`%'`;
+            sql_where = sql_where + ` lo_contr_num LIKE '%`+data.contrNum+`%'`;
         }
         wh++;
-    }
+    }*/
     if(wh > 0){
         sql = sql + ' WHERE ' + sql_where;
     }
-    sql = sql + ` ORDER BY so_id`;
+    sql = sql + ` ORDER BY lo.lb_id`;
     //console.log(sql)
     pool.query(sql
     , (err,res)=>{

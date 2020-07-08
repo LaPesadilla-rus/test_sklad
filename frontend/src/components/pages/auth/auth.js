@@ -19,7 +19,7 @@ export default class Auth extends React.Component{
         this.props.setUserId(localStorage.getItem('user'));
         this.props.setAt(localStorage.getItem('at'));
         this.props.setRt(localStorage.getItem('rt'));
-        console.log(this.props.isAuthorize);
+        //console.log(this.props.isAuthorize);
         
         if (localStorage.getItem('at') === ''){
             localStorage.setItem('at', 'asdf');
@@ -36,7 +36,7 @@ export default class Auth extends React.Component{
         localStorage.setItem('at',' res.data.token');
         localStorage.setItem('rt', 'res.data.refreshToken');
         localStorage.setItem('userName', 'res.data.us_name');*/
-        console.log(this.state.login + ' ' + this.state.password);
+        //console.log(this.state.login + ' ' + this.state.password);
         if (this.state.login === ''){
             alert('Не веден логин');
             return 0;
@@ -50,17 +50,18 @@ export default class Auth extends React.Component{
             password: this.state.password
         }
         axio.post('/auth/login', {data}).then(res=>{
-            console.log(res.data)
+            //console.log(res.data)
             this.props.setUserId(res.data.user);
             this.props.setAt(res.data.token);
             this.props.setRt(res.data.refreshToken);
+            this.props.setAuthorize(true);
+            this.props.setUserName(res.data.us_name);
             localStorage.setItem('user', res.data.user);
             localStorage.setItem('at', res.data.token);
             localStorage.setItem('rt', res.data.refreshToken);
             localStorage.setItem('userName', res.data.us_name);
-            this.props.setAuthorize(true);
-            this.props.setUserName(res.data.us_name);
-            console.log(res.data.us_name)
+            
+            //console.log(res.data.us_name)
             axio.defaults.headers.common['at'] = res.data.token;
             axio.defaults.headers.common['rt'] = res.data.refreshToken;
             axio.defaults.headers.common['us_id'] = res.data.user;

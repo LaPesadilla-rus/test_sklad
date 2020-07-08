@@ -7,6 +7,7 @@ import Actions from '../../actions_bar/action_new';
 import DataRow from './data_row';
 import InputForm from '../input_form/input_form';
 import OutForm from '../out_form/out_form';
+import DataFilter from './data_filter';
 
 
 
@@ -48,19 +49,27 @@ class Data extends Component{
 
     componentDidMount = () => {
         
-        let data = this.props.authStore.auth;
-        console.log(data)
+        /*let data = this.props.authStore;
+        console.log(data)*/
         axio.get('/sklad/all').then(res=>{
             //console.log(res.data);
             this.setState({
                 equips: res.data
             });
         });
-        console.log(this.props)
+        //console.log(this.props)
     }
 
     onReboot = () => {
         axio.get('/sklad/all').then(res=>{
+            this.setState({
+                equips: res.data
+            });
+        });
+    }
+
+    filterDownload = (data) => {
+        axio.post('/sklad/all', {data}).then(res=>{
             this.setState({
                 equips: res.data
             });
@@ -87,7 +96,13 @@ class Data extends Component{
         //console.log(this.props.authStore.auth)
         return (
             <div className='sklad_main_div'>
-                {<Actions changeNew={this.changeNew} changeOut={this.changeOutForm} />}
+                
+                <div className='sklad_main_group'>
+                    <Actions changeNew={this.changeNew} changeOut={this.changeOutForm} />
+                </div>
+                <div className='sklad_main_group'>
+                    <DataFilter filterDownload={this.filterDownload}/>
+                </div>
             <form onSubmit={this.handleSubmit}>
                 <table className="data-table data-table_pos">
                     <thead>
@@ -123,7 +138,7 @@ class Data extends Component{
 
 export default connect(
     state => ({
-        authStore: state
+        authStore: state.auth
     }),
     dispatch => ({
         testDispatch: dispatch

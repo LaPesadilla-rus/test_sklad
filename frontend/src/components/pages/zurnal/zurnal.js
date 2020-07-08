@@ -5,6 +5,7 @@ import UnicId from 'react-html-id';
 
 import Postupl from './vkladki/postupl.js';
 import Vipiska from './vkladki/vipiska';
+import Spisano from './vkladki/spisano';
 
 
 export default class Zurnal extends Component{
@@ -69,6 +70,25 @@ export default class Zurnal extends Component{
         });
     }
 
+    spisano = () => {
+        var data = {
+            flDate1: this.state.flDate1,
+            flDate2: this.state.flDate2,
+            invNum: this.state.invNum,
+            contrNum: this.state.contrNum,
+        }
+        axio.post('/zurnal/spisano', {data}).then(res=>{
+            //console.log(res.data)
+            this.setState({
+                data: res.data
+            })
+        });
+        this.setState({
+            buttonStatus: 2,
+            txt: "Списано"
+        });
+    }
+
     sbrosFiltr = () => {
         this.setState({
             flDate1: '',
@@ -99,7 +119,7 @@ export default class Zurnal extends Component{
             <div className='zurnal_fon'>
                 <button className='button' onClick={this.postupl}>Поступления</button>
                 <button className='button' onClick={this.vipiska}>Выписка</button>
-                <button className='button' onClick={(e) => {this.setState({buttonStatus: 2})}}>Списано</button>
+                <button className='button' onClick={this.spisano}>Списано</button>
                 <div className='zurnal_block'>
                     <table>
                         <tbody>
@@ -118,21 +138,23 @@ export default class Zurnal extends Component{
                                     <input onChange={(e) => {this.setState({invNum: e.target.value})}} value={this.state.invNum}></input>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label>Дата контракта</label>
-                                </td>
-                                <td>
-                                    <label>С </label>
-                                    <input type='date' onChange={(e) => {this.setState({flDate3: e.target.value})}} value={this.state.flDate3}></input>
-                                    <label>По</label>
-                                    <input type='date' onChange={(e) => {this.setState({flDate4: e.target.value})}} value={this.state.flDate4}></input>
-                                </td>
-                                <td>
-                                    <label>Номер договора:</label>
-                                    <input onChange={(e) => {this.setState({contrNum: e.target.value})}} value={this.state.contrNum}></input>
-                                </td>
-                            </tr>
+                            {(this.state.buttonStatus === 0) ? <tr>
+                                                                    <td>
+                                                                        <label>Дата контракта</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <label>С </label>
+                                                                        <input type='date' onChange={(e) => {this.setState({flDate3: e.target.value})}} value={this.state.flDate3}></input>
+                                                                        <label>По</label>
+                                                                        <input type='date' onChange={(e) => {this.setState({flDate4: e.target.value})}} value={this.state.flDate4}></input>
+                                                                    </td>
+                                                                    <td>
+                                                                        <label>Номер договора:</label>
+                                                                        <input onChange={(e) => {this.setState({contrNum: e.target.value})}} value={this.state.contrNum}></input>
+                                                                    </td>
+                                                                </tr>
+                                                                : null}
+                            
                         </tbody>
                     </table>
                     <button className='button button_red' onClick={this.sbrosFiltr}>Сбросить</button>
@@ -142,6 +164,7 @@ export default class Zurnal extends Component{
 
                     {(this.state.buttonStatus === 0) ? <Postupl data={this.state.data} txt={this.state.txt} /> : null}
                     {(this.state.buttonStatus === 1) ? <Vipiska data={this.state.data} txt={this.state.txt} /> : null}
+                    {(this.state.buttonStatus === 2) ? <Spisano data={this.state.data} txt={this.state.txt} /> : null}
 
                 </div> 
                 {/*<div className='zurnal_block'>    

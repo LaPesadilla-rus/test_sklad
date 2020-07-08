@@ -47,6 +47,7 @@ export default class Act1429 extends Component{
             mol_name: this.props.row.mol_name,
             act_id: 4,
             prim: '',
+            equip: this.state.dop_upload
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;

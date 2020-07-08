@@ -4,7 +4,7 @@ import Data_table from '../../modules/sklad_main/data_table/data_table'
 import Input_form from '../../modules/sklad_main/input_form/input_form.js'
 //import Users from './components/Users.js';
 //import Users from '../Users.js'
-import {Route, Redirect} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
 export default class Data_Block extends Component {
     render(){

@@ -18,9 +18,6 @@ export default class Action_new extends Component{
                         <button className="action__button actions__button_pos" onClick={this.props.changeOut}>
                             <MdAddBox /> <label>Выписка</label>
                         </button>
-                        <NavLink className="action__button actions__button_pos out_button" to="./new">
-                            <MdAddBox /> <label>Просмотр движений</label>
-                        </NavLink>
                         <NavLink className="action__button actions__button_pos info_button" to="/spr/all">
                             <MdFolder /> <label>Справочники</label>
                         </NavLink>

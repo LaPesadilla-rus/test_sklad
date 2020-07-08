@@ -45,10 +45,12 @@ export default class Act1423 extends Component{
             mol_name: this.props.row.mol_name,
             act_id: 1,
             prim: '',
+            equip: this.state.dop_upload
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
+        //console.log(this.state.dop_upload)
         //console.log(data)
         const FileDownload = require('js-file-download');
         

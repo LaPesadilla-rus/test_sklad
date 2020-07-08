@@ -97,6 +97,7 @@ app.get('/sklad/out_data', skladController.out_data);
 
 app.post('/sklad/download', skladController.sklad_download);
 
+app.post('/sklad/all', skladController.filterAll);
 app.post('/sklad/new/save', skladController.sklad_save);
 app.post('/sklad/new/update', skladController.sklad_update);
 app.post('/sklad/new/type', skladController.type_post);

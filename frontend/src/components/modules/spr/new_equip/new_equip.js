@@ -327,6 +327,10 @@ export default class New_equip extends Component {
             })
         });
     }
+    
+    changeNon = () => {
+
+    }
 
     onClose= () =>{
         this.props.onClose();
@@ -344,10 +348,10 @@ export default class New_equip extends Component {
         if (this.props.act === 'select'){
             form = <form className='new_eq__form' onSubmit={this.handleSelect}>
                         <div className='new_eq_data'>
-                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeNon} ChangeSelect={this.ChangeKategor} 
                                 ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
                                 data={this.state.kat_data} id_val={this.state.kat} />
-                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeNon} ChangeSelect={this.ChangeType} 
                                 ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
                                 data={this.state.type_data} id_val={this.state.type} />
                             <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
@@ -368,10 +372,10 @@ export default class New_equip extends Component {
         if (this.props.act === 'update'){
             form = <form className='new_eq__form' onSubmit={this.handleUpdate}>
                         <div className='new_eq_data'>
-                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeNon} ChangeSelect={this.ChangeKategor} 
                                 ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
                                 data={this.state.kat_data} id_val={this.state.kat} />
-                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
+                            <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeNon} ChangeSelect={this.ChangeType} 
                                 ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
                                 data={this.state.type_data} id_val={this.state.type} />
                             <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 
@@ -392,10 +396,10 @@ export default class New_equip extends Component {
         if (this.props.act === 'insert'){
             form = <form className='new_eq__form' onSubmit={this.handleSubmit}>
                     <div className='new_eq_data'>
-                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeKategor} 
+                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeNon} ChangeSelect={this.ChangeKategor} 
                             ModalData={this.ModalData} name='Категория' table='kategor_spr' zagolovok='Выбрать категорию' 
                             data={this.state.kat_data} />
-                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeType} 
+                        <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeNon} ChangeSelect={this.ChangeType} 
                             ModalData={this.ModalData} table='type_equip_spr' name='Тип оборудования' zagolovok='Тип оборудования' 
                             data={this.state.type_data} />
                         <NewEquipSelect key={this.nextUniqueId()} onModal={this.changeModal} ChangeSelect={this.ChangeMarka} 

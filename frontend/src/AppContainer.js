@@ -13,9 +13,11 @@ import {connect} from 'react-redux';
 class AppContainer extends React.Component {
     
     componentDidMount (){
-        console.log(localStorage.getItem('at'))
+        //console.log(localStorage.getItem('at'))
         if(localStorage.getItem('at')){
             this.props.setAuthorize(true);
+            this.props.setAt(localStorage.getItem('At'));
+            this.props.setRt(localStorage.getItem('Rt'));
             this.props.setUserName(localStorage.getItem('userName'))
         }
     }

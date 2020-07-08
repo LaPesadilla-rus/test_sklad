@@ -7,9 +7,10 @@ export default class Menu extends Component{
 
     exitButton = () =>{
         this.props.setAuthorize(false);
-        localStorage.setItem('user', '');
+        /*localStorage.setItem('user', '');
         localStorage.setItem('at', '');
-        localStorage.setItem('rt', '');
+        localStorage.setItem('rt', '');*/
+        localStorage.clear();
         this.props.setUserId('');
         this.props.setAt('');
         this.props.setRt('');

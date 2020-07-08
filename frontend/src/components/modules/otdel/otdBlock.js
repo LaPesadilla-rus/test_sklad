@@ -134,20 +134,20 @@ export default class OtdBlock extends Component{
             <div className='otdel_main'>
                 <p>Отеделение: {this.props.row.ot_name}</p>
                 {this.props.row.otd_equip.length > 0 ? <div className='otdel_workspace'>
-                                                        <div className='otdel_workspace_mol'>
-                                                            <div className='mol_column'>
-                                                                <button className='button button_red'>Временно</button>
+                                                            <div className='otdel_workspace_mol'>
+                                                                <div className='mol_column'>
+                                                                    <button className='button button_red'>Временно</button>
+                                                                </div>
+                                                                <div className='otdel_workspace_equip'>
+                                                                    {this.props.row.otd_equip.map(row => <OtdEquips key={this.nextUniqueId()} 
+                                                                                                                row={row}
+                                                                                                                data={this.props.data}
+                                                                                                                clickEquip={this.clickEquip}
+                                                                                                                reg='1'/>)}
+                                                                </div>
                                                             </div>
-                                                            <div className='otdel_workspace_equip'>
-                                                                {this.props.row.otd_equip.map(row => <OtdEquips key={this.nextUniqueId()} 
-                                                                                                            row={row}
-                                                                                                            data={this.props.data}
-                                                                                                            clickEquip={this.clickEquip}
-                                                                                                            reg='1'/>)}
-                                                            </div>
-                                                        </div>
-                                                </div> 
-                                                : ''}
+                                                        </div> 
+                                                        : ''}
                 
                 <div className='otdel_workspace'>
                         { this.props.row.mol_data.map(row => <OtdMols key={this.nextUniqueId()} 

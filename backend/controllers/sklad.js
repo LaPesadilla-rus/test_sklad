@@ -11,6 +11,16 @@ exports.all = function(req, res) {
     })
 };
 
+exports.filterAll = function(req, res) {
+    Sklad.filterAll(req.body.data, function(err, docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs.rows);
+    })
+};
+
 exports.provider = function(req,res) {
     Sklad.provider(function(err,docs){
         if (err) {

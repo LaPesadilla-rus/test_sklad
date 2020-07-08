@@ -230,12 +230,16 @@ exports.spisat14_23 = async function(req, res) {
         }
         
     });
-    await Otdel.spisatInsert(docNum, req.body.data, function (err, docs) {
-        if (err) {
-            console.log(err);
-            return res.sendStatus(500);
-        }
-    });
+    for (i = 0; i < req.body.data.equip.length; i++){
+        await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+        });
+    }
+    //return res.sendStatus(200)
+    
     await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
@@ -368,12 +372,14 @@ exports.spisat14_27 = async function(req, res) {
         }
         
     });
-    await Otdel.spisatInsert(docNum, req.body.data, function (err, docs) {
-        if (err) {
-            console.log(err);
-            return res.sendStatus(500);
-        }
-    });
+    for (i = 0; i < req.body.data.equip.length; i++){
+        await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+        });
+    }
     await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
@@ -559,12 +565,14 @@ exports.spisat14_29 = async function(req, res) {
         }
         
     });
-    await Otdel.spisatInsert(docNum, req.body.data, function (err, docs) {
-        if (err) {
-            console.log(err);
-            return res.sendStatus(500);
-        }
-    });
+    for (i = 0; i < req.body.data.equip.length; i++){
+        await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+        });
+    }
     await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);

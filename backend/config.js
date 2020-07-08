@@ -5,3 +5,4 @@ module.exports = rc ('JWT', {
     connection: './data',
     secret: 'ShityPassword',
 });
+
