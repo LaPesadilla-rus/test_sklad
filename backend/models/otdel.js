@@ -115,13 +115,13 @@ exports.moveEQ = async function (data, cb) {
     });
 };
 
-exports.moveEqLog = async function (data, cb) {
+exports.moveEqLog = async function (data, us_id, cb) {
     //console.log(data);
     if (!data.mol_id){
         data.mol_id = data.row.bl_mol_id
     }
-    var sql = ` INSERT INTO public.equip_traff (et_user, et_mol_id1, et_otd_id1, et_mol_id2, et_otd_id2, et_bl_id, et_eq_id)
-                VALUES ( '`+data.user+`', `+data.row.bl_mol_id+`, `+data.row.bl_otd_id+`, `+data.mol_id+`, `+data.otd_id+`, `+data.row.bl_id+`, `+data.row.bl_eq_id+`);
+    var sql = ` INSERT INTO public.equip_traff (et_user, et_mol_id1, et_otd_id1, et_mol_id2, et_otd_id2, et_bl_id, et_eq_id, et_usr_id)
+                VALUES ( '`+data.user+`', `+data.row.bl_mol_id+`, `+data.row.bl_otd_id+`, `+data.mol_id+`, `+data.otd_id+`, `+data.row.bl_id+`, `+data.row.bl_eq_id+`, `+us_id+`);
      `;
     //console.log(sql)
     await pool.query(sql).then (

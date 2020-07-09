@@ -42,7 +42,7 @@ exports.Move = async function (data, us_id, cb) {
                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
                     hy_mol_id1, hy_otd_id1, hy_mol_id2, hy_otd_id2, 
-                    hy_user, hy_poyasn, hy_us_id)
+                    hy_user, hy_poyasn, hy_usr_id)
                     VALUES ( `+data.row.bl_eq_id+`, `+data.row.bl_pr_id+`, `+data.row.bl_un_id+`, `+data.row.bl_amount+`, 
                                 '`+data.row.bl_inv_num+`', '`+data.row.bl_contr_num+`', '`+data.row.bl_prim+`', '`+data.row.bl_inp_usr+`', 
                                 `+data.row.bl_mol_id+`, `+data.row.bl_otd_id+`, `+data.mol_id+`, `+data.otd_id+`, 
@@ -62,10 +62,10 @@ exports.StorageUpdate = async function (data, us_id, cb) {
     var  sql = `INSERT INTO public.history(
                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
-                    hy_user, hy_poyasn, hy_usr_id)
+                    hy_user, hy_poyasn, hy_usr_id, hy_buh_name)
                     VALUES ( `+data.equip_id+`, `+data.provider_id+`, `+data.units_id+`, `+data.kol+`, 
-                                '`+data.inv_num+`', '`+data.dogovr_num+`', '`+data.prim+`', '`+data.row.st_inp_usr+`', 
-                                '`+data.user+`', 'Обновление хранилища', `+us_id+`);
+                                '`+data.inv_num+`', '`+data.dogvr_num+`', '`+data.prim+`', '`+data.row.st_inp_usr+`', 
+                                '`+data.user+`', 'Обновление хранилища', `+us_id+`, '`+data.buh_name+`');
                 `;  
     //console.log(sql);
     //cb('','');
@@ -111,7 +111,7 @@ exports.StorageIn = async function ( data, us_id, cb) {
                                 
                                 '`+data.user+`', 'Поступило', `+us_id+`);
                 `;  
-    //.log(sql);
+    //console.log(sql);
     pool.query(sql).then (
         (res) => {
         }

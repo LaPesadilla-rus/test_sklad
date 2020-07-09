@@ -51,3 +51,14 @@ exports.spisano = function(req,res) {
         res.send(docs.rows);
     })
 }
+
+exports.moving = function(req,res) {
+    Zurnal.moving(req.body.data,function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows);
+        res.send(docs.rows);
+    })
+}

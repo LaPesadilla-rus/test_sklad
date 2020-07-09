@@ -110,7 +110,7 @@ exports.moveEQ = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    await Otdel.moveEqLog(req.body.data, function (err, docs) {
+    await Otdel.moveEqLog(req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);

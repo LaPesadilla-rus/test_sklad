@@ -6,6 +6,7 @@ import UnicId from 'react-html-id';
 import Postupl from './vkladki/postupl.js';
 import Vipiska from './vkladki/vipiska';
 import Spisano from './vkladki/spisano';
+import Moving from './vkladki/moving';
 
 
 export default class Zurnal extends Component{
@@ -89,6 +90,25 @@ export default class Zurnal extends Component{
         });
     }
 
+    moving = () => {
+        var data = {
+            flDate1: this.state.flDate1,
+            flDate2: this.state.flDate2,
+            invNum: this.state.invNum,
+            contrNum: this.state.contrNum,
+        }
+        axio.post('/zurnal/moving', {data}).then(res=>{
+            //console.log(res.data)
+            this.setState({
+                data: res.data
+            })
+        });
+        this.setState({
+            buttonStatus: 3,
+            txt: "Перемещения"
+        });
+    }
+
     sbrosFiltr = () => {
         this.setState({
             flDate1: '',
@@ -120,6 +140,7 @@ export default class Zurnal extends Component{
                 <button className='button' onClick={this.postupl}>Поступления</button>
                 <button className='button' onClick={this.vipiska}>Выписка</button>
                 <button className='button' onClick={this.spisano}>Списано</button>
+                <button className='button' onClick={this.moving}>Перемещения</button>
                 <div className='zurnal_block'>
                     <table>
                         <tbody>
@@ -165,6 +186,7 @@ export default class Zurnal extends Component{
                     {(this.state.buttonStatus === 0) ? <Postupl data={this.state.data} txt={this.state.txt} /> : null}
                     {(this.state.buttonStatus === 1) ? <Vipiska data={this.state.data} txt={this.state.txt} /> : null}
                     {(this.state.buttonStatus === 2) ? <Spisano data={this.state.data} txt={this.state.txt} /> : null}
+                    {(this.state.buttonStatus === 3) ? <Moving  data={this.state.data} txt={this.state.txt} /> : null}
 
                 </div> 
                 {/*<div className='zurnal_block'>    

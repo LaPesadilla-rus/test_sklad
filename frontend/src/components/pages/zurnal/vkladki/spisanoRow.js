@@ -17,7 +17,7 @@ export default class SpisanoRow extends Component {
     render() {
         return (
 
-            <tr>
+            <tr className='normalRec'>
                 <td>{this.props.row.lo_date}</td>
                 <td>{this.props.row.ac_name}</td>
                 <td>{this.props.row.lb_act_num}</td>

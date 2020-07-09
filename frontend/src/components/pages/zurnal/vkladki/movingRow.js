@@ -4,7 +4,7 @@ import '../zurnal.css';
 import UnicId from 'react-html-id';
 
 
-export default class PostuplRow extends Component{
+export default class MovingRow extends Component{
     constructor() {
         super();
         UnicId.enableUniqueIds(this);
@@ -17,15 +17,15 @@ export default class PostuplRow extends Component{
     render() {
         return (
                 
-                <tr className='normalRec'>
-                    <td>{this.props.row.si_date}</td>
-                    <td>{this.props.row.si_inv_num}</td>
+                <tr className={(this.props.row.mol1 === this.props.row.mol2) ? ' offTheRec ' : 'normalRec'}>
+                    <td>{this.props.row.et_date}</td>
+                    <td>{this.props.row.bl_inv_num}</td>
                     <td>{this.props.row.equip_name}</td>
-                    <td>{this.props.row.un_name}</td>
-                    <td>{this.props.row.si_amount}</td>
                     <td>{this.props.row.us_name}</td>
-                    <td>{this.props.row.si_contr_num}</td>
-                    <td>{this.props.row.si_contr_date}</td>
+                    <td>{this.props.row.mol1}</td>
+                    <td>{this.props.row.otd1}</td>
+                    <td>{this.props.row.mol2}</td>
+                    <td>{this.props.row.otd2}</td>
                 </tr>
                          
         );

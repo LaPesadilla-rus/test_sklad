@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { NavLink } from 'react-router-dom';
 import './l_menu.css';
 import { MdAssignment, MdPersonPin, MdDvr, MdExitToApp, MdFilterFrames } from "react-icons/md";
+import axio from 'axios';
 
 export default class Menu extends Component{
 
@@ -14,6 +15,10 @@ export default class Menu extends Component{
         this.props.setUserId('');
         this.props.setAt('');
         this.props.setRt('');
+
+        axio.get('/auth/out').then(res=>{
+            console.log(res)
+        });
     }
 
     render (){
@@ -33,9 +38,9 @@ export default class Menu extends Component{
                     <NavLink className="button_block" activeClassName="act" to="/reports/all">
                         <MdDvr/><label>Заявки</label>
                     </NavLink> 
-                    <div className="button_block" onClick={this.exitButton}>
+                    <NavLink className="button_block" onClick={this.exitButton} to="/">
                         <MdExitToApp/><label>Выход</label>
-                    </div> 
+                    </NavLink> 
                 </div>
             </div>
         );

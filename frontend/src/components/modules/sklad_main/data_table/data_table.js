@@ -103,34 +103,37 @@ class Data extends Component{
                 <div className='sklad_main_group'>
                     <DataFilter filterDownload={this.filterDownload}/>
                 </div>
-            <form onSubmit={this.handleSubmit}>
-                <table className="data-table data-table_pos">
-                    <thead>
-                        <tr className="data-table__head data-table__body_pos" onClick={this.handleSubmit} id='123'>
-                            <th className='data-table__cell data-table__cell_pos cell_1'>Категория</th> 
-                            <th className='data-table__cell data-table__cell_pos cell_2'>Инв номер</th> 
-                            <th className='data-table__cell data-table__cell_pos cell_3'>Наименование</th>
-                            <th className='data-table__cell data-table__cell_pos cell_4'>Ед.изм</th>
-                            <th className='data-table__cell data-table__cell_pos cell_5'>Остаток</th>
-                            <th className='data-table__cell data-table__cell_pos cell_6'>Примечание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.equips.map( id => <DataRow key={id.st_id} 
-                                                                changeEdit={this.changeEdit}
-                                                                row={id} />)}
-                    </tbody>
-                </table>
-            </form>
-            {this.state.isEditOpen &&
-                    <InputForm row={this.table.data} equips_arr={this.state.equips}  onClose={this.changeEdit} onReboot={this.onReboot}/>
-                }
-            {this.state.isNewOpen &&
-                    <InputForm id_item=''  onClose={this.changeNew} onReboot={this.onReboot}/>
-                }
-            {this.state.isOutOpen &&
-                    <OutForm onClose={this.changeOutForm} onReboot={this.onReboot}/>
-                }
+                <div className='scroll'>
+                    <form onSubmit={this.handleSubmit}>
+                        <table className="sklad_table_body">
+                            <thead className="sklad_table_head">
+                                <tr className="" onClick={this.handleSubmit} id='123'>
+                                    <th className='sklad_table_cell_head'>Категория</th> 
+                                    <th className='sklad_table_cell_head'>Инв номер</th> 
+                                    <th className='sklad_table_cell_head'>Наименование</th>
+                                    <th className='sklad_table_cell_head'>Наименование по бух уч.</th>
+                                    <th className='sklad_table_cell_head'>Ед.изм</th>
+                                    <th className='sklad_table_cell_head'>Остаток</th>
+                                    <th className='sklad_table_cell_head'>Примечание</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.state.equips.map( id => <DataRow key={id.st_id} 
+                                                                        changeEdit={this.changeEdit}
+                                                                        row={id} />)}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                {this.state.isEditOpen &&
+                        <InputForm row={this.table.data} equips_arr={this.state.equips}  onClose={this.changeEdit} onReboot={this.onReboot}/>
+                    }
+                {this.state.isNewOpen &&
+                        <InputForm id_item=''  onClose={this.changeNew} onReboot={this.onReboot}/>
+                    }
+                {this.state.isOutOpen &&
+                        <OutForm onClose={this.changeOutForm} onReboot={this.onReboot}/>
+                    }
             </div>
         );
     }
@@ -156,3 +159,15 @@ export default connect(
                             <td className='data-table__cell data-table__cell_pos  cell_6'>ВКС (конф-зал)</td>
                         </tr>
  */
+
+ /**
+  * <th className='data-table__cell data-table__cell_pos cell_1'>Категория</th> 
+                            <th className='data-table__cell data-table__cell_pos cell_2'>Инв номер</th> 
+                            <th className='data-table__cell data-table__cell_pos cell_3'>Наименование</th>
+                            <th className='data-table__cell data-table__cell_pos cell_3'>Наименование по бух уч.</th>
+                            <th className='data-table__cell data-table__cell_pos cell_4'>Ед.изм</th>
+                            <th className='data-table__cell data-table__cell_pos cell_5'>Остаток</th>
+                            <th className='data-table__cell data-table__cell_pos cell_6'>Примечание</th>
+  * 
+  * 
+  */

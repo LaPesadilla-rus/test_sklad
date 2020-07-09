@@ -10,7 +10,7 @@ client.connect();*/
 
 exports.all = function (cb) {
     pool.query(`SELECT st.st_id, st.st_amount, st.st_prim, te.te_name, eq.eq_name, pr.pr_name, st.st_inv_num, kat.kat_name,
-                    un.un_name, to_char(st.st_inp_date, 'YYYY-MM-DD'), *
+                    un.un_name, to_char(st.st_inp_date, 'YYYY-MM-DD'), (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name, st.*
                     
                     FROM storage st
                     
@@ -18,7 +18,10 @@ exports.all = function (cb) {
                     on eq.eq_id = st.st_eq_id
 
                     inner join type_equip_spr te
-					on te.te_id = eq.eq_type_id
+                    on te.te_id = eq.eq_type_id
+                    
+                    inner join marka_equip_spr ma
+                    on ma.ma_id = eq.eq_mark_id
                     
                     inner join provider_spr pr
                     on pr.pr_id = st.st_pr_id
@@ -29,7 +32,7 @@ exports.all = function (cb) {
                     inner join units_spr un
                     on un.un_id = st.st_un_id
 
-                    order by st.st_id 
+                    order by st.st_id desc
                 `
     , (err,res)=>{
         cb(err, res); 
@@ -88,7 +91,7 @@ exports.filterAll = function (data, cb) {
         where = ` WHERE ` + where;
         sql += where;
     }
-    sql += ` order by st.st_id `;
+    sql += ` order by st.st_id desc`;
     //console.log(sql)
     pool.query(sql
     , (err,res)=>{
@@ -173,9 +176,9 @@ exports.sklad_save = function(req,cb) {
     //console.log(req.headers.us_id)
     /*let date = new Date();
     let dateNow = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();*/
-    var sql = `INSERT INTO public.storage (st_eq_id, st_pr_id, st_un_id, st_inv_num, st_amount, st_contr_date, st_contr_num, st_inp_usr, st_usr_id)
+    var sql = `INSERT INTO public.storage (st_eq_id, st_pr_id, st_un_id, st_inv_num, st_amount, st_contr_date, st_contr_num, st_usr_id, st_buh_name, st_prim)
     VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`,'`+req.body.data.date+`',
-    '`+req.body.data.dogvr_num+`', '`+req.body.data.user+`', `+req.headers.us_id+`);`;
+    '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`, '`+req.body.data.buh_name+`', '`+req.body.data.prim+`');`;
     //console.log(sql)
     pool.query(sql
     , (err,res)=>{
@@ -191,10 +194,9 @@ exports.sklad_save_in = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
     /*let date = new Date();
     let dateNow = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();*/
-    var sql = `INSERT INTO public.storage_in (si_eq_id, si_pr_id, si_un_id, si_inv_num, si_amount, si_contr_date, si_contr_num, si_usr_id)
-    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`,'`+req.body.data.date+`',
-    '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`);`;
-    //console.log(sql)
+    var sql = `INSERT INTO public.storage_in (si_eq_id, si_pr_id, si_un_id, si_inv_num, si_amount, si_contr_date, si_contr_num, si_usr_id, si_buh_name)
+    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`, '`+req.body.data.date+`', 
+    '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`, '`+req.body.data.buh_name+`');`;
     pool.query(sql
     , (err,res)=>{
         if (err !== undefined) {
@@ -210,7 +212,8 @@ exports.sklad_update = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
     var sql = `UPDATE public.storage 
                 SET st_pr_id = `+req.body.data.provider_id+`, st_un_id=`+req.body.data.units_id+`, st_inv_num='`+req.body.data.inv_num+`', st_amount=`+req.body.data.kol+`,
-                st_contr_date='`+req.body.data.date+`', st_contr_num='`+req.body.data.dogvr_num+`', st_upd_usr='`+req.body.data.user+`', st_prim='`+req.body.data.prim+`'
+                st_contr_date='`+req.body.data.date+`', st_contr_num='`+req.body.data.dogvr_num+`', st_usr_upd_id=`+req.headers.us_id+`, st_prim='`+req.body.data.prim+`',
+                st_buh_name= '`+req.body.data.buh_name+`'
                 WHERE st_id=`+req.body.data.st_id+`
                 `
     //console.log(sql)

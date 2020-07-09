@@ -3,12 +3,12 @@ var express = require('express');
 var app = express();
 
 
-/*const {Pool,Client} = require('pg');
+const {Pool} = require('pg');
 
 const conn = require('./db_con.js');
 const pool = new Pool (conn.conn_str);
 
-const client = new Client(conn.conn_str);
+/*const client = new Client(conn.conn_str);
 client.connect();*/
 
 const skladController = require('./controllers/sklad.js');
@@ -65,13 +65,25 @@ spr.getData();*/
 //test 22.05.2020
 app.use(express.json());
 
-app.use(function (req, res, next) {
+app.use( async function (req, res, next) {
     //console.log('Time:', Date.now());
     //console.log(req.headers)
-    if (req.headers.at){
+    var sql = '';
+    var data = [];
+    sql = `SELECT * FROM users WHERE us_id = `+req.headers.us_id+` and us_rt = '`+req.headers.rt+`'`;
+    //console.log(sql)
+    await pool.query(sql).then (
+        (res) => {
+            data = res.rows;
+        }
+    ).catch(function(err) {
+        //console.log(err)
+    });
+    //console.log(data)
+    if (data.length > 0 || req.originalUrl === '/auth/login' || req.originalUrl === '/auth/out'){
         next()
     }else{
-        console.log('ALERT');
+        console.log('ALERT' + data.length + req.originalUrl);
         res.sendStatus(500)
     }
     //next();
@@ -80,7 +92,7 @@ app.use(function (req, res, next) {
 //---------------------------------------- AUTH
 
 app.post('/auth/login', authController.login);
-//app.post('auth/out', authController.authOut);
+app.get('/auth/out', authController.authOut);
 
 //----------------------------------------
 app.get('/sklad/all', skladController.all);
@@ -147,6 +159,7 @@ app.post('/otdel/all_filter', otdelController.all_filter);
 app.post('/zurnal/postupl', zurnalController.postupl);
 app.post('/zurnal/vipiska', zurnalController.vipiska);
 app.post('/zurnal/spisano', zurnalController.spisano);
+app.post('/zurnal/moving', zurnalController.moving);
 //----------------------------------------------
 
 /*app.get('/', function(req, res) {

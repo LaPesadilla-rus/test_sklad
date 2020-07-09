@@ -17,7 +17,7 @@ export default class VipiskaRow extends Component{
     render() {
         return (
                 
-                <tr>
+                <tr className='normalRec'>
                     <td>{this.props.row.so_date}</td>
                     <td>{this.props.row.so_inv_num}</td>
                     <td>{this.props.row.equip_name}</td>

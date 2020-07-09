@@ -40,13 +40,14 @@ export default class DataRow extends Component{
             color_kart = true;
         }
         return (
-                <tr onClick={this.editEquip} className= {'data-table__row data-table__row_pos '+(color_sreds ? 'kat_osn' : '') + (color_kart ? 'kat_kartr' : '' )}>
-                    <td className='data-table__cell data-table__cell_pos cell_1 '>{this.props.row.kat_name}</td> 
-                    <td className='data-table__cell data-table__cell_pos cell_2'>{this.props.row.st_inv_num}</td> 
-                    <td className='data-table__cell data-table__cell_pos cell_3'>{this.props.row.te_name + ' ' + this.props.row.eq_name}</td>
-                    <td className='data-table__cell data-table__cell_pos cell_4'>{this.props.row.un_name}</td>
-                    <td className='data-table__cell data-table__cell_pos cell_5'>{this.props.row.st_amount}</td>
-                    <td className='data-table__cell data-table__cell_pos cell_6'>{this.props.row.st_prim}</td>
+                <tr onClick={this.editEquip} className= {'sklad_table_row '+(color_sreds ? 'kat_osn' : '') + (color_kart ? 'kat_kartr' : '' )}>
+                    <td className='sklad_table_cell'>{this.props.row.kat_name}</td> 
+                    <td className='sklad_table_cell'>{this.props.row.st_inv_num}</td> 
+                    <td className='sklad_table_cell cell_left'>{this.props.row.equip_name}</td>
+                    <td className='sklad_table_cell cell_left'>{this.props.row.st_buh_name}</td>
+                    <td className='sklad_table_cell'>{this.props.row.un_name}</td>
+                    <td className='sklad_table_cell'>{this.props.row.st_amount}</td>
+                    <td className='sklad_table_cell cell_left'>{this.props.row.st_prim}</td>
                 </tr>
                 
         );

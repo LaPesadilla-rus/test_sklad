@@ -113,10 +113,12 @@ export default class Autocomplite extends Component {
 
     render(){
         let window;
+        let spisok = this.props.items_arr;
         if (this.state.suggestions.length === 0 && this.state.isWindowOpen && this.props.modelText.length === 0) {
             //console.log(this.props.items_arr)
+            spisok = spisok.slice(0, 5);
             window = <ul>
-                        {this.props.items_arr.map(item =>  <li onClick={() => this.suggestionSelected(item)} key={this.nextUniqueId()}>{item}</li>)}
+                        {spisok.map(item =>  <li onClick={() => this.suggestionSelected(item)} key={this.nextUniqueId()}>{item}</li>)}
                     </ul>;
         }else {
             window = null;

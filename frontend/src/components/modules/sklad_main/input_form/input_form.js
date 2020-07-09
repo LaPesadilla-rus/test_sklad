@@ -8,13 +8,14 @@ import Autocomplite from '../../../simple_comp/autocomplite/autocomplite';
 import NewEquip from '../../spr/new_equip/new_equip';
 
 const BlockItem = (props) => {
-    return  <tr className="data-table__body data-table__body_pos">
-                <td className='data-table__cell data-table__cell_pos cell_1'>{props.dogvr_num}</td> 
-                <td className='data-table__cell data-table__cell_pos cell_2'>{props.inv_num}</td> 
-                <td className='data-table__cell data-table__cell_pos cell_3'>{props.name}</td>
-                <td className='data-table__cell data-table__cell_pos cell_4'>{props.units}</td>
-                <td className='data-table__cell data-table__cell_pos cell_5'>{props.kol}</td>
-                <td className='data-table__cell data-table__cell_pos cell_6'>{props.prim}</td>
+    return  <tr className="sklad_table_row">
+                <td className='sklad_table_cell'>{props.dogvr_num}</td> 
+                <td className='sklad_table_cell'>{props.inv_num}</td> 
+                <td className='sklad_table_cell'>{props.name}</td>
+                <td className='sklad_table_cell'>{props.buh_name}</td>
+                <td className='sklad_table_cell'>{props.units}</td>
+                <td className='sklad_table_cell'>{props.kol}</td>
+                <td className='sklad_table_cell'>{props.prim}</td>
             </tr>        
 }
 
@@ -33,6 +34,7 @@ export default class Input_form extends Component {
             inv_num: '',
             dogvr_num: '',
             mol: '',
+            buh_name: '',
             type_data: [],
             kat_data: [],
             prov_data: [],
@@ -95,7 +97,8 @@ export default class Input_form extends Component {
                 date: this.props.row.to_char,
                 inv_num: this.props.row.st_inv_num,
                 dogvr_num: this.props.row.st_contr_num,
-                equip_name: this.props.row.te_name + ' ' + this.props.row.eq_name,
+                equip_name: this.props.row.equip_name,
+                buh_name: this.props.row.st_buh_name,
             });
             if (this.props.row.st_prim) {
                 this.setState({
@@ -140,6 +143,7 @@ export default class Input_form extends Component {
             provider_id: this.state.provider,
             dogvr_num: this.state.dogvr_num,
             user: 'admin',
+            buh_name: this.state.buh_name,
         };
         var stat = this.saveDB(data);
         var n = this.state.hyst_data.length
@@ -238,6 +242,7 @@ export default class Input_form extends Component {
             provider_id: this.state.provider,
             dogvr_num: this.state.dogvr_num,
             user: 'admin',
+            buh_name: this.state.buh_name,
         };
         var stat = this.saveDB(data);
         if (stat){
@@ -261,10 +266,10 @@ export default class Input_form extends Component {
             alert("Поставщик не выбран!")
             return;
         }
-        console.log(this.state.inv_num)
+        //console.log(this.props.row)
         const data = {
             equip_name: this.state.equip_name,
-            equip_id: this.props.row.eq_id,
+            equip_id: this.props.row.st_eq_id,
             units_name: this.props.row.un_name,
             units_id: this.state.units,
             f_name: this.state.f_name,
@@ -278,6 +283,7 @@ export default class Input_form extends Component {
             st_id: this.props.row.st_id,
             user: 'Admin',
             row: this.props.row,
+            buh_name: this.state.buh_name,
         };
         var err = '';
         //console.log(data)
@@ -302,6 +308,7 @@ export default class Input_form extends Component {
         if (err !== ''){
             alert(err);
         }else{
+            //console.log(data)
             axio.post('/sklad/new/update', {data}).then(res => {
                 //console.log(res.data);
                 if (res.data === 'POST COMPLITE') {
@@ -486,6 +493,10 @@ export default class Input_form extends Component {
                                                     <td><button type='button' className='button' onClick={this.changeNewEquip}>Добавить оборудование</button></td>
                                                 </tr>}
                             <tr>
+                                <td className='cell_name'><p>Бухгалтерское наименование</p></td>
+                                <td><input onChange={(e) => {this.setState({buh_name: e.target.value})}} value={this.state.buh_name}></input></td>
+                            </tr>
+                            <tr>
                                 <td className='cell_name'><p>Инвентарный номер</p></td>
                                 <td><input onChange={(e) => {this.setState({inv_num: e.target.value})}} value={this.state.inv_num}></input></td>
                             </tr>
@@ -508,22 +519,23 @@ export default class Input_form extends Component {
                     </table>
                     {this.props.row ? redactItem : newItem}
                 </form>
-                {!this.props.row && <table className="data-table data-table_pos">
-                    <thead>
-                        <tr className="data-table__head data-table__body_pos" onClick={this.handleSubmit} id='123'>
-                            <th className='data-table__cell data-table__cell_pos cell_1'>Номер договора</th> 
-                            <th className='data-table__cell data-table__cell_pos cell_2'>Инв номер</th> 
-                            <th className='data-table__cell data-table__cell_pos cell_3'>Наименование</th>
-                            <th className='data-table__cell data-table__cell_pos cell_4'>Ед.изм</th>
-                            <th className='data-table__cell data-table__cell_pos cell_5'>Кол-во</th>
-                            <th className='data-table__cell data-table__cell_pos cell_6'>Примечание</th>
+                {!this.props.row && <table className="sklad_table_body">
+                    <thead className="sklad_table_head">
+                        <tr className="" onClick={this.handleSubmit} id='123'>
+                            <th className='sklad_table_cell_head'>Номер договора</th> 
+                            <th className='sklad_table_cell_head'>Инв номер</th> 
+                            <th className='sklad_table_cell_head'>Наименование</th>
+                            <th className='sklad_table_cell_head'>Наименование по бух уч.</th>
+                            <th className='sklad_table_cell_head'>Ед.изм</th>
+                            <th className='sklad_table_cell_head'>Кол-во</th>
+                            <th className='sklad_table_cell_head'>Примечание</th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.state.hyst_data.map( id =>  <BlockItem 
                                                                 key={this.nextUniqueId()} kol={id.kol} date='20.20.2020' 
                                                                 kod='AAAA' dogvr_num={id.dogvr_num} id='12' units={id.units_name} prim={id.prim} inv_num={id.inv_num}
-                                                                name={id.equip_name}
+                                                                name={id.equip_name} buh_name={id.buh_name}
                                                             />)
                         }
                        

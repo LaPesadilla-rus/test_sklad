@@ -29,3 +29,16 @@ exports.loginRT = async(rt, id, cb) => {
         cb(err,'');
     });
 };
+
+exports.checkRt = async(id,cb) => {
+    var sql = '';
+    sql = `SELECT * FROM users WHERE us_id = `+id+``;
+    //console.log(sql)
+    await pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+};
