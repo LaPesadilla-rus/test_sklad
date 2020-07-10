@@ -21,6 +21,7 @@ export default class PostuplRow extends Component{
                     <td>{this.props.row.si_date}</td>
                     <td>{this.props.row.si_inv_num}</td>
                     <td>{this.props.row.equip_name}</td>
+                    <td>{this.props.row.si_buh_name}</td>
                     <td>{this.props.row.un_name}</td>
                     <td>{this.props.row.si_amount}</td>
                     <td>{this.props.row.us_name}</td>

@@ -69,19 +69,19 @@
     background-color: #3d646e;
 }
 
-/*.data-table {
+.data-table {
     background-color: #f1f0f0;
     border-radius: 10px;
-}*/
+}
 
-/*.data-table_pos {
+.data-table_pos {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 4px;
-}*/
+}
 
-/*.data-table__head{
+.data-table__head{
     border-radius: 4px;
 
     text-shadow: 0 2px 1px rgba(0, 0, 0, 0.075);
@@ -92,9 +92,9 @@
     color: white;
     background-color: #0a5e74;
     border-collapse: collapse;
-}*/
+}
 
-/*.data-table__body {
+.data-table__body {
     background-color: #24a197;
     border-radius: 4px;
     
@@ -108,9 +108,9 @@
     color: white;
     text-align: left;
     border-collapse: collapse;
-}*/
+}
 
-/*.data-table__body_pos {
+.data-table__body_pos {
     width: calc(100% - 8px);
 }
 
@@ -132,9 +132,9 @@
 
     border: 1px solid green;
     border-collapse: collapse;
-}*/
+}
 
-/*.data-table__row_pos{
+.data-table__row_pos{
     float: left;
     width: calc(100% - 8px);
     margin-left: 4px;
@@ -154,19 +154,18 @@
     
     word-wrap: break-word;
     border: 1px solid black
-}*/
+}
 
-/*.data-table__cell_pos {
+.data-table__cell_pos {
     padding: 2px;
-}*/
+}
 
-/*.data-table__body:hover {
+.data-table__body:hover {
     background-color: #254677;
     box-shadow: 0 0 10px rgb(10, 103, 165);
     transition: all 1s;
 }
 
-*/
 
 
 

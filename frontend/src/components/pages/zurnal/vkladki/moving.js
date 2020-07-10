@@ -26,6 +26,7 @@ export default class Moving extends Component{
                                 <th className='thead'>Дата перемещения</th>
                                 <th className='thead'>Инвентарый номер</th>
                                 <th className='thead'>Наименование</th>
+                                <th className='thead'>Наименование по бух.уч.</th>
                                 <th className='thead'>Пользователь</th>
                                 <th className='thead'>Старый МОЛ</th>
                                 <th className='thead'>Старый отдел</th>

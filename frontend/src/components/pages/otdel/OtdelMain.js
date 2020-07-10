@@ -4,6 +4,7 @@ import axio from 'axios';
 import UnicId from 'react-html-id';
 
 import OtdBlock from '../../modules/otdel/otdBlock.js';
+import OtdBlock2 from '../../modules/otdel/otdBlock2.js';
 import Autocomplite from '../../simple_comp/autocomplite/autocomplite';
 //import { otd_data } from '../../../../../backend/controllers/otdel';
 
@@ -128,7 +129,7 @@ export default class OtdelMain extends Component{
                     <button className='button' onClick={this.enableFilter}>Применить фильтр</button>
                     <button className='button' onClick={this.disableFilter}>Сбросить фильтр</button>
                 </div>
-                {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock key={this.nextUniqueId()} 
+                {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock2 key={this.nextUniqueId()} 
                                                                                                 data={this.state.data}
                                                                                                 row={row}
                                                                                                 onReboot={this.onReboot}/>) : ''}  

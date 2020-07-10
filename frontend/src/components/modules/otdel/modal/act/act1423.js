@@ -40,7 +40,7 @@ export default class Act1423 extends Component{
         //console.log(this.props)
         var data = {
             dop_upload: this.state.dop_upload,
-            osn_upload: this.state.osn_upload,
+            osn_upload: this.state.dop_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
             act_id: 1,

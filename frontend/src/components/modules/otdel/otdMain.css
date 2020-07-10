@@ -8,6 +8,7 @@
 
     font-size: 17px;
     color: black;
+    
 }
 
 .otdel_main select {
@@ -51,3 +52,20 @@
 .act_disable_button{
     width: 80%;
 }
+
+.otd_table{
+    margin: 5px;
+    width: calc(100% - 10px);
+    background-color: rgb(216, 216, 216);
+    border-collapse: collapse;
+}
+
+.otd_table th{
+    border: 1px solid black;
+    background-color: rgb(117, 117, 117);
+}
+
+.otd_table td{
+    border: 1px solid black;
+}
+

@@ -1,0 +1,40 @@
+.modalWindow{
+border: 1px solid; 
+background-color: #00CCFF;
+position: absolute;
+bottom: 0;
+right: 0;
+margin-bottom: 20px;
+margin-right: 30px;
+/*width: 35px;
+height: 80px;*/
+min-width: 40px;
+min-height: 50px;
+border-radius: 10px;
+text-align: center;
+box-shadow: 0 0 10px rgba(0,0,0,0.5);
+font-size: 18px;
+word-wrap: break-word;
+
+padding: 5px;
+
+display: flex;
+
+justify-content: center;
+align-items: center;
+
+}
+.styles_gr{
+    border: 1px solid #113d20; 
+    background-color: #20793e;
+
+
+    
+}
+.styles_r{
+        border: 1px solid #4b100b; 
+        background-color: #7e221b;
+        
+        
+}
+    

@@ -227,7 +227,7 @@ exports.out_file = async function (req, res){
     
     var workbook = new Excel.Workbook();
     var randVal = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
-    //console.log(randVal)
+    console.log(req.body.data)
     await workbook.xlsx.readFile('./docs/TR.xlsx').then( async function(){
         //console.log(workbook.worksheets.id + ' ' + workbook.worksheets.name)
         var ws = workbook.getWorksheet(7);
@@ -239,10 +239,10 @@ exports.out_file = async function (req, res){
             ws.getCell(n,2).value = i+1;
             ws.getCell(n,12).value = i+1;
 
-            ws.getCell(n,3).value = arr[i].equip_name;
+            ws.getCell(n,3).value = arr[i].st_buh_name;
             ws.getCell(n,4).value = arr[i].un_name;
             ws.getCell(n,5).value = arr[i].kol;
-            ws.getCell(n,13).value = arr[i].equip_name;
+            ws.getCell(n,13).value = arr[i].st_buh_name;
             ws.getCell(n,14).value = arr[i].un_name;
             ws.getCell(n,15).value = arr[i].kol;
             n++;

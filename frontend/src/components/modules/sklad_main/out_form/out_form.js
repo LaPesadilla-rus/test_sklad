@@ -23,6 +23,7 @@ export default class OutForm extends Component{
             inv_num: '',
             amount: '',
             kol: '',
+            buh_name: '',
             out_arr: [],
             otd_name: '',
             mol_name: '',
@@ -127,7 +128,7 @@ export default class OutForm extends Component{
 
     setInvText = (val) => {
         var row = this.findRowEquip('', val);
-        //console.log(row)
+        console.log(row)
         //console.log(this.state.data)
         if (row.equip_name){
             this.setState({
@@ -135,6 +136,7 @@ export default class OutForm extends Component{
                 eq_name: row.equip_name,
                 act_row: row,
                 amount: row.st_amount,
+                buh_name: row.st_buh_name,
             });
         }else{
             this.setState({
@@ -142,6 +144,7 @@ export default class OutForm extends Component{
                 act_row: [],
                 inv_num: val,
                 amount: '-',
+                buh_name: '-'
             });
         }
         
@@ -335,6 +338,7 @@ export default class OutForm extends Component{
                                 <td className='out_form_td'><Autocomplite modelText={this.state.inv_num} items_arr={this.state.inv_data} setText={this.setInvText} /></td>
                                 </tr>
                                 <tr><td className='out_form_td1'><label>Остаток: </label></td><td className='out_form_td'><label>{this.state.amount}</label></td></tr>
+                                <tr><td className='out_form_td1'><label>Наименование по бух.уч.: </label></td><td className='out_form_td'><label>{this.state.buh_name}</label></td></tr>
                                 <tr>
                                     <td className='out_form_td1'><label>Количество: </label></td>
                                     <td className='out_form_td' ><input type='number' onChange={(e) => { this.setState({ kol: e.target.value})}} value={this.state.kol}></input></td></tr>
@@ -371,6 +375,7 @@ export default class OutForm extends Component{
                             <thead>
                                 <tr>
                                     <th>Наименование</th>
+                                    <th>Наименование по бух. уч.</th>
                                     <th>Инв. номер</th>
                                     <th>Кол-во</th>
                                 </tr>

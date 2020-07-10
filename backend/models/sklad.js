@@ -244,9 +244,9 @@ exports.sklad_out = function(req,cb) {
 // ПОФИКСИТЬ ПЕРЕДАЧУ ID ПОЛЬЗОВАТЕЛЯ
 exports.sklad_out_midl0 = async function(data, mol_id, otd_id, user, cb) {
     var sql = `INSERT INTO public.storage_out(
-                    so_eq_id, so_pr_id, so_un_id, so_amount, so_inv_num, so_contr_num, so_mol_id, so_otd_id, so_usr_id, so_kat_id)
+                    so_eq_id, so_pr_id, so_un_id, so_amount, so_inv_num, so_contr_num, so_mol_id, so_otd_id, so_usr_id, so_kat_id, so_buh_name)
                     VALUES (`+data.st_eq_id+`, `+data.st_pr_id+`, `+data.st_un_id+`, `+data.kol+`, '`+data.st_inv_num+`',
-                    '`+data.st_contr_num+`', `+mol_id+`, `+otd_id+`, 0, `+data.eq_kat_id+`);`;
+                    '`+data.st_contr_num+`', `+mol_id+`, `+otd_id+`, 0, `+data.eq_kat_id+`, '`+data.st_buh_name+`');`;
     //console.log(sql)
     await pool.query(sql).then (
         (res) => {
@@ -260,9 +260,9 @@ exports.sklad_out_midl0 = async function(data, mol_id, otd_id, user, cb) {
 
 exports.sklad_out_midl1 = async function(data, mol_id, otd_id,cb) {
     var sql = `INSERT INTO public.balance(
-                    bl_eq_id, bl_pr_id, bl_un_id, bl_amount, bl_inv_num, bl_contr_num,  bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id)
+                    bl_eq_id, bl_pr_id, bl_un_id, bl_amount, bl_inv_num, bl_contr_num,  bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id, bl_buh_name)
                     VALUES (`+data.st_eq_id+`, `+data.st_pr_id+`, `+data.st_un_id+`, `+data.kol+`, '`+data.st_inv_num+`',
-                    '`+data.st_contr_num+`','`+data.st_inp_usr+`', '`+data.st_prim+`', `+mol_id+`, `+otd_id+`);`;
+                    '`+data.st_contr_num+`','`+data.st_inp_usr+`', '`+data.st_prim+`', `+mol_id+`, `+otd_id+`, '`+data.st_buh_name+`');`;
     //console.log(sql)
     await pool.query(sql).then (
         (res) => {

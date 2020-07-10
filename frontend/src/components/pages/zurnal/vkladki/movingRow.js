@@ -21,6 +21,7 @@ export default class MovingRow extends Component{
                     <td>{this.props.row.et_date}</td>
                     <td>{this.props.row.bl_inv_num}</td>
                     <td>{this.props.row.equip_name}</td>
+                    <td>{this.props.row.bl_buh_name}</td>
                     <td>{this.props.row.us_name}</td>
                     <td>{this.props.row.mol1}</td>
                     <td>{this.props.row.otd1}</td>

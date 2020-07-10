@@ -21,7 +21,7 @@ export default class VipiskaRow extends Component{
                     <td>{this.props.row.so_date}</td>
                     <td>{this.props.row.so_inv_num}</td>
                     <td>{this.props.row.equip_name}</td>
-                    
+                    <td>{this.props.row.so_buh_name}</td>
                     <td>{this.props.row.un_name}</td>
                     <td>{this.props.row.so_amount}</td>
                     <td>{this.props.row.us_name}</td>

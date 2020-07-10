@@ -5,8 +5,10 @@ import UnicId from 'react-html-id';
 import TableBlock from './table_block.js';
 import Relation from './relation/relationContainer';
 import SprButton from './spr_button_spr';
+import NewUser from './new_user/new_user';
+import { connect } from 'react-redux';
 
-export default class Spr_block extends Component {
+class Spr_block extends Component {
     constructor(props) {
         super(props);
         UnicId.enableUniqueIds(this);
@@ -14,6 +16,7 @@ export default class Spr_block extends Component {
             main: [],
             isModalOpen: false,
             isRelationOpen: false,
+            isNewUser: false,
             actSpr: [],
             acrRow: [],
         };
@@ -31,6 +34,7 @@ export default class Spr_block extends Component {
     }
 
     componentDidMount = () => {
+        //console.log(this.props.authStore)
         axio.get('/spr/all').then(res=>{
             this.setState({
                 main:  res.data,
@@ -47,8 +51,12 @@ export default class Spr_block extends Component {
         this.setState(state => ({ isRelationOpen: !state.isRelationOpen}))
     }
 
+    changeNewUser = () => {
+        this.setState(state => ({ isNewUser: !state.isNewUser}))
+    }
+
     changeSpr = (row) => {
-        console.log(row);
+        //console.log(row);
         this.setState({
             actSpr: row
         })
@@ -65,6 +73,11 @@ export default class Spr_block extends Component {
         return(
             <div className='spr_block_act_zone'> 
                 <button className='button' onClick={this.changeRelation}>Создать связь</button>
+                {(this.props.authStore.role === '0') ? <div>
+                                                            <button className='button button_green' onClick={this.changeNewUser}>Создать пользователя</button>
+                                                            <button className='button'> Список пользователей</button>
+                                                        </div> : null}
+                
                 <div>
                     {this.state.main.map(row=> 
                         <SprButton  key={this.nextUniqueId()} row={row} changeSpr={this.changeSpr} />
@@ -73,10 +86,22 @@ export default class Spr_block extends Component {
                 {this.state.actSpr.name && spr}
                 
                 {this.state.isRelationOpen && <Relation onClose={this.changeRelation}/>}
+
+                {this.state.isNewUser && <NewUser onClose={this.changeNewUser} />}
             </div>
         )
     }          
 }
+
+export default connect(
+    state => ({
+        authStore: state.auth
+    }),
+    dispatch => ({
+        testDispatch: dispatch
+    }),
+
+)(Spr_block)
 
 /**
  * <div className='spr_block_main'>

@@ -7,7 +7,7 @@ import AuthContainer from './components/pages/auth/authContainer'
 
 import {BrowserRouter} from 'react-router-dom';
 
-import { setUserId, setAt, setRt, setAuthorize, setUserName} from './store/auth/action';
+import { setUserId, setAt, setRt, setAuthorize, setUserName, setUserRole} from './store/auth/action';
 import {connect} from 'react-redux';
 
 class AppContainer extends React.Component {
@@ -19,6 +19,7 @@ class AppContainer extends React.Component {
             this.props.setAt(localStorage.getItem('At'));
             this.props.setRt(localStorage.getItem('Rt'));
             this.props.setUserName(localStorage.getItem('userName'))
+            this.props.setUserRole(localStorage.getItem('role'))
         }
     }
 
@@ -46,7 +47,8 @@ const pushStateToProps = (state) => {
         user: state.auth.user,
         at: state.auth.at,
         rt: state.auth.rt,
-        isAuthorize: state.auth.isAuthorize
+        isAuthorize: state.auth.isAuthorize,
+        role: state.auth.role
     };
 };
 
@@ -56,6 +58,7 @@ const pushDispatchToProps = {
     setRt,
     setAuthorize,
     setUserName,
+    setUserRole
 };
 
 export default connect(pushStateToProps, pushDispatchToProps)(AppContainer);

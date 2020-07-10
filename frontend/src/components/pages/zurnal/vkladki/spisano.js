@@ -28,6 +28,7 @@ export default class Spisano extends Component{
                                 <th className='thead'>Номер акта</th>
                                 <th className='thead'>Инвентарый номер</th>
                                 <th className='thead'>Наименование</th>
+                                <th className='thead'>Наименование по бух.уч.</th>
                                 {/*<th className='thead'>Ед. изм.</th>
                                 <th className='thead'>Кол-во</th>*/}
                                 <th className='thead'>Пользователь</th>

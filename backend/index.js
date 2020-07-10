@@ -115,7 +115,6 @@ app.post('/sklad/new/update', skladController.sklad_update);
 app.post('/sklad/new/type', skladController.type_post);
 app.post('/sklad/out', skladController.sklad_out);
 app.post('/sklad/out_file', skladController.out_file);
-
 //------------------------------
 app.post('/equip/save', skladController.equip_save);
 //--------------------------------
@@ -132,7 +131,9 @@ app.post('/spr/equip', sprController.equip)
 app.post('/spr/save', sprController.spr_save);
 app.post('/spr/update', sprController.spr_update);
 app.post('/equip/update', sprController.equip_update);
-app.post('/spr/relation/add', sprController.relation_add)
+app.post('/spr/relation/add', sprController.relation_add);
+
+app.post('/users/new', sprController.newUser);
 
 app.delete('/spr/delete', sprController.spr_delete);
 

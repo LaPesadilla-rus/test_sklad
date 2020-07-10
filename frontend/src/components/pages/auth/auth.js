@@ -19,6 +19,7 @@ export default class Auth extends React.Component{
         this.props.setUserId(localStorage.getItem('user'));
         this.props.setAt(localStorage.getItem('at'));
         this.props.setRt(localStorage.getItem('rt'));
+        this.props.setUserRole(localStorage.getItem('role'))
         //console.log(this.props.isAuthorize);
         
         if (localStorage.getItem('at') === ''){
@@ -50,16 +51,18 @@ export default class Auth extends React.Component{
             password: this.state.password
         }
         axio.post('/auth/login', {data}).then(res=>{
-            //console.log(res.data)
+            console.log(res.data)
             this.props.setUserId(res.data.user);
             this.props.setAt(res.data.token);
             this.props.setRt(res.data.refreshToken);
             this.props.setAuthorize(true);
             this.props.setUserName(res.data.us_name);
+            this.props.setUserRole(res.data.role);
             localStorage.setItem('user', res.data.user);
             localStorage.setItem('at', res.data.token);
             localStorage.setItem('rt', res.data.refreshToken);
             localStorage.setItem('userName', res.data.us_name);
+            localStorage.setItem('role', res.data.role)
             
             //console.log(res.data.us_name)
             axio.defaults.headers.common['at'] = res.data.token;
