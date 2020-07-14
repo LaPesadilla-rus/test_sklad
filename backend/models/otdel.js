@@ -19,6 +19,14 @@ exports.otd_name = function (cb) {
     });
 };
 
+exports.primUpd =  function (data, cb) {
+    var sql = `UPDATE public.balance SET bl_prim = '`+data.txt+`' WHERE bl_id = `+data.bl_id+` `;
+    pool.query(sql,
+        (err,res) => {
+            cb(err, res)
+        });
+};
+
 /*const otd_name2 = async  () =>{
     pool.query(`SELECT ot.ot_name, bl_otd_id, COUNT(bl.*) as otd 
                 FROM balance bl
@@ -56,7 +64,8 @@ exports.mol_name = function (cb) {
 };
 
 exports.all = function (cb) {
-    pool.query(`SELECT *, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name || ' Инв. ном.: ' || bl_inv_num) as equip_name, mo.mo_otd_id as mol_otd, ot.ot_name, un.un_name  
+    pool.query(`SELECT *, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name, 
+                mo.mo_otd_id as mol_otd, ot.ot_name, un.un_name, kat.kat_name  
                 FROM balance bl
 
                 inner join equip_spr eq
@@ -74,10 +83,13 @@ exports.all = function (cb) {
                 inner join otd_spr ot
                 on bl.bl_otd_id = ot.ot_id
 
+                inner join kategor_spr kat
+                on kat.kat_id = eq.eq_kat_id
+
                 inner join units_spr un
                 on un.un_id = bl.bl_un_id
 
-                ORDER BY equip_name
+                ORDER BY bl.bl_inp_date desc
     `
     , (err,res)=>{
         cb(err, res); 
@@ -209,8 +221,9 @@ exports.otd_data_mol_filter2 = async(mo_id) => {
 exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
     var docs;
     //docs = await pool.query('SELECT')
-    var sql = `SELECT bl.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name || ' Инв. ном.: ' || bl_inv_num) as equip_name, mo_name as mol_name, ot_name as otd_name,
-                un.un_name, eq.eq_kat_id, mo.mo_otd_id, ot_name, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name ) as equip_text, te_name
+    var sql = `SELECT bl.*, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name, mo_name as mol_name, ot_name as otd_name,
+                un.un_name, eq.eq_kat_id, mo.mo_otd_id, ot_name, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name ) as equip_text, te_name,
+                kat.kat_name 
                 FROM balance bl
 
                 inner join mol_spr mo
@@ -231,6 +244,9 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
 
                 inner join units_spr un
                 on un.un_id = bl.bl_un_id
+
+                inner join kategor_spr kat
+                on kat.kat_id = eq.eq_kat_id
     `;
     if (reg === 'main'){
         sql = sql + ` WHERE bl_mol_id = `+mo_id+` AND bl_otd_id = `+otd_id+``; 
@@ -271,7 +287,7 @@ exports.spisatInsert = async function (docNum,data, row, us_id, cb) {
     var sql = ` INSERT INTO public.logbook (lb_mol_name, lb_isp_name, lb_prim, lb_act_id, lb_act_num, lb_usr_id, lb_eq_id, lb_inv_num, lb_buh_name)
                 VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`, `+us_id+`, `+row.bl_eq_id+`, '`+row.bl_inv_num+`', '`+row.bl_buh_name+`');
      `;
-     console.log(sql)
+     //console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);

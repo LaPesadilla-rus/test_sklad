@@ -1,22 +1,11 @@
-var express = require('express');
-var app = express();
-//-----
-//var pgp = require("pg-promise")(/*options*/);
-/*const connectionString = 'postgresql://postgre:masterkey@127.0.0.1:5432/sklad'
-var db = pgp(connectionString);
+const express = require('express');
+const path = require('path');
+const app = express();
 
-app.use(express.json());
+app.use(express.static(path.join(__dirname, 'build')));
 
-app.use('/123', (req, res) => {
-    db.any('SELECT * FROM users')
-    .then(rows => {
-        console.log(rows);
-        res.json(rows)
-    })
-});*/
-//---
 app.get('/', function(req, res) {
-    res.send('SKALD SERVER FR');
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(3000, function() {

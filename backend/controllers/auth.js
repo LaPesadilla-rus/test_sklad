@@ -5,18 +5,15 @@ const { v4: uuidv4 } = require('uuid');
 const config = require('../config');
 
 exports.login = async function(req, res) {
-    //console.log(req.body)
     let data = {}
     await Auth.login(req.body.data ,function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        //console.log(docs.rows[0])
         data = docs.rows[0];
     });
     if (data.us_id !== ''){
-        //user.id = data.us_id;
         const refreshToken = uuidv4();
         var out_data = {
             token: jwt.sign( {id: data.us_id }, config.secret),
@@ -41,19 +38,15 @@ exports.login = async function(req, res) {
 }
 
 exports.checkRt = async function(req, res){
-    //console.log(req)
     await Auth.checkRt(req.body.data ,function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        //console.log(docs.rows[0])
-        //data = docs.rows[0];
     });
 }
 
 exports.authOut = async function(req, res){
-    //console.log('OUT')
     if (req.headers.rt !== ''){
         await Auth.loginRT('', req.headers.us_id ,function(err,docs){
             if (err) {

@@ -152,7 +152,6 @@ exports.sklad_update = async function(req, res) {
 }
 
 exports.sklad_out = async function(req, res) {
-    //console.log(req.body.data);
     var arr = [];
     var mas1 = [],
     item_arr = [],
@@ -168,16 +167,11 @@ exports.sklad_out = async function(req, res) {
         if (mas.length = 0){
             errMes.errTxt = 'Ошибка выписки на позиции: ' + (i + 1);
             errMes.errPos = i;
-            //console.log(errMes)
             return res.send(errMes)
         }
-        //item_arr[i] = mas.slice();
     }
-    //console.log(arr)
     for(var i = 0; i < arr.length; i++){
-        //mas = await Sklad.sklad_out_midl3(arr[i]);
         let mas = item_arr[i];
-        //console.log(arr[i].eq_kat_id)
         await Sklad.sklad_out_midl2(arr[i],mas, function(err,docs){
             if (err) {
                 console.log(err);
@@ -211,15 +205,13 @@ exports.sklad_out = async function(req, res) {
         Hyst.StorageOut(mas, req.body.data.mol_id, req.body.data.otd_id, arr[i].kol, req.body.data.user, req.headers.us_id, function(err,docs){
             if (err) {
                 console.log(err);
-                //errMes.row = err;
-                //errMes.txt = 'Ошибка выписки!';
-                //return res.send(errMes);
             }
         });
     }
     res.send('OK');
 }
 
+//вроде это не нужно уже
 exports.out_file = async function (req, res){
     var arr = [];
     arr = req.body.data.equip;

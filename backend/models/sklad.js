@@ -1,12 +1,7 @@
 
-const {Pool/*, Client*/} = require('pg');
-
+const {Pool} = require('pg');
 const conn = require('../db_con.js');
-
 const pool = new Pool (conn.conn_str);
-
-/*const client = new Client(conn.conn_str);
-client.connect();*/
 
 exports.all = function (cb) {
     pool.query(`SELECT st.st_id, st.st_amount, st.st_prim, te.te_name, eq.eq_name, pr.pr_name, st.st_inv_num, kat.kat_name,
@@ -173,13 +168,12 @@ exports.equip_save = function(req,cb) {
 
 exports.sklad_save = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
-    //console.log(req.headers.us_id)
-    /*let date = new Date();
-    let dateNow = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();*/
-    var sql = `INSERT INTO public.storage (st_eq_id, st_pr_id, st_un_id, st_inv_num, st_amount, st_contr_date, st_contr_num, st_usr_id, st_buh_name, st_prim)
-    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`,'`+req.body.data.date+`',
-    '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`, '`+req.body.data.buh_name+`', '`+req.body.data.prim+`');`;
-    //console.log(sql)
+    var sql = `INSERT INTO public.storage (st_eq_id, st_pr_id, st_un_id, st_inv_num, st_amount, 
+                                            st_contr_date, st_contr_num, st_usr_id, 
+                                            st_buh_name, st_prim)
+    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`,
+            '`+req.body.data.date+`', '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`, 
+            '`+req.body.data.buh_name+`', '`+req.body.data.prim+`');`;
     pool.query(sql
     , (err,res)=>{
         if (err !== undefined) {
@@ -192,11 +186,12 @@ exports.sklad_save = function(req,cb) {
 
 exports.sklad_save_in = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
-    /*let date = new Date();
-    let dateNow = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();*/
-    var sql = `INSERT INTO public.storage_in (si_eq_id, si_pr_id, si_un_id, si_inv_num, si_amount, si_contr_date, si_contr_num, si_usr_id, si_buh_name)
-    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',`+req.body.data.kol+`, '`+req.body.data.date+`', 
-    '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`, '`+req.body.data.buh_name+`');`;
+    var sql = `INSERT INTO public.storage_in (si_eq_id, si_pr_id, si_un_id, si_inv_num, 
+                                                si_amount, si_contr_date, si_contr_num, si_usr_id, 
+                                                si_buh_name)
+    VALUES ( `+req.body.data.equip_id+`,`+req.body.data.provider_id+`, `+req.body.data.units_id+` ,'`+req.body.data.inv_num+`',
+                `+req.body.data.kol+`, '`+req.body.data.date+`', '`+req.body.data.dogvr_num+`', `+req.headers.us_id+`, 
+                '`+req.body.data.buh_name+`');`;
     pool.query(sql
     , (err,res)=>{
         if (err !== undefined) {
@@ -275,7 +270,6 @@ exports.sklad_out_midl1 = async function(data, mol_id, otd_id,cb) {
 }
 
 exports.sklad_out_midl2 = async function(data,a,cb) {
-    //console.log(a[0].st_amount)
     var val = (a.st_amount - data.kol);
     sql = `UPDATE public.storage SET st_amount = `+val+` WHERE st_id = `+data.st_id+``;
     //console.log(sql)
@@ -290,7 +284,6 @@ exports.sklad_out_midl2 = async function(data,a,cb) {
 
 exports.sklad_out_midl3 = async function(data,cb) {
     var sql = '';
-    //data.st_id = 2000;
     sql = `SELECT * FROM storage WHERE st_id = `+data.st_id+``;
     await pool.query(sql).then ((res) =>{
         //console.log(res.rows)

@@ -111,6 +111,16 @@ exports.newUser = function(req, res) {
     })
 }
 
+exports.updUser = function(req, res) {
+    Spr.updUser(req, function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs);
+    })
+}
+
 exports.relation_add = function(req, res) {
     Spr.relation_add(req, function(err,docs){
         if (err) {

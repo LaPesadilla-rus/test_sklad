@@ -1,7 +1,7 @@
 .modalWindow{
 border: 1px solid; 
 background-color: #00CCFF;
-position: absolute;
+position: fixed;
 bottom: 0;
 right: 0;
 margin-bottom: 20px;

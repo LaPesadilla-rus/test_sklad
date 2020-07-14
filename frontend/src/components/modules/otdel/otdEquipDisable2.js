@@ -12,8 +12,10 @@ export default class OtdEquipsDisabled extends Component{
                 <td>{this.props.row.bl_buh_name}</td>
                 
                 <td>{this.props.row.un_name}</td>
+                
                 <td>{this.props.row.bl_amount}</td>
-                <td>asd</td>
+                <td>{this.props.row.bl_prim}</td>
+                <td></td>
             </tr>
         );
     }

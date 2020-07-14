@@ -2,9 +2,6 @@ import React from 'react';
 import './auth.css';
 import axio from 'axios';
 import {Redirect} from 'react-router-dom';
-//import {withAuth} from '../../../Auth/index'
-
-//import AuthForm from './AuthForm';
 
 export default class Auth extends React.Component{
     constructor() {
@@ -30,14 +27,7 @@ export default class Auth extends React.Component{
         axio.defaults.headers.common['us_id'] = localStorage.getItem('user');
     }
 
-    //static contextType = ThemeContext;
-
     sendAuth = () => {
-        /*localStorage.setItem('user', 'res.data.user');
-        localStorage.setItem('at',' res.data.token');
-        localStorage.setItem('rt', 'res.data.refreshToken');
-        localStorage.setItem('userName', 'res.data.us_name');*/
-        //console.log(this.state.login + ' ' + this.state.password);
         if (this.state.login === ''){
             alert('Не веден логин');
             return 0;
@@ -51,7 +41,7 @@ export default class Auth extends React.Component{
             password: this.state.password
         }
         axio.post('/auth/login', {data}).then(res=>{
-            console.log(res.data)
+            //console.log(res.data)
             this.props.setUserId(res.data.user);
             this.props.setAt(res.data.token);
             this.props.setRt(res.data.refreshToken);
@@ -78,8 +68,8 @@ export default class Auth extends React.Component{
         return (
             <div className='auth'>
                 <div className='auth_form'>
-                    Логин:<input onChange={(e) => {this.setState({ login: e.target.value})}} value={this.state.login}></input>
-                    Проль:<input type='password' onChange={(e) => {this.setState({password: e.target.value})}} value={this.state.password}></input>
+                    Логин:<input className='input_global' onChange={(e) => {this.setState({ login: e.target.value})}} value={this.state.login}></input>
+                    Пароль:<input className='input_global' type='password' onChange={(e) => {this.setState({password: e.target.value})}} value={this.state.password}></input>
                     <button onClick={this.sendAuth} className='button'>Авторизоваться</button>
                 </div>
                 {this.props.isAutorize ? <Redirect to='/'/> : null}
@@ -88,6 +78,4 @@ export default class Auth extends React.Component{
         );
     }
 }
-
-//Auth.contextType = ThemeContext;
 

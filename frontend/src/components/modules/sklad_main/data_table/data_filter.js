@@ -3,6 +3,8 @@ import './data_table.css';
 import UnicId from 'react-html-id';
 import axio from 'axios';
 
+import { MdDone, MdDeleteForever} from "react-icons/md";
+
 export default class DataFilter extends Component {
     constructor(){
         super();
@@ -60,9 +62,11 @@ export default class DataFilter extends Component {
 
                 <label>Наименование модели</label>
                 <input onChange={(e) => {this.setState({ name: e.target.value})}} value={this.state.name} ></input>
-
-                <button className='button button_green' onClick={this.primFilter}>Применить</button>
-                <button className='button' onClick={this.sbrosButton} >Сбросить</button>
+                <div className='button_container'>
+                    <button className='button button_green' onClick={this.primFilter}><MdDone/>Применить</button>
+                    <button className='button' onClick={this.sbrosButton} ><MdDeleteForever/>Сбросить</button>
+                </div>
+                
             </div>
         )
     }

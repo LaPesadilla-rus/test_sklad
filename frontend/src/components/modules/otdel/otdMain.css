@@ -67,5 +67,17 @@
 
 .otd_table td{
     border: 1px solid black;
+    min-height: 30px;
+}
+
+.otd_button_red{
+    background-color: rgb(116, 11, 11);
+    border: 1px solid #500e0e;
+    box-shadow: 0 0 3px rgb(99, 7, 7);
+    transition: all 0.5s;
+}
+
+.otd_button_red:hover{
+    background-color: rgb(192, 10, 10); 
 }
 

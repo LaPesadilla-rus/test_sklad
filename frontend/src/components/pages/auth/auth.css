@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
 
-    background-color: #d8d8d8;
+    background-color: #afbebe;
 
     position:absolute;
     width: 100vw;
@@ -17,15 +17,17 @@
 }
 
 .auth_form{
-
     width: 350px;
     border: 1px solid #525252;
-    background-color: rgba(175, 175, 175, 0.747);
+    background-color: rgba(204, 203, 203, 0.747);
     
     color: black;
+    /*box-shadow: 0 0 3px rgb(7, 77, 99);*/
 
     display: flex;
     flex-direction: column;
 
     padding: 10px;
+
+    border-radius: 5px;
 }

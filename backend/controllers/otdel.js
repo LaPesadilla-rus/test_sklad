@@ -1,7 +1,20 @@
 const Otdel = require('../models/otdel.js');
 const Hyst = require('../models/hyst.js');
+const Files_14_23 = require('../docsWorker/14-23');
+const Files_14_27 = require('../docsWorker/14-27');
+const Files_14_29 = require('../docsWorker/14-29');
 
-exports.all = function(req, res) {
+exports.primUpd = function(req, res) {
+    Otdel.primUpd(req.body.data ,function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs.rows);
+    })
+}
+
+/*exports.all = function(req, res) {
     var data = [];
     Otdel.otd_name( function (err, docs) {
         if (err) {
@@ -9,7 +22,6 @@ exports.all = function(req, res) {
             return res.sendStatus(500);
         }
         data = { otd: docs.rows };
-        //res.send(data);
         Otdel.mol_name( function (err, docs) {
             if (err) {
                 console.log(err);
@@ -26,60 +38,7 @@ exports.all = function(req, res) {
             });
         });
     });
-};
-
-/*const all2 = async (req,res) => {
-    var data = [];
-    var c = [];
-    //var c = await Otdel.otd_name2();
-    //console.log('1')
-    try{
-        c = '1'
-        console.log(c)
-        c = [];
-        c = await Otdel.otd_name2().then(console.log);
-        console.log(c)
-        console.log(Otdel.otd_name2())
-        c ='2';
-        console.log(c)
-    }catch (e){
-        console.log(e)
-    }
-   
-    //console.log('2')
-    
-    res.sendStatus(200)
-}*/
-
-//module.exports.all2 = all2;
-
-/*docs.rows.forEach(row => {
-            //console.log(row.bl_otd_id)
-            Otdel.mol_name(row.bl_otd_id,function(err,docs){
-                if(err){
-                    console.log(err);
-                    return res.sendStatus(500);
-                }
-                data = {...data, otd: {mol: docs.rows}}
-            });
-            
-        })*/
-        /*Otdel.mol_name('1',function(err,docs){
-            if(err){
-                console.log(err);
-                return res.sendStatus(500);
-            }
-            data = {...data, mol: docs.rows}
-            
-            Otdel.all(function(err,docs){
-                if(err){
-                    console.log(err);
-                    return res.sendStatus(500);
-                }
-                data = {...data, items:  docs.rows}
-                res.send(data);
-            })
-        })*/
+};*/
 
 exports.otd_data = function(req, res) {
     var data = [];
@@ -125,6 +84,7 @@ exports.moveEQ = async function(req, res) {
     res.send('MOVE COMPLITE');
 };
 
+//Правильная функция на вывод данных по всем отделам
 exports.all2 = async function(req, res) {
     var data = [];
     var mol_data;
@@ -204,14 +164,6 @@ exports.all_filter = async function(req, res) {
         data[i].otd_equip = otd_equip;
         data[i].mol_data = mol_data;
     }
-    //console.log(mol_data);
-    /*for(var i = 0; i < docs.otd_data.length; i++){
-        //console.log(docs.otd_data[i])
-        if (docs.otd_data[i].otd_equip.length === 0){
-            
-        }
-    }*/
-    //docs.otd_data[1].splice(i,1);
     res.send(docs);
 };
 
@@ -238,7 +190,6 @@ exports.spisat14_23 = async function(req, res) {
             }
         });
     }
-    //return res.sendStatus(200)
     
     await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
@@ -246,114 +197,8 @@ exports.spisat14_23 = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    const Excel = require('exceljs');
-    let rows;
-    const border = {
-        top: {style:'thin'},
-        left: {style:'thin'},
-        bottom: {style:'thin'},
-        right: {style:'thin'},
-    };
-    const top = {
-        top: {style:'thin'},
-    }
-    const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-
-    var workbook = new Excel.Workbook();
-    workbook.xlsx.readFile('./docs/14-23_mk3.xlsx').then(function(){
-        var ws = workbook.getWorksheet(1);
-        var n = 20;
-        ws.getCell(11,6).value = req.body.data.mol_name;
-        ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
-
-        rows = ws.getRow(n);
-        rows.height = 38;
-        rows.commit();
-
-        ws.mergeCells(n,2,n,4);
-        ws.mergeCells(n,5,n,6);
-        ws.mergeCells(n,7,n,8);
-
-        ws.getCell(20,1).value = '1';
-        ws.getCell(20,2).value = data.osn_upload[0].equip_text;
-        ws.getCell(20,5).value = data.osn_upload[0].bl_inv_num;
-        ws.getCell(20,7).value = data.osn_upload[0].un_name;
-        ws.getCell(20,9).value = '1';
-
-        ws.getCell(20,1).border = border;
-        ws.getCell(20,2).border = border;
-        ws.getCell(20,5).border = border;
-        ws.getCell(20,7).border = border;
-        ws.getCell(20,9).border = border;
-
-        ws.getCell(20,1).alignment = alligment;
-        ws.getCell(20,2).alignment = alligment;
-        ws.getCell(20,5).alignment = alligment;
-        ws.getCell(20,7).alignment = alligment;
-        ws.getCell(20,9).alignment = alligment;
-
-        n = 25,
-        i = 1;
-        data.dop_upload.forEach(row => {
-            rows = ws.getRow(n);
-            rows.height = 38;
-            rows.commit();
-            ws.mergeCells(n,2,n,4);
-            ws.mergeCells(n,5,n,6);
-            ws.mergeCells(n,7,n,8);
-
-            ws.getCell(n,1).value = i;
-            ws.getCell(n,2).value =row.equip_text;
-            ws.getCell(n,5).value = row.bl_inv_num;
-            ws.getCell(n,7).value = row.un_name;
-            ws.getCell(n,9).value = '1';
-
-            ws.getCell(n,1).border = border;
-            ws.getCell(n,2).border = border;
-            ws.getCell(n,5).border = border;
-            ws.getCell(n,7).border = border;
-            ws.getCell(n,9).border = border;
-
-            ws.getCell(n,1).alignment = alligment;
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,5).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            ws.getCell(n,9).alignment = alligment;
-
-            n ++;
-            i++;
-        });
-        n = n +2;
-        ws.mergeCells(n,1,n,9);
-        ws.getCell(n,1).value = 'ФИО и подписи, ответственных за установку материальной ценности:';
-
-        n = n + 2;
-        for(var a = 0; a < 4; a++){
-            ws.mergeCells(n,2,n,3);
-            ws.mergeCells(n,7,n,8);
-            ws.getCell(n,2).value = "____________";
-            ws.getCell(n,7).value = "____________";
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            n++;
-            ws.mergeCells(n,2,n,3);
-            ws.mergeCells(n,7,n,8);
-            ws.getCell(n,2).value = "(подпись)";
-            ws.getCell(n,7).value = "(ФИО)";
-
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            n++;
-        }
-        
-        workbook.xlsx.writeFile('./docs/test10.xlsx').then(function(){
-            res.download('./docs/test10.xlsx');
-        });
-    });
-
     
-
-    //res.send('Complite');
+    Files_14_23.file_14_23(data, req, docNum, res)
 }
 
 exports.spisat14_27 = async function(req, res) {
@@ -386,167 +231,8 @@ exports.spisat14_27 = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    const Excel = require('exceljs');
-    let rows;
-    const border = {
-        top: {style:'thin'},
-        left: {style:'thin'},
-        bottom: {style:'thin'},
-        right: {style:'thin'},
-    };
-    const top = {
-        top: {style:'thin'},
-    }
-    const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-
-    var workbook = new Excel.Workbook();
-    workbook.xlsx.readFile('./docs/14-27.xlsx').then(function(){
-        var ws = workbook.getWorksheet(1);
-        var n = 20;
-        ws.getCell(11,6).value = req.body.data.mol_name;
-        ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
-
-        rows = ws.getRow(n);
-        rows.height = 38;
-        rows.commit();
-
-        ws.mergeCells(n,2,n,4);
-        ws.mergeCells(n,5,n,6);
-        ws.mergeCells(n,7,n,8);
-
-        ws.getCell(20,1).value = '1';
-        ws.getCell(20,2).value = data.osn_upload[0].equip_text;
-        ws.getCell(20,5).value = data.osn_upload[0].bl_inv_num;
-        ws.getCell(20,7).value = data.osn_upload[0].un_name;
-        ws.getCell(20,9).value = '1';
-
-        ws.getCell(20,1).border = border;
-        ws.getCell(20,2).border = border;
-        ws.getCell(20,5).border = border;
-        ws.getCell(20,7).border = border;
-        ws.getCell(20,9).border = border;
-
-        ws.getCell(20,1).alignment = alligment;
-        ws.getCell(20,2).alignment = alligment;
-        ws.getCell(20,5).alignment = alligment;
-        ws.getCell(20,7).alignment = alligment;
-        ws.getCell(20,9).alignment = alligment;
-
-        n = 25,
-        i = 1;
-        data.dop_upload.forEach(row => {
-            rows = ws.getRow(n);
-            rows.height = 38;
-            rows.commit();
-            ws.mergeCells(n,2,n,6);
-            ws.mergeCells(n,7,n,8);
-
-            ws.getCell(n,1).value = i;
-            ws.getCell(n,2).value = row.te_name;
-            ws.getCell(n,7).value = row.un_name;
-            ws.getCell(n,9).value = '1';
-
-            ws.getCell(n,1).border = border;
-            ws.getCell(n,2).border = border;
-            ws.getCell(n,7).border = border;
-            ws.getCell(n,9).border = border;
-
-            ws.getCell(n,1).alignment = alligment;
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            ws.getCell(n,9).alignment = alligment;
-
-            n ++;
-            i++;
-        });
-        n = n + 2;
-        ws.mergeCells(n,1,n,9);
-        ws.getCell(n,1).value = 'на следующую материальную ценность: ';
-        n++;
-
-        rows = ws.getRow(n);
-        rows.height = 38;
-        rows.commit();
-        ws.mergeCells(n,2,n,4);
-        ws.mergeCells(n,5,n,6);
-        ws.mergeCells(n,7,n,8);
-
-        ws.getCell(n,1).value = '№ п/п';
-        ws.getCell(n,2).value = 'Наименование МЦ';
-        ws.getCell(n,5).value = "Инвентарный номер";
-        ws.getCell(n,7).value = "Единицы измерения";
-        ws.getCell(n,9).value = "Количество";
-
-        ws.getCell(n,1).border = border;
-        ws.getCell(n,2).border = border;
-        ws.getCell(n,5).border = border;
-        ws.getCell(n,7).border = border;
-        ws.getCell(n,9).border = border;
-
-        ws.getCell(n,1).alignment = alligment;
-        ws.getCell(n,2).alignment = alligment;
-        ws.getCell(n,5).alignment = alligment;
-        ws.getCell(n,7).alignment = alligment;
-        ws.getCell(n,9).alignment = alligment;
-        n++;
-        i = 1;
-        //--
-        data.dop_upload.forEach(row => {
-            rows = ws.getRow(n);
-            rows.height = 38;
-            rows.commit();
-            ws.mergeCells(n,2,n,4);
-            ws.mergeCells(n,5,n,6);
-            ws.mergeCells(n,7,n,8);
-
-            ws.getCell(n,1).value = i;
-            ws.getCell(n,2).value =row.equip_text;
-            ws.getCell(n,5).value = row.bl_inv_num;
-            ws.getCell(n,7).value = row.un_name;
-            ws.getCell(n,9).value = '1';
-
-            ws.getCell(n,1).border = border;
-            ws.getCell(n,2).border = border;
-            ws.getCell(n,5).border = border;
-            ws.getCell(n,7).border = border;
-            ws.getCell(n,9).border = border;
-
-            ws.getCell(n,1).alignment = alligment;
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,5).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            ws.getCell(n,9).alignment = alligment;
-
-            n ++;
-            i++;
-        });
-        n = n +2;
-        ws.mergeCells(n,1,n,9);
-        ws.getCell(n,1).value = 'ФИО и подписи, ответственных за установку материальной ценности:';
-
-        n = n + 2;
-        for(var a = 0; a < 4; a++){
-            ws.mergeCells(n,2,n,3);
-            ws.mergeCells(n,7,n,8);
-            ws.getCell(n,2).value = "____________";
-            ws.getCell(n,7).value = "____________";
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            n++;
-            ws.mergeCells(n,2,n,3);
-            ws.mergeCells(n,7,n,8);
-            ws.getCell(n,2).value = "(подпись)";
-            ws.getCell(n,7).value = "(ФИО)";
-
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            n++;
-        }
-        
-        workbook.xlsx.writeFile('./docs/test20.xlsx').then(function(){
-            res.download('./docs/test20.xlsx');
-        });
-    });
+    
+    Files_14_27.file_14_27(data, req, docNum, res);
 }
 
 exports.spisat14_29 = async function(req, res) {
@@ -579,166 +265,7 @@ exports.spisat14_29 = async function(req, res) {
             return res.sendStatus(500);
         }
     });
-    const Excel = require('exceljs');
-    let rows;
-    const border = {
-        top: {style:'thin'},
-        left: {style:'thin'},
-        bottom: {style:'thin'},
-        right: {style:'thin'},
-    };
-    const top = {
-        top: {style:'thin'},
-    }
-    const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
-    var workbook = new Excel.Workbook();
-    workbook.xlsx.readFile('./docs/14-29.xlsx').then(function(){
-        var ws = workbook.getWorksheet(1);
-        var n = 20;
-        ws.getCell(11,6).value = req.body.data.mol_name;
-        ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
-
-        rows = ws.getRow(n);
-        rows.height = 38;
-        rows.commit();
-
-        ws.mergeCells(n,2,n,4);
-        ws.mergeCells(n,5,n,6);
-        ws.mergeCells(n,7,n,8);
-
-        ws.getCell(20,1).value = '1';
-        ws.getCell(20,2).value = data.osn_upload[0].equip_text;
-        ws.getCell(20,5).value = data.osn_upload[0].bl_inv_num;
-        ws.getCell(20,7).value = data.osn_upload[0].un_name;
-        ws.getCell(20,9).value = '1';
-
-        ws.getCell(20,1).border = border;
-        ws.getCell(20,2).border = border;
-        ws.getCell(20,5).border = border;
-        ws.getCell(20,7).border = border;
-        ws.getCell(20,9).border = border;
-
-        ws.getCell(20,1).alignment = alligment;
-        ws.getCell(20,2).alignment = alligment;
-        ws.getCell(20,5).alignment = alligment;
-        ws.getCell(20,7).alignment = alligment;
-        ws.getCell(20,9).alignment = alligment;
-
-        n = 25,
-        i = 1;
-        data.dop_upload.forEach(row => {
-            rows = ws.getRow(n);
-            rows.height = 38;
-            rows.commit();
-            ws.mergeCells(n,2,n,6);
-            ws.mergeCells(n,7,n,8);
-
-            ws.getCell(n,1).value = i;
-            ws.getCell(n,2).value = row.te_name;
-            ws.getCell(n,7).value = row.un_name;
-            ws.getCell(n,9).value = '1';
-
-            ws.getCell(n,1).border = border;
-            ws.getCell(n,2).border = border;
-            ws.getCell(n,7).border = border;
-            ws.getCell(n,9).border = border;
-
-            ws.getCell(n,1).alignment = alligment;
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            ws.getCell(n,9).alignment = alligment;
-
-            n ++;
-            i++;
-        });
-        n = n + 2;
-        ws.mergeCells(n,1,n,9);
-        ws.getCell(n,1).value = 'на следующий элемент: ';
-        n++;
-
-        rows = ws.getRow(n);
-        rows.height = 38;
-        rows.commit();
-        ws.mergeCells(n,2,n,4);
-        ws.mergeCells(n,5,n,6);
-        ws.mergeCells(n,7,n,8);
-
-        ws.getCell(n,1).value = '№ п/п';
-        ws.getCell(n,2).value = 'Наименование МЦ';
-        ws.getCell(n,5).value = "Инвентарный номер";
-        ws.getCell(n,7).value = "Единицы измерения";
-        ws.getCell(n,9).value = "Количество";
-
-        ws.getCell(n,1).border = border;
-        ws.getCell(n,2).border = border;
-        ws.getCell(n,5).border = border;
-        ws.getCell(n,7).border = border;
-        ws.getCell(n,9).border = border;
-
-        ws.getCell(n,1).alignment = alligment;
-        ws.getCell(n,2).alignment = alligment;
-        ws.getCell(n,5).alignment = alligment;
-        ws.getCell(n,7).alignment = alligment;
-        ws.getCell(n,9).alignment = alligment;
-        n++;
-        i = 1;
-        //--
-        data.dop_upload.forEach(row => {
-            rows = ws.getRow(n);
-            rows.height = 38;
-            rows.commit();
-            ws.mergeCells(n,2,n,4);
-            ws.mergeCells(n,5,n,6);
-            ws.mergeCells(n,7,n,8);
-
-            ws.getCell(n,1).value = i;
-            ws.getCell(n,2).value =row.equip_text;
-            ws.getCell(n,5).value = row.bl_inv_num;
-            ws.getCell(n,7).value = row.un_name;
-            ws.getCell(n,9).value = '1';
-
-            ws.getCell(n,1).border = border;
-            ws.getCell(n,2).border = border;
-            ws.getCell(n,5).border = border;
-            ws.getCell(n,7).border = border;
-            ws.getCell(n,9).border = border;
-
-            ws.getCell(n,1).alignment = alligment;
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,5).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            ws.getCell(n,9).alignment = alligment;
-
-            n ++;
-            i++;
-        });
-        n = n +2;
-        ws.mergeCells(n,1,n,9);
-        ws.getCell(n,1).value = 'ФИО и подписи, ответственных за установку материальной ценности:';
-
-        n = n + 2;
-        for(var a = 0; a < 4; a++){
-            ws.mergeCells(n,2,n,3);
-            ws.mergeCells(n,7,n,8);
-            ws.getCell(n,2).value = "____________";
-            ws.getCell(n,7).value = "____________";
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            n++;
-            ws.mergeCells(n,2,n,3);
-            ws.mergeCells(n,7,n,8);
-            ws.getCell(n,2).value = "(подпись)";
-            ws.getCell(n,7).value = "(ФИО)";
-
-            ws.getCell(n,2).alignment = alligment;
-            ws.getCell(n,7).alignment = alligment;
-            n++;
-        }
-        
-        workbook.xlsx.writeFile('./docs/test30.xlsx').then(function(){
-            res.download('./docs/test30.xlsx');
-        });
-    });
+    Files_14_29.file_14_29(data, req, docNum, res);
 }
 

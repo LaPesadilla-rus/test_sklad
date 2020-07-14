@@ -301,6 +301,19 @@ exports.newUser = function(req, cb) {
         });
 }
 
+exports.updUser = function(req, cb) {
+    let data = req.body.data;
+    var sql =  `INSERT INTO users (us_login, us_pas, us_role, us_name)
+                    VALUES ('`+data.login+`', '`+data.pass1+`', `+data.role+`, '`+data.name+`' )
+                `;
+    sql = ` UPDATE users SET us_pas = '`+data.pass1+`'`
+    //console.log(sql)
+    pool.query(sql 
+        ,(err,res)=>{
+            cb(err,'SAVE COMPLITE');
+        });
+}
+
 exports.relation_add = function(req,cb) {
     //console.log(req.body)
     if(!req.body.data) return res.sendStatus(400);

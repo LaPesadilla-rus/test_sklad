@@ -3,7 +3,7 @@ import './otdMain.css';
 import UnicId from 'react-html-id';
 
 import OtdMols2 from './otdMols2';
-import OtdEquips from './otdEquips';
+//import OtdEquips from './otdEquips';
 import OtdEquips2 from './otdEquips2';
 import ModalMove from './modal/modalMove';
 import ModalAct from './modal/modalAct';
@@ -143,6 +143,7 @@ export default class OtdBlock2 extends Component{
                             <th>Наименование по бух.уч.</th>
                             <th>Ед. изм.</th>
                             <th>Кол-во</th>
+                            <th>Примечание</th>
                             <th>Кнопка</th>
                         </tr>
                     </thead>
@@ -161,7 +162,8 @@ export default class OtdBlock2 extends Component{
                                                                  row={row} 
                                                                  data={this.props.data}
                                                                  clickEquip={this.clickEquip}
-                                                                 clickAct={this.changeModalAct} />)}
+                                                                 clickAct={this.changeModalAct}
+                                                                 onReboot={this.props.onReboot} />)}
                     </tbody>
                 </table>
                 

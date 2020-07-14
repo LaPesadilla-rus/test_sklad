@@ -82,3 +82,8 @@
     transition: all 1s;
 }
 
+.action_new{
+    display: flex;
+    flex-direction: row;
+}
+

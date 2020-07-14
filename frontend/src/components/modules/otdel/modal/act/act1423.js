@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import UnicId from 'react-html-id';
 import './act.css';
 import axio from 'axios';
+import Loader from '../../../../simple_comp/loader/loader'
 
 import Column from './column1423';
 
@@ -12,11 +13,13 @@ export default class Act1423 extends Component{
         this.osnUpload = [];
         this.dopUpload = [];
         this.dopData = [];
+        this.loader = false;
         this.state = {
             osn_sel: '',
             dop_sel: '',
             osn_upload: [],
             dop_upload: [],
+            isLoader: false,
         }
     }
 
@@ -36,8 +39,11 @@ export default class Act1423 extends Component{
         this.props.onClose();
     }
 
-    onSubmith = () => {
+    onSubmith = async () => {
         //console.log(this.props)
+        this.setState({
+            isLoader: true
+        })
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.dop_upload,
@@ -54,12 +60,16 @@ export default class Act1423 extends Component{
         //console.log(data)
         const FileDownload = require('js-file-download');
         
-        axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
+        await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
             FileDownload(res.data, '14-23.xlsx');
+            this.setState({
+                isLoader: false
+            });
         });
-        this.props.onClose();
-        this.props.modalActClose();
-        this.props.onReboot();
+        await this.props.onClose();
+        await this.props.modalActClose();
+        await this.props.onReboot();
+        
     }
 
     changeOsn = (e) => {
@@ -191,6 +201,7 @@ export default class Act1423 extends Component{
                     </div>
                 </div>
             </div>
+            {this.state.isLoader && <Loader/>}
         </div>
         );
     }

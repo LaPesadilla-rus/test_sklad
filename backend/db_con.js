@@ -8,13 +8,3 @@ const conn_str =  ({
 });
 
 module.exports.conn_str = conn_str;
-
-
-
-/*function test () {
-    
-}
-
-
-
-module.exports.test = test;*/

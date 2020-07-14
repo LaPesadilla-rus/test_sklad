@@ -19,6 +19,7 @@ class Spr_block extends Component {
             isNewUser: false,
             actSpr: [],
             acrRow: [],
+            reg: '',
         };
     }
 
@@ -52,7 +53,11 @@ class Spr_block extends Component {
     }
 
     changeNewUser = () => {
-        this.setState(state => ({ isNewUser: !state.isNewUser}))
+        this.setState(state => ({ isNewUser: !state.isNewUser, reg: 'new'}))
+    }
+
+    updateUser = () => {
+        this.setState(state => ({ isNewUser: !state.isNewUser, reg: 'upd'}))
     }
 
     changeSpr = (row) => {
@@ -75,6 +80,7 @@ class Spr_block extends Component {
                 <button className='button' onClick={this.changeRelation}>Создать связь</button>
                 {(this.props.authStore.role === '0') ? <div>
                                                             <button className='button button_green' onClick={this.changeNewUser}>Создать пользователя</button>
+                                                            <button className='button button_green' onClick={this.updateUser}> Изменить данные</button>
                                                             <button className='button'> Список пользователей</button>
                                                         </div> : null}
                 
@@ -87,7 +93,7 @@ class Spr_block extends Component {
                 
                 {this.state.isRelationOpen && <Relation onClose={this.changeRelation}/>}
 
-                {this.state.isNewUser && <NewUser onClose={this.changeNewUser} />}
+                {this.state.isNewUser && <NewUser onClose={this.changeNewUser} reg={this.state.reg} />}
             </div>
         )
     }          

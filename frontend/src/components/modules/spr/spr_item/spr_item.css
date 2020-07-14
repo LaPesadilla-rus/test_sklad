@@ -1,27 +1,25 @@
-.modal {
+/*.modal {
     background-color: rgb(207, 207, 207);
     border-radius: 10px;
     color: black;
     border: 1px solid #707270;
     box-shadow: 0 0 10px rgb(80, 80, 80);
 
-    flex-direction: row;
     padding: 10px;
-}
+}*/
 
 .modal_pos {
     /*min-width: 50px;
     min-height: 50px;*/
+    /*position: fixed;*/
 
 }
 
-.background_modal{
-    background-color: rgba(146, 146, 146, 0.658);
-    display: flex;
-    z-index: 150;
-}
+/*.background_modal{
+    background-color: rgba(146, 146, 146, 0.658);    z-index: 150;
+}*/
 
-.background_modal_pos{
+/*.background_modal_pos{
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -30,23 +28,22 @@
 
     
     flex-wrap: wrap;
-    align-self: center;
     margin-left: -10px;
     margin-right: -20px;
-}
+}*/
 
 .modal form{
-    display: flex;
+    /*display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: column;*/
 }
 
 .modal div {
-    margin-top: 10px;
-    align-self: center;
+    /*margin-top: 10px;
+    align-self: center;*/
 }
 
-.modal button {
+/*.modal button {
     margin: 10px;
 }
 
@@ -76,4 +73,4 @@
 
  .modal input:active {
     box-shadow: inset 0 0 5px rgb(28, 61, 207); 
- }
+ }*/

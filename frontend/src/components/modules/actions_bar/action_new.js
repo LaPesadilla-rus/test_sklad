@@ -10,15 +10,15 @@ export default class Action_new extends Component{
 
     render (){
         return (
-                <div className = 'Action_new'>
+                <div className = 'button_container'>
                     <IconContext.Provider value={{size: "25"}}>
-                        <button onClick={this.props.changeNew} className="action__button actions__button_pos new_button" >
+                        <button onClick={this.props.changeNew} className="button" >
                         <MdCreateNewFolder /> <label>Поступление</label>
                         </button>
-                        <button className="action__button actions__button_pos" onClick={this.props.changeOut}>
+                        <button className="button" onClick={this.props.changeOut}>
                             <MdAddBox /> <label>Выписка</label>
                         </button>
-                        <NavLink className="action__button actions__button_pos info_button" to="/spr/all">
+                        <NavLink className="button" to="/spr/all">
                             <MdFolder /> <label>Справочники</label>
                         </NavLink>
                     </IconContext.Provider>

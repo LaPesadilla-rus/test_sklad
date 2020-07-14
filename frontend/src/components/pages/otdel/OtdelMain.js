@@ -3,7 +3,7 @@ import './OtdelMain.css';
 import axio from 'axios';
 import UnicId from 'react-html-id';
 
-import OtdBlock from '../../modules/otdel/otdBlock.js';
+//import OtdBlock from '../../modules/otdel/otdBlock.js';
 import OtdBlock2 from '../../modules/otdel/otdBlock2.js';
 import Autocomplite from '../../simple_comp/autocomplite/autocomplite';
 //import { otd_data } from '../../../../../backend/controllers/otdel';
@@ -35,7 +35,7 @@ export default class OtdelMain extends Component{
                 //console.log(row)
                 data.push(row.equip_name);
             });
-            //console.log(data)
+            //console.log(res.data)
             this.setState({
                 filter_data: res.data,
                 equip_data: data
@@ -107,27 +107,53 @@ export default class OtdelMain extends Component{
         
     }
 
+    changeOtd = (e) => {
+        let arr = [];
+        if (e.target.value === '-1'){
+            arr = this.state.filter_data.mol_data;
+            this.setState({
+                otd_id: e.target.value,
+                filter_mol: arr,
+                mol_id: '-1'
+            })
+        }else{
+            this.state.filter_data.mol_data.forEach(row => {
+                if (parseInt(e.target.value) === row.mo_otd_id){
+                    arr.push(row);
+                }
+            });
+            this.setState({
+                otd_id: e.target.value,
+                filter_mol: arr,
+            })
+        }
+       
+    }
+
     render() {
         return (
             <div className='otdel_base'>   
                 <div className='otdel_main'>
                     <p>Фильтры</p>
                     <label>Отдел : </label>
-                    <select onChange={(e) => { this.setState ({ otd_id: e.target.value})}} value={this.state.otd_id}>
+                    <select onChange={this.changeOtd } value={this.state.otd_id}>
                         <option key={this.nextUniqueId()} value='-1'></option>
                         {this.state.filter_data.otd_data && this.state.filter_data.otd_data.map( row => <option key={this.nextUniqueId()} value={row.ot_id}>{row.ot_name}</option>)}     
                     </select>
                     <label>МОЛ : </label>
                     <select onChange={(e) => { this.setState ({ mol_id: e.target.value})}} value={this.state.mol_id}>
                         <option key={this.nextUniqueId()} value='-1'></option>
-                        {this.state.filter_data.mol_data && this.state.filter_data.mol_data.map( row => <option key={this.nextUniqueId()} value={row.mo_id}>{row.mo_name}</option>)}     
+                        {this.state.filter_mol && this.state.filter_mol.map( row => <option key={this.nextUniqueId()} value={row.mo_id}>{row.mo_name}</option>)}     
                     </select>
                     <div className='filter_div'>
                         <label>Наименование: </label>
                         <div className='filter_input'><Autocomplite modelText={this.state.eq_name} items_arr={this.state.equip_data} setText={this.setText} /></div>
                     </div>
-                    <button className='button' onClick={this.enableFilter}>Применить фильтр</button>
-                    <button className='button' onClick={this.disableFilter}>Сбросить фильтр</button>
+                    <div className='button_container'>
+                        <button className='button' onClick={this.enableFilter}>Применить фильтр</button>
+                        <button className='button' onClick={this.disableFilter}>Сбросить фильтр</button>
+                    </div>
+                    
                 </div>
                 {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock2 key={this.nextUniqueId()} 
                                                                                                 data={this.state.data}

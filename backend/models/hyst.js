@@ -5,7 +5,6 @@ const conn = require('../db_con.js');
 const pool = new Pool (conn.conn_str);
 
 exports.spisatHystory = async function (docNum,data, us_id, cb) {
-    console.log(data);
     var sql = ` INSERT INTO public.history(
                      hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
@@ -24,12 +23,8 @@ exports.spisatHystory = async function (docNum,data, us_id, cb) {
                             `+row.bl_mol_id+`, `+row.bl_otd_id+`, `+data.equip[0].bl_id+`, 
                             `+data.act_id+`, `+docNum+`, '`+data.user+`', 'Списано', `+us_id+`);
         `;
-        pool.query(sql).then (
-            (res) => {
-                //cb('',res);
-            }
-        ).catch(function(err) {
-            cb(err,'');
+        pool.query(sql, (err,res) => {
+            cb(err,res);
         });
      });
 }
@@ -48,17 +43,12 @@ exports.Move = async function (data, us_id, cb) {
                                 `+data.row.bl_mol_id+`, `+data.row.bl_otd_id+`, `+data.mol_id+`, `+data.otd_id+`, 
                                 '`+data.user+`', 'Движение', `+us_id+`);
                 `; 
-    pool.query(sql).then (
-        (res) => {
-            //cb('',res);
-        }
-    ).catch(function(err) {
-        cb(err,'');
+    pool.query(sql, (err,res) => {
+            cb(err,res);
     });
 }
 
 exports.StorageUpdate = async function (data, us_id, cb) {
-    //console.log(data)
     var  sql = `INSERT INTO public.history(
                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
@@ -67,19 +57,12 @@ exports.StorageUpdate = async function (data, us_id, cb) {
                                 '`+data.inv_num+`', '`+data.dogvr_num+`', '`+data.prim+`', '`+data.row.st_inp_usr+`', 
                                 '`+data.user+`', 'Обновление хранилища', `+us_id+`, '`+data.buh_name+`');
                 `;  
-    //console.log(sql);
-    //cb('','');
-    pool.query(sql).then (
-        (res) => {
-            //cb('',res);
-        }
-    ).catch(function(err) {
-        cb(err,'');
+    pool.query(sql, (err,res) => {
+        cb(err,res);
     });
 }
 
 exports.StorageOut = async function ( data, mol_id, otd_id, kol, user, us_id, cb) {
-    //console.log(data)
     var  sql = `INSERT INTO public.history(
                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr,
@@ -90,17 +73,12 @@ exports.StorageOut = async function ( data, mol_id, otd_id, kol, user, us_id, cb
                                 `+otd_id+`, `+mol_id+`,
                                 '`+user+`', 'Выписано', `+us_id+`, '`+data.st_buh_name+`');
                 `;  
-    //console.log(sql);
-    pool.query(sql).then (
-        (res) => {
-        }
-    ).catch(function(err) {
-        cb(err,'');
+    pool.query(sql, (err,res) => {
+        cb(err,res);
     });
 }
 
 exports.StorageIn = async function ( data, us_id, cb) {
-    //console.log(data)
     var  sql = `INSERT INTO public.history(
                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
                     hy_inv_num, hy_contr_num, hy_prim,
@@ -111,12 +89,8 @@ exports.StorageIn = async function ( data, us_id, cb) {
                                 
                                 '`+data.user+`', 'Поступило', `+us_id+`);
                 `;  
-    //console.log(sql);
-    pool.query(sql).then (
-        (res) => {
-        }
-    ).catch(function(err) {
-        cb(err,'');
+    pool.query(sql, (err,res) => {
+        cb(err,res);
     });
 }
 

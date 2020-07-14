@@ -24,7 +24,8 @@ export default class OtdMols2 extends Component{
                                                             mol={this.props.mol_name} 
                                                             row={row}
                                                             clickEquip={this.props.clickEquip}
-                                                            clickAct={this.props.clickAct} />)}
+                                                            clickAct={this.props.clickAct}
+                                                            onReboot={this.props.onReboot} />)}
             </React.Fragment>  
         );
     }

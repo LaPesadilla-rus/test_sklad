@@ -4,7 +4,7 @@ import axio from 'axios';
 
 import ModalInfo from '../../../simple_comp/modal_info/modalInfo';
 
-export default class New_user extends Component {
+export default class UpdateUser extends Component {
     
     constructor (props) {
         super(props);
@@ -47,19 +47,18 @@ export default class New_user extends Component {
             this.setState({ errTxt: err});
             this.showMessage(0);
         }else{
-            if(this.props.reg === 'new'){
-                axio.post('/users/new', {data}).then(res => {
-                    if (res.data === 'SAVE COMPLITE') {
-                    this.setState({ errTxt: 'Сохранение успешно'});
-                    this.showMessage(1);
-                    //this.props.onReboot();
-                    this.props.onClose();
-                    }else{
-                        this.setState({ errTxt: 'Не сохранено'});
-                        this.showMessage(0);
-                    }
-                });
-            }
+            axio.post('/users/new', {data}).then(res => {
+                if (res.data === 'SAVE COMPLITE') {
+                this.setState({ errTxt: 'Сохранение успешно'});
+                this.showMessage(1);
+                //this.props.onReboot();
+                this.props.onClose();
+                }else{
+                    this.setState({ errTxt: 'Не сохранено'});
+                    this.showMessage(0);
+                }
+            });
+            
         }
     }
 
@@ -88,9 +87,6 @@ export default class New_user extends Component {
         return (
                 <div className='background_modal background_modal_pos'>
                     <div className="modal modal_pos">
-                        <div>
-                            {(this.props.reg === 'new') ? <label>Новый пользователь</label> : <label>Изменить пользователя</label> }
-                        </div>
                         <div>
                             <label>Логин: </label>
                             <input onChange={(e) => {this.setState({ login: e.target.value})}} value={this.state.login}></input>
