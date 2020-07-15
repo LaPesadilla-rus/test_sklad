@@ -11,6 +11,7 @@ import OtdelMain from '../pages/otdel/OtdelMain';
 import Zurnal from '../pages/zurnal/zurnal';
 import Auth from '../pages/auth/authContainer';
 import {Route, Redirect} from 'react-router-dom';
+import Zauvki from '../../components/pages/zauavki/Zauavki'
 
 //import { PrivateRoute } from '../pages/auth/PrivateRoute';
 
@@ -35,6 +36,8 @@ export default class Routs extends Component {
                     <Route path='/zurnal' component={Zurnal}/>
 
                     <Route path='/auth' component={Auth}/>
+
+                    <Route path='/reports' component={Zauvki}/>
 
 
                     <Route path='/spr' component={SprForms}/>
