@@ -1,20 +1,15 @@
-import React, {Component}  from 'react';
+import React from 'react';
 import './loader.css';
 
-export default class Loader extends Component {
-    
-    constructor (props) {
-        super(props);
-        this.state = {
-        };
-    }
+const Loader = () => {
 
-    render () {
         return (
-                <div className='background_modal background_modal_pos loader'>
-
-                <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <div className='background_modal_loader background_modal_loader_pos loader'>
+                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
         );
-    }
+    
 }
+
+export default Loader;
+

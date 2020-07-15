@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Menu from './components/modules/l_menu/l_menuContainer';
+import Loader from './components/simple_comp/loader/loader';
 //import Body from './components/body/body.js';
 import Routs from './components/routs/routs';
 import AuthContainer from './components/pages/auth/authContainer'
@@ -27,6 +28,7 @@ class AppContainer extends React.Component {
         return (
             <BrowserRouter>
               <div className="back">
+              {this.props.loader_status && <Loader/>}
                 <div className="App">
                     {this.props.isAuthorize ?  <div className="App">
                         <Menu />
@@ -35,6 +37,8 @@ class AppContainer extends React.Component {
                   
                 </div> 
               </div>
+              
+              
             </BrowserRouter>
           );
     }
@@ -48,7 +52,8 @@ const pushStateToProps = (state) => {
         at: state.auth.at,
         rt: state.auth.rt,
         isAuthorize: state.auth.isAuthorize,
-        role: state.auth.role
+        role: state.auth.role,
+        loader_status: state.loader.loader_state
     };
 };
 
