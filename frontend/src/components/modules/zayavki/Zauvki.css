@@ -1,7 +1,6 @@
 .ForB{
     background-color: rgba(216, 216, 216, 0.718);
     display: flex;
-    width: 100%;
     height: 50px;
     padding: 10px;
 }
@@ -10,7 +9,7 @@
     border: #000000;
     color: #000000;
     font-weight: bold;
-    background-color: #9c9c9c ;
+    background-color: #bbb3b3dc ;
     border-spacing: 0px;
     width:100%
 }
@@ -18,7 +17,7 @@
 .Table_pol{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 90%;
 }
 
 .back{
@@ -41,6 +40,9 @@
 }
 .Text{
     resize: none;
-    width: 250px;
+    width: 200px;
     height: 50px;
+}
+.Table_head{
+    background-color: rgb(5, 77, 73); ;
 }

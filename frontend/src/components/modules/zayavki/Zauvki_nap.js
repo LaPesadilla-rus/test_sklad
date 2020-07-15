@@ -7,7 +7,7 @@ export default class Zauvki_nap extends React.Component {
     }
 
 	render (){ 
-    return ( <tr className='oi' onClick={this.onClick}> 
+    return ( <tr width='100%' className='oi' onClick={this.onClick}> 
     <td>gg</td>
     <td>asfd</td>
     <td>fg</td>

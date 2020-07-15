@@ -41,7 +41,7 @@ Look = () => {
                             <th>Статус</th>
                         </tr>
                     </thead> 
-                    <tbody className='Table_body'>
+                    <tbody>
                     <Zauvki_nap Look={this.Look}/>
                     </tbody>
                 </table>
