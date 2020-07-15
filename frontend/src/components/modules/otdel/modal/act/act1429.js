@@ -6,7 +6,10 @@ import axio from 'axios';
 import Column from './column1423';
 import Column1427 from './column1427';
 
-export default class Act1429 extends Component{
+import { connect } from 'react-redux';
+import { setLoaderShow, setLoaderHide } from '../../../../../store/loader/actions';
+
+class Act1429 extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
@@ -22,14 +25,10 @@ export default class Act1429 extends Component{
     }
 
     componentDidMount () {
-        //var row = this.props.row
-        //console.log(this.props)
         this.dopData = this.props.dop_equip;
         this.dopUpload.push(this.props.row);
         var arr = [];
         arr[0] = this.props.row;
-        /*var arr2 = [];
-        arr2.push(arr);*/
         this.setState({dop_upload: arr })
     }
 
@@ -37,9 +36,8 @@ export default class Act1429 extends Component{
         this.props.onClose();
     }
 
-    onSubmith = () => {
-        //console.log(this.props);
-        //console.log(this.state)
+    onSubmith = async () => {
+        this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.osn_upload,
@@ -55,10 +53,13 @@ export default class Act1429 extends Component{
         console.log(data)
         const FileDownload = require('js-file-download');
         
-        axio.post('/otdel/spisat14_29', {data},  { responseType: 'arraybuffer' }).then(res=>{
+        await axio.post('/otdel/spisat14_29', {data},  { responseType: 'arraybuffer' }).then(res=>{
             FileDownload(res.data, '14-29.xlsx');
         });
-        //this.props.onClose();
+        await this.props.setLoaderHide();
+        await this.props.onClose();
+        await this.props.modalActClose();
+        await this.props.onReboot();
     }
 
     changeOsn = (e) => {
@@ -69,7 +70,6 @@ export default class Act1429 extends Component{
                 arr.push(row);
             }
         });
-        //console.log(arr[0].equip_name)
         this.setState({ 
             osn_sel: e.target.value,
             osn_upload: arr,
@@ -81,7 +81,6 @@ export default class Act1429 extends Component{
         var arr = [],
         val = parseInt(e.target.value),
         indx = 0;
-        //this.setState({ dop_sel: e.target.value });
         this.dopData.forEach(row => {
             if (row.bl_id === val){
                 arr.push(row);
@@ -89,14 +88,11 @@ export default class Act1429 extends Component{
             }
             indx ++;
         });
-        //console.log(arr[0].equip_name)
         this.setState({ 
             dop_sel: e.target.value,
-            //dop_upload: arr,
         });
         this.setState({dop_upload: this.state.dop_upload.concat(arr)})
         this.dopUpload.push(arr);
-        //console.log(this.dopUpload);
     }
 
     render() {
@@ -212,4 +208,15 @@ export default class Act1429 extends Component{
         );
     }
 }
+
+const pushDispatchToProps = {
+    setLoaderShow,
+    setLoaderHide
+};
+
+export default connect(
+    '',
+    pushDispatchToProps,
+
+)(Act1429)
 

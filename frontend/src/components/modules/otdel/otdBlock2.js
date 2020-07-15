@@ -30,10 +30,6 @@ export default class OtdBlock2 extends Component{
         }
     }
 
-    /*componentDidMount = () => {
-        console.log(this.props.row)
-    }*/
-
     changeModalMove = () =>{
         this.setState(state => ({ isModalMoveOpen: !state.isModalMoveOpen}))
     }
@@ -56,14 +52,6 @@ export default class OtdBlock2 extends Component{
     changeAct1423 = () => {
         this.setState(state => ({ isAct1423Open: !state.isAct1423Open}));
         this.sortDopOsn();
-        /*var mol_id = this.state.act_data.bl_mol_id;
-        var otd_id = this.state.act_data.bl_otd_id;
-        var id = this.state.act_data.bl_id;*/
-        /*this.props.data.forEach(row => {
-            if (row.bl_otd_id === otd_id && row.bl_mol_id === mol_id && row.bl_id !== id){
-                console.log(row)
-            }
-        })*/
     }
 
     sortDopOsn = () => {
@@ -99,18 +87,9 @@ export default class OtdBlock2 extends Component{
     }
 
     clickEquip = (val) => {
-        //console.log(val)
         this.setState({
             selEquip: val,
         });
-        /*this.props.data.forEach(element => {
-            if(element.bl_id === val){
-                this.setState({
-                    selEquip: element,
-                    bl_id: val,
-                });
-            }
-        })*/
         this.changeModalMove();
     }
     

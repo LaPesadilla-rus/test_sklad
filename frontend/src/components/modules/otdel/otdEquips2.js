@@ -17,7 +17,6 @@ export default class OtdEquips2 extends Component{
 
     componentDidMount() {
         document.addEventListener('click', this.handleClickOutside, false);
-        (this.props.reg) ? console.log('button_red') : console.log('false');  
     }
 
     clickMove = () => {
