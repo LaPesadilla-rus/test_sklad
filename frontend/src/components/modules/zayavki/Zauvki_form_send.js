@@ -56,10 +56,15 @@ changeKat = (e) => {
 }
 
 changeMar (e){
-    console.log(e.target.value)
+ this.setState({ val_mar: e.target.value})
 }
-changeType (e){
-console.log(e.target.value)
+changeType = (e)=>{
+    this.setState({ val_mar: e.target.value})
+    var arr: [];
+    let ytpe_m=this.state.type
+    let cat_m=this.state.cat
+    //this.state.types.map(id =>
+        
 
 }
 
@@ -79,7 +84,7 @@ console.log(e.target.value)
                             </tr>
                         <tr >
                             <td align="left">Тип </td> 
-                             <td><select onChange={this.changeType} value={this.e}>
+                             <td><select onChange={this.changeType} value={this.val_mar}>
                              <option placeholder='----' value='-1'></option>
                              {this.state.types.map( id => <option key={id.te_id} value={id.te_id}>{id.te_name}</option>)}
                              </select>
