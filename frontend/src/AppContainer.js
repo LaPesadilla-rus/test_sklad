@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Menu from './components/modules/l_menu/l_menuContainer';
 import Loader from './components/simple_comp/loader/loader';
+import ModalInfo from './components/simple_comp/modal_info/modalInfo';
 //import Body from './components/body/body.js';
 import Routs from './components/routs/routs';
 import AuthContainer from './components/pages/auth/authContainer'
@@ -29,6 +30,7 @@ class AppContainer extends React.Component {
             <BrowserRouter>
               <div className="back">
               {this.props.loader_status && <Loader/>}
+              {this.props.message_state && <ModalInfo/>}
                 <div className="App">
                     {this.props.isAuthorize ?  <div className="App">
                         <Menu />
@@ -37,8 +39,6 @@ class AppContainer extends React.Component {
                   
                 </div> 
               </div>
-              
-              
             </BrowserRouter>
           );
     }
@@ -53,7 +53,8 @@ const pushStateToProps = (state) => {
         rt: state.auth.rt,
         isAuthorize: state.auth.isAuthorize,
         role: state.auth.role,
-        loader_status: state.loader.loader_state
+        loader_status: state.loader.loader_state,
+        message_state: state.message.message_state,
     };
 };
 
