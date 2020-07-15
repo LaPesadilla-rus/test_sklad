@@ -2,7 +2,7 @@ const conn_str =  ({
     user: 'postgres',
     host: 'localhost',
     database: 'sklad',
-    password: 'masterkey',
+    password: 'masterpas',
     port: 5432,
     max: 3
 });
