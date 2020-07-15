@@ -39,7 +39,7 @@ class Act1423 extends Component{
         this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
-            osn_upload: this.state.dop_upload,
+            osn_upload: this.state.osn_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
             act_id: 1,
@@ -160,7 +160,6 @@ class Act1423 extends Component{
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
                             </select>
-                            <button className='button'>Добавить</button>
                         </div>
                         <div className='combo_div'>
                             <table className='act_table'>

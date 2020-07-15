@@ -4,6 +4,7 @@ import axio from 'axios';
 import UnicId from 'react-html-id';
 import TableBlock from './table_block.js';
 import Relation from './relation/relationContainer';
+import RelationWatch from './relation/relationWatch'
 import SprButton from './spr_button_spr';
 import NewUser from './new_user/new_user';
 import { connect } from 'react-redux';
@@ -31,17 +32,13 @@ class Spr_block extends Component {
                 actSpr: []
             });
         });
-        //this.changeSpr(this.state.actSpr);
-
     }
 
     componentDidMount = () => {
-        //console.log(this.props.authStore)
         axio.get('/spr/all').then(res=>{
             this.setState({
                 main:  res.data,
             });
-            //console.log(res.data)
         });  
     }
 
@@ -66,7 +63,6 @@ class Spr_block extends Component {
     }
 
     changeSpr = (row) => {
-        //console.log(row);
         this.setState({
             actSpr: row
         })
@@ -84,7 +80,7 @@ class Spr_block extends Component {
             <div className='spr_block_act_zone'> 
                 <div>
                     <button className='button' onClick={this.changeRelation}>Создать связь</button>
-                    <button className='button' onClick={this.changeRelation}>Просмотреть связи</button>
+                    <button className='button' onClick={this.changeWatchRelation}>Просмотреть связи</button>
                 </div>
                 
                 {(this.props.authStore.role === '0') ? <div>
@@ -101,6 +97,8 @@ class Spr_block extends Component {
                 {this.state.actSpr.name && spr}
                 
                 {this.state.isRelationOpen && <Relation onClose={this.changeRelation}/>}
+
+                {this.state.isWatchRelation && <RelationWatch onClose={this.isWatchRelation}/>}
 
                 {this.state.isNewUser && <NewUser onClose={this.changeNewUser} reg={this.state.reg} />}
             </div>

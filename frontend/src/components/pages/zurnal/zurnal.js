@@ -42,7 +42,6 @@ export default class Zurnal extends Component{
             contrNum: this.state.contrNum,
         }
         axio.post('/zurnal/postupl', {data}).then(res=>{
-            console.log(res.data)
             this.setState({
                 data: res.data
             })
@@ -189,26 +188,6 @@ export default class Zurnal extends Component{
                     {(this.state.buttonStatus === 3) ? <Moving  data={this.state.data} txt={this.state.txt} /> : null}
 
                 </div> 
-                {/*<div className='zurnal_block'>    
-                    <table>
-                        <thead>
-                            <tr>
-                                {this.state.data.param && this.state.data.param.map(row => <th className='thead'>{row}</th>)}
-                            </tr>
-                        </thead>
-                        <tbody>
-                                {this.state.data.data && this.state.data.data.map(row => 
-                                <tr>
-                                    {row.map(line => 
-                                        <td className='thead'>{line}</td>
-                                    )}
-                                    
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                                    </div>*/}   
-                 
             </div>
         );
     }

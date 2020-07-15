@@ -30,7 +30,9 @@ app.use( async function (req, res, next) {
     if (data.length > 0 || req.originalUrl === '/auth/login' || req.originalUrl === '/auth/out'){
         next()
     }else{
-        console.log('ALERT user_id: ' + req.headers.us_id+ ' URL://' + req.originalUrl);
+        let date = '';
+        date = new Date().getTime();
+        console.log('ALERT user_id:' + req.headers.us_id+ ' URL://' + req.originalUrl + ' TIME:' + date);
         res.sendStatus(500)
     }
   });
@@ -95,6 +97,7 @@ app.get('/otdel/filter_data', otdelController.filter_data);
 
 app.post('/otdel/moveEQ', otdelController.moveEQ);
 app.post('/otdel/spisat14_23', otdelController.spisat14_23);
+app.post('/otdel/spisat14_25', otdelController.spisat14_25);
 app.post('/otdel/spisat14_27', otdelController.spisat14_27);
 app.post('/otdel/spisat14_29', otdelController.spisat14_29);
 app.post('/otdel/all_filter', otdelController.all_filter);

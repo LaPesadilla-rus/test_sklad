@@ -9,14 +9,18 @@
 .act_table {
     width: 100%;
     border: 1px solid black;
+    border-collapse: collapse;
+    box-shadow: 0 0 3px rgb(80, 80, 80);
 }
 
 .act_table thead {
     background-color: #818181;
+    
 }
 
 .act_table td {
     border: 1px solid black;
+    background-color: rgb(137, 168, 201);
 }
 
 .act_line_div{

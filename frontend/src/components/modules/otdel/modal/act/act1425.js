@@ -2,20 +2,19 @@ import React, {Component} from 'react';
 import UnicId from 'react-html-id';
 import './act.css';
 import axio from 'axios';
-
-import Column from './column1423';
-import Column1427 from './column1427';
-
 import { connect } from 'react-redux';
 import { setLoaderShow, setLoaderHide } from '../../../../../store/loader/actions';
 
-class Act1429 extends Component{
+import Column from './column1423';
+
+class Act1425 extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
         this.osnUpload = [];
         this.dopUpload = [];
         this.dopData = [];
+        this.loader = false;
         this.state = {
             osn_sel: '',
             dop_sel: '',
@@ -43,23 +42,24 @@ class Act1429 extends Component{
             osn_upload: this.state.osn_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
-            act_id: 4,
+            act_id: 2,
             prim: '',
             equip: this.state.dop_upload
         }
+        //console.log(data)
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
-        console.log(data)
         const FileDownload = require('js-file-download');
         
-        await axio.post('/otdel/spisat14_29', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-29.xlsx');
+        await axio.post('/otdel/spisat14_25', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            FileDownload(res.data, '14-25.xlsx');
         });
         await this.props.setLoaderHide();
         await this.props.onClose();
         await this.props.modalActClose();
         await this.props.onReboot();
+        
     }
 
     changeOsn = (e) => {
@@ -101,7 +101,7 @@ class Act1429 extends Component{
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
                 <div className="act_main">
-                    <p>Акт 14-29 </p>
+                    <p>Акт 14-25 </p>
                     <div className='act_container'>
                         <div className='combo_div'>
                             <label>Материально-ответственное лицо: </label>
@@ -127,7 +127,30 @@ class Act1429 extends Component{
                             <label className='act_container_text'>{this.props.row.mol_name}</label>
                         </div>
                         <div className='act_line_div'>
-                            <label>подтверждаем, что при ремонте основного средства: </label>
+                            <label>подтверждаем, что следующие материальные ценности: </label>
+                            <select onChange={this.changeDop} value={this.state.dop_sel}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
+                            </select>
+                        </div>
+                        <div className='combo_div'>
+                            <table className='act_table'>
+                                <thead>
+                                    <tr>
+                                        <th>№ п/п</th>
+                                        <th>Наименование МЦ</th>
+                                        <th>Инвентарный номер</th>
+                                        <th>Единица измерения</th>
+                                        <th>Количество</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className='act_line_div'>
+                            <label>были установлены в основное средство: </label>
                             <select onChange={this.changeOsn} value={this.state.osn_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.osn_equip.map( id => <option key={id.bl_id} value={id.bl_id}>{id.equip_name}</option>)}
@@ -155,47 +178,7 @@ class Act1429 extends Component{
                                 </tbody>
                             </table>
                         </div>
-                        <div className='combo_div'>
-                            <label>была произведена замена вышедшего из строя элемента: </label>
-                        </div>
-                        <div className='combo_div'>
-                            <table className='act_table'>
-                                <thead>
-                                    <tr>
-                                        <th>№ п/п</th>
-                                        <th>Наименование запчасти ОС</th>
-                                        <th>Единица измерения</th>
-                                        <th>Количество</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { this.state.dop_upload.map(row => <Column1427 key={this.nextUniqueId()} data={row} indx={indx} />)}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className='act_line_div'>
-                            <label>на следующий элемент: </label>
-                            <select onChange={this.changeDop} value={this.state.dop_sel}>
-                                <option placeholder='----' value='-1'></option>
-                                {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
-                            </select>
-                        </div>
-                        <div className='combo_div'>
-                            <table className='act_table'> 
-                                <thead>
-                                    <tr>
-                                        <th>№ п/п</th>
-                                        <th>Наименование МЦ</th>
-                                        <th>Инвентарный номер</th>
-                                        <th>Единица измерения</th>
-                                        <th>Количество</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
-                                </tbody>
-                            </table>
-                        </div>
+                        
                     </div>
                     <div className='combo_div'>
                     <button className='button button_green' onClick={this.onSubmith}>Подвердить</button>
@@ -217,5 +200,5 @@ export default connect(
     '',
     pushDispatchToProps,
 
-)(Act1429)
+)(Act1425)
 
