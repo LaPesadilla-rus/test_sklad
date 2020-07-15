@@ -1,0 +1,48 @@
+.ForB{
+    background-color: rgba(216, 216, 216, 0.718);
+    display: flex;
+    height: 50px;
+    padding: 10px;
+}
+
+.Table{
+    border: #000000;
+    color: #000000;
+    font-weight: bold;
+    background-color: #bbb3b3dc ;
+    border-spacing: 0px;
+    width:100%
+}
+
+.Table_pol{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.back{
+    background-color:  rgba(216, 216, 216, 0.718);
+    box-shadow: 0 0 3px rgb(30, 35, 39);
+    color: white;
+    font-size: 15px;
+}
+
+.buttons{
+    margin: 5px;
+    padding: 10px;
+    min-width: 50px;
+    background-color: rgb(13, 84, 117);
+    box-shadow: 0 0 3px rgb(46, 52, 56);
+    transition: all 0.5s;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+}
+.Text{
+    resize: none;
+    width: 200px;
+    height: 50px;
+}
+.Table_head{
+    background-color: rgb(5, 77, 73); ;
+}
