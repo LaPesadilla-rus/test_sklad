@@ -298,7 +298,6 @@ exports.spisatInsert = async function (docNum,data, row, us_id, cb) {
 }
 
 exports.filter_data_otd = async function (cb) {
-    var docs = [];
     var sql = `SELECT * FROM otd_spr `
     await pool.query(sql).then (
         (res) => {
@@ -310,7 +309,6 @@ exports.filter_data_otd = async function (cb) {
 }
 
 exports.filter_data_mol = async function (cb) {
-    var docs = [];
     var sql = `SELECT * FROM mol_spr `
     await pool.query(sql).then (
         (res) => {
@@ -322,7 +320,6 @@ exports.filter_data_mol = async function (cb) {
 }
 
 exports.filter_data_eq = async function (cb) {
-    var docs = [];
     var sql = `SELECT eq.*, (te.te_name || ' ' || ma.ma_name || ' ' || eq.eq_name) as equip_name 
                 FROM equip_spr  eq
 

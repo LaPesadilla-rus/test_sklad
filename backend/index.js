@@ -30,7 +30,7 @@ app.use( async function (req, res, next) {
     if (data.length > 0 || req.originalUrl === '/auth/login' || req.originalUrl === '/auth/out'){
         next()
     }else{
-        console.log('ALERT' + data.length + req.originalUrl);
+        console.log('ALERT user_id: ' + req.headers.us_id+ ' URL://' + req.originalUrl);
         res.sendStatus(500)
     }
   });

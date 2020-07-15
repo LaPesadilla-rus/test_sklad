@@ -16,6 +16,7 @@ class Spr_block extends Component {
             main: [],
             isModalOpen: false,
             isRelationOpen: false,
+            isWatchRelation: false,
             isNewUser: false,
             actSpr: [],
             acrRow: [],
@@ -52,6 +53,10 @@ class Spr_block extends Component {
         this.setState(state => ({ isRelationOpen: !state.isRelationOpen}))
     }
 
+    changeWatchRelation = () => {
+        this.setState(state => ({ isWatchRelation: !state.isWatchRelation}))
+    }
+
     changeNewUser = () => {
         this.setState(state => ({ isNewUser: !state.isNewUser, reg: 'new'}))
     }
@@ -77,7 +82,11 @@ class Spr_block extends Component {
                     </div>
         return(
             <div className='spr_block_act_zone'> 
-                <button className='button' onClick={this.changeRelation}>Создать связь</button>
+                <div>
+                    <button className='button' onClick={this.changeRelation}>Создать связь</button>
+                    <button className='button' onClick={this.changeRelation}>Просмотреть связи</button>
+                </div>
+                
                 {(this.props.authStore.role === '0') ? <div>
                                                             <button className='button button_green' onClick={this.changeNewUser}>Создать пользователя</button>
                                                             <button className='button button_green' onClick={this.updateUser}> Изменить данные</button>

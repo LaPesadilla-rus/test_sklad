@@ -48,4 +48,40 @@
     width: 100%;
     height: 100%;
 }
-  
+
+.test1 {
+  background-image: url(test1.png);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.test2 {
+  background-image: url(test2.png);
+  width: 95px;
+  height: 95px;
+  animation: went_rotate 1.8s cubic-bezier(0.2, 0.2, 0.2, 0.2) infinite;
+  margin-top: 1px;
+}
+
+@keyframes went_rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(72deg);
+  }
+  40% {
+    transform: rotate(144deg);
+  }
+  60% {
+    transform: rotate(216deg);
+  }
+  80% {
+    transform: rotate(288deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -202,19 +202,10 @@ exports.spisano = function(data, cb) {
         }
         wh++;
     }
-    /*if (data.contrNum !== ''){
-        if (wh !== 0){
-            sql_where = sql_where + ` AND lo_contr_num LIKE '%`+data.contrNum+`%'`;
-        }else{
-            sql_where = sql_where + ` lo_contr_num LIKE '%`+data.contrNum+`%'`;
-        }
-        wh++;
-    }*/
     if(wh > 0){
         sql = sql + ' WHERE ' + sql_where;
     }
     sql = sql + ` ORDER BY lo.lb_id  desc`;
-    console.log(sql)
     pool.query(sql
     , (err,res)=>{
         cb(err,res);
@@ -279,19 +270,10 @@ exports.moving = function(data, cb) {
         }
         wh++;
     }
-    /*if (data.contrNum !== ''){
-        if (wh !== 0){
-            sql_where = sql_where + ` AND lo_contr_num LIKE '%`+data.contrNum+`%'`;
-        }else{
-            sql_where = sql_where + ` lo_contr_num LIKE '%`+data.contrNum+`%'`;
-        }
-        wh++;
-    }*/
     if(wh > 0){
         sql = sql + ' WHERE ' + sql_where;
     }
     sql = sql + ` ORDER BY et.et_id desc`;
-    //console.log(sql)
     pool.query(sql
     , (err,res)=>{
         cb(err,res);

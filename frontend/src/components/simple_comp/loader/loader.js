@@ -5,7 +5,8 @@ const Loader = () => {
 
         return (
                 <div className='background_modal_loader background_modal_loader_pos loader'>
-                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    {/*<div className="lds-ring"><div></div><div></div><div></div><div></div></div>*/}
+                    <div className='test1'><div className='test2'></div></div>
                 </div>
         );
     

@@ -6,9 +6,12 @@ import UnicId from 'react-html-id';
 //import OtdBlock from '../../modules/otdel/otdBlock.js';
 import OtdBlock2 from '../../modules/otdel/otdBlock2.js';
 import Autocomplite from '../../simple_comp/autocomplite/autocomplite';
+
+import { connect } from 'react-redux';
+import { setLoaderShow, setLoaderHide } from '../../../store/loader/actions';
 //import { otd_data } from '../../../../../backend/controllers/otdel';
 
-export default class OtdelMain extends Component{
+class OtdelMain extends Component{
     constructor() {
         super();
         UnicId.enableUniqueIds(this);
@@ -23,7 +26,8 @@ export default class OtdelMain extends Component{
         };
     }
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+        //this.props.setLoaderShow();
         var data = [];
         axio.get('/otdel/all2').then(res=>{
             this.setState({
@@ -41,6 +45,7 @@ export default class OtdelMain extends Component{
                 equip_data: data
             });
         });
+        //await this.props.setLoaderHide();
     }
 
     onReboot = () => {
@@ -163,6 +168,17 @@ export default class OtdelMain extends Component{
         );
     }
 }
+
+const pushDispatchToProps = {
+    setLoaderShow,
+    setLoaderHide
+};
+
+export default connect(
+    '',
+    pushDispatchToProps,
+
+)(OtdelMain)
 /**
  * <button onClick={this.Click}>asdsad</button>
  */
