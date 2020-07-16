@@ -30,7 +30,7 @@ class OtdelMain extends Component{
         this.props.setLoaderShow();
         var data = [],
             arr = [];
-        axio.get('/otdel/all2').then(res=>{
+        await axio.get('/otdel/all2').then(res=>{
             this.setState({
                 data: res.data
             });
@@ -44,7 +44,7 @@ class OtdelMain extends Component{
             //console.log(res.data)
             
         });
-        await this.setState({
+        this.setState({
             filter_data: arr,
             equip_data: data
         });

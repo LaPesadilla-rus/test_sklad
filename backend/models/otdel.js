@@ -3,7 +3,7 @@ const {Pool/*, Client*/} = require('pg');
 
 const conn = require('../db_con.js');
 
-const pool = new Pool (conn.conn_str);
+const pool = new Pool (conn.conn_str_download);
 
 exports.otd_name = function (cb) {
     pool.query(`SELECT ot.ot_name, bl_otd_id, COUNT(bl.*) as otd 
@@ -145,9 +145,15 @@ exports.moveEqLog = async function (data, us_id, cb) {
     });
 }
 
-exports.otd_data_otd1 = async() => {
+exports.otd_data_otd1 = async(reg) => {
     var docs = [];
-    await pool.query('SELECT * FROM otd_spr ORDER BY ot_name')
+    var sql = ``;
+    if (reg === 0) {
+        sql = `SELECT * FROM otd_spr WHERE ot_id = 1 ORDER BY ot_name`
+    }else{
+        sql = `SELECT * FROM otd_spr ORDER BY ot_name`
+    }
+    await pool.query(sql)
         .then(
             (res) => {
                 docs = res;
