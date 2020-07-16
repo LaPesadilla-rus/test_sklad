@@ -11,7 +11,7 @@ const conn_str_download =  ({
     user: 'postgres',
     host: 'localhost',
     database: 'test_sklad',
-    password: 'masterkey',
+    password: 'masterpas',
     port: 5432,
     max: 3
 });
