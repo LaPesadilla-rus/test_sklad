@@ -2,11 +2,13 @@ import React from 'react';
 import './modalInfo.css';
 import { connect } from 'react-redux';
 
+import { setMessageHide} from '../../../store/message/actions';
+
 class ModalInfo extends React.Component {
 	componentDidMount = () => {
-		/*setTimeout(() => {
-			this.props.showMessage()	
-			 }, 3000);*/
+		setTimeout(() => {
+			this.props.setMessageHide()	
+			 }, 2000);
 	}
 
 	render (){
@@ -18,12 +20,13 @@ class ModalInfo extends React.Component {
 	}
 }
 
+const pushDispatchToProps = {
+	setMessageHide
+};
+
 export default connect(
     state => ({
         messageStore: state.message
     }),
-    dispatch => ({
-        testDispatch: dispatch
-    }),
-
+    pushDispatchToProps
 )(ModalInfo)

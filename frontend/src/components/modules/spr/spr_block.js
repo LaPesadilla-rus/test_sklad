@@ -8,6 +8,7 @@ import RelationWatch from './relation/relationWatch'
 import SprButton from './spr_button_spr';
 import NewUser from './new_user/new_user';
 import { connect } from 'react-redux';
+import { setLoaderShow, setLoaderHide } from '../../.././store/loader/actions';
 
 class Spr_block extends Component {
     constructor(props) {
@@ -40,6 +41,14 @@ class Spr_block extends Component {
                 main:  res.data,
             });
         });  
+    }
+
+    dowloadFromFile = async() => {
+        this.props.setLoaderShow();
+        await axio.get('/spr/downloadFromFile').then(res=>{
+            console.log(res.data)
+        });
+        this.props.setLoaderHide();
     }
 
     changeModal = () => {
@@ -87,6 +96,7 @@ class Spr_block extends Component {
                                                             <button className='button button_green' onClick={this.changeNewUser}>Создать пользователя</button>
                                                             <button className='button button_green' onClick={this.updateUser}> Изменить данные</button>
                                                             <button className='button'> Список пользователей</button>
+                                                            <button className='button button_yellow' onClick={this.dowloadFromFile}>Загрузить из файла</button>
                                                         </div> : null}
                 
                 <div>
@@ -105,15 +115,15 @@ class Spr_block extends Component {
         )
     }          
 }
-
+const pushDispatchToProps = {
+    setLoaderShow,
+    setLoaderHide
+};
 export default connect(
     state => ({
         authStore: state.auth
     }),
-    dispatch => ({
-        testDispatch: dispatch
-    }),
-
+    pushDispatchToProps
 )(Spr_block)
 
 /**

@@ -44,16 +44,15 @@ app.get('/auth/out', authController.authOut);
 
 //----------------------------------------
 app.get('/sklad/all', skladController.all);
-
 app.get('/sklad/new/type', skladController.type);
-
-
 app.get('/sklad/new/provider', skladController.provider);
 app.get('/sklad/new/marka', skladController.marka);
 app.get('/sklad/new/units', skladController.units);
 app.get('/sklad/new/kat', skladController.kat);
 app.get('/sklad/kat', skladController.kat2);
 app.get('/sklad/out_data', skladController.out_data);
+
+app.get('/spr/downloadFromFile', skladController.downlFrFile);
 
 app.post('/sklad/download', skladController.sklad_download);
 

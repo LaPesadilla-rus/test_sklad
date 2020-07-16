@@ -33,4 +33,11 @@ z-index: 450;
         border: 1px solid #4b100b; 
         background-color: #7e221b;   
 }
+
+/*.modalWindow label {
+    background-color: #c0c0c0;
+    border-radius: 5px;
+
+    padding: 2px;
+}*/
     

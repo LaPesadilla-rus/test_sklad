@@ -1,6 +1,6 @@
 const defState = {
-    message_state: true,
-    txt: 'asdasdasdasdad',
+    message_state: false,
+    txt: 'Default Message',
     color: 1
 };
 
