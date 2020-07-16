@@ -34,6 +34,7 @@ Look = () => {
          
                     <thead> 
                         <tr className='Table_head'>
+                            <th>Номер заявки</th>
                             <th>Категория </th>
                             <th>Тип</th>
                             <th>Марка</th>

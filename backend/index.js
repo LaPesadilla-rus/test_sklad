@@ -12,6 +12,7 @@ const sprController = require('./controllers/spr.js');
 const otdelController = require('./controllers/otdel.js');
 const authController = require('./controllers/auth.js');
 const zurnalController = require('./controllers/zurnal.js');
+const zauvkiController = require('./controllers/zauvki.js');
 
 app.use(express.json());
 
@@ -85,6 +86,10 @@ app.post('/users/new', sprController.newUser);
 app.post('/users/upd', sprController.updUser);
 
 app.delete('/spr/delete', sprController.spr_delete);
+
+//------------------------------ZAUVKI
+app.get('/zauvki/all_zauvki',zauvkiController.all_zauvki)
+app.post('/zauvki/new_zauvka',zauvkiController.new_zauvka)
 
 //------------------------------
 //OTDEL
