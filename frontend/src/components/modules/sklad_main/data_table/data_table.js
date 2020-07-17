@@ -53,7 +53,7 @@ class Data extends Component{
         /*let data = this.props.authStore;
         console.log(data)*/
         axio.get('/sklad/all').then(res=>{
-            //console.log(res.data);
+            console.log(res.data);
             this.setState({
                 equips: res.data
             });
