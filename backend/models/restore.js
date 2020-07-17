@@ -99,3 +99,26 @@ exports.molNewInsert = async (data, cb) => {
         cb('',row[0].mo_id)
     }
 }
+
+exports.deleteAllStorage = async (cb) => {
+    var  sql = `DELETE FROM storage WHERE st_id >= 0
+    `; 
+    await pool.query(sql).catch( (err) => {
+        cb(err, '');
+    })
+    cb('','')
+}
+
+exports.insertStorage = async (data,cb) => {
+    var  sql = `INSERT INTO storage(st_buh_name, st_inv_num, st_un_id, st_amount, st_prim, st_kat_id) 
+                VALUES ('`+data.buh_name+`', '`+data.inv_num+`', `+data.un_id+`, `+data.amount+`, '`+data.prim+`', `+data.kat_id+`)
+    `;
+    //console.log(sql) 
+    await pool.query(sql).then( (res) => {
+        cb('','')
+    }).catch( (err) => {
+        console.log(data)
+        console.log(sql)
+        cb(err,'')
+    })
+}

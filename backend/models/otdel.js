@@ -3,7 +3,7 @@ const {Pool/*, Client*/} = require('pg');
 
 const conn = require('../db_con.js');
 
-const pool = new Pool (conn.conn_str_download);
+const pool = new Pool (conn.conn_str);
 
 exports.otd_name = function (cb) {
     pool.query(`SELECT ot.ot_name, bl_otd_id, COUNT(bl.*) as otd 
