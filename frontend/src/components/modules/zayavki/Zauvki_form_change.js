@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axio from 'axios';
+
 import UnicId from 'react-html-id';
 export default class Zauvki_form_change extends Component{
  
@@ -8,14 +9,14 @@ export default class Zauvki_form_change extends Component{
         this.state = {
             value: 'Введите описание заявки',
             otd_data: [],
-            cat: [],
-            val_cat: '',
-            val_mar: '',
-            mar: [],
-            type: [],
-            val_type: '',
-            sel_per: '',
-            sel_ar:[]
+            cat_ch: [],
+            val_cat_ch: '-1',
+            val_mar_ch: '-1',
+            mar_ch: [],
+            type_ch: [],
+            val_type_ch: '-1',
+            sel_per_ch: '',
+            sel_ar_ch:[]
         } 
         this.handleChange = this.handleChange.bind(this);
     }
@@ -24,49 +25,53 @@ export default class Zauvki_form_change extends Component{
       }
       componentDidMount (){
         axio.get('/sklad/new/kat').then(res=>{
-            console.log(res.data)
+          //  console.log(res.data)
             this.setState({
-                cat: res.data
+                cat_ch: res.data
             });
         });
        axio.get('/sklad/new/marka').then(res=>{
                 this.setState({
-                    mar: res.data
+                    mar_ch: res.data
                 });
             });   
             axio.get('/sklad/new/type').then(res=>{
-             console.log(res.data)
+            // console.log(res.data)
                 this.setState({
-                    type: res.data
+                    type_ch: res.data
                 });
-            });  
+            });
+            console.log(this.props)
+         this.setState({ val_cat_ch: this.props.arr.za_kat_id}) 
+         this.setState({ val_type_ch: this.props.arr.za_type_id}) 
+         this.setState({ val_mar_ch: this.props.arr.za_marka_id}) 
     }
     onClose = () => {
         this.props.clf();
     }
-    changeKat = (e) => {
-        this.setState({ val_cat: e.target.value})
-        var arr = [];
+    changesKat = (e) => {
+        this.setState({ val_cat_ch: e.target.value})
+        var arr_ch = [];
         var val= e.target.value;
-        this.state.type.map(id => {
+        this.state.type_ch.map(id => {
             if (parseInt(val)=== id.te_kat_id){
-                arr.push(id); }
+                arr_ch.push(id); }
                 
             })
-            if (arr.length === 0){
+            if (arr_ch.length === 0){
                 this.setState({
-                    val_type:'',
+                    val_type_ch:'',
                 })
             }
             this.setState({
-                sel_ar: arr
+                sel_ar_ch: arr_ch
             })
     }
-    changeMar =(e)=>{
-     this.setState({ val_mar: e.target.value})
+    changesMar =(e)=>{
+     this.setState({ val_mar_ch: e.target.value})
     }
-    changeType = (e)=>{
-        this.setState({ val_type: e.target.value})
+    changesType = (e)=>{
+        this.setState({ val_type_ch: e.target.value})
     }
 
     render() {
@@ -78,21 +83,22 @@ export default class Zauvki_form_change extends Component{
                         <table>
                         <tbody>
                         <tr>
-                            <td align="left">Категория </td><td><select  onChange={this.changeKat} value={this.state.val_cat}>
+                        <td align="left">Категория </td><td>
+                            <select  onChange={this.changesKat} value={this.state.val_cat_ch}>
                                 <option placeholder='----' value='-1'></option>
-                                {this.state.cat.map( id => <option key={id.kat_id} value={id.kat_id}>{id.kat_name}</option>)}
+                            {this.state.cat_ch.map( id => <option key={id.kat_id} value={id.kat_id}>{id.kat_name}</option>)}
                             </select></td></tr>
                         <tr>
                         <td align="left">Тип </td> 
-                             <td><select onChange={this.changeType} value={this.state.val_type}>
+                             <td><select onChange={this.changesType} value={this.state.val_type_ch}>
                              <option placeholder='----' value='-1'></option>
-                             {this.state.sel_ar.map( id => <option key={id.te_id} value={id.te_id}>{id.te_name}</option>)}
+                             {this.state.sel_ar_ch.map( id => <option key={id.te_id} value={id.te_id}>{id.te_name}</option>)}
                              </select>
                              </td></tr>
                         <tr>
-                            <td align="left"> Марка </td><td><select onChange={this.changeMar} value={this.state.val_mar}>
+                            <td align="left"> Марка </td><td><select onChange={this.changesMar} value={this.state.val_mar_ch}>
                                 <option placeholder='----' value='-1'></option>
-                                {this.state.mar.map( id => <option key={id.id} value={id.id}>{id.name}</option>)}
+                                {this.state.mar_ch.map( id => <option key={id.id} value={id.id}>{id.name}</option>)}
                             </select></td></tr>
                         <tr>
                             <td colSpan='3'><textarea className='Text'value={this.state.value} onChange={this.handleChange}>Введите описание заявки</textarea></td>

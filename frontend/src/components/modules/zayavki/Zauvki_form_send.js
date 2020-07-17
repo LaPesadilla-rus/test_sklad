@@ -5,7 +5,6 @@ export default class Zauvki_form_send extends Component{
     constructor() {
         super();
         this.state = {
-            value: 'Введите описание заявки',
             otd_data: [],
             cat: [],
             val_cat: '',
@@ -16,12 +15,13 @@ export default class Zauvki_form_send extends Component{
             sel_per: '',
             sel_ar: [],
             textar: '',
-            zav_n: ''
+            zav_n: '',
+            arr: []
         } 
         this.handleChange = this.handleChange.bind(this);
     }
     handleChange(event) {
-        this.setState({value: event.target.value});
+        this.setState({textar: event.target.value});
       }
 componentDidMount (){
     axio.get('/sklad/new/kat').then(res=>{
@@ -40,7 +40,7 @@ componentDidMount (){
         this.setState({
             type: res.data
         });
-    }); 
+    });  
 }
 changeKat = (e) => {
     this.setState({ val_cat: e.target.value});
@@ -75,7 +75,7 @@ onSubmith = event => {
         val_cat: this.state.val_cat,
         val_type: this.state. val_type,
         val_mar: this.state.val_mar,
-        textar: this.state.textar,
+        textar: this.state.value,
         zav_n: this.state.zav_n,
     }
     console.log(data)      
@@ -89,13 +89,10 @@ onSubmith = event => {
     }
     if (data.val_type === '-1'){
         err = err + "Тип не выбран";}
-    if (data.za_n === '0'){
-        data.za_n = 1;
-    }
+   
     if (err){
         alert(err)    
     }else{
-        data.za_n=data.za_n+1
             axio.post('/zauvki/new_zauvka', {data}).then(res => {
                 if (res.data === 'SAVE COMPLITE') {
                     alert('Сохранено');
@@ -134,7 +131,7 @@ onSubmith = event => {
                             </select>
                               </td> 
                              </tr>
-                            <tr ><td colSpan='3'><textarea className='Text'value={this.state.value} onChange={this.handleChange}>Введите описание заявки</textarea></td></tr>
+                            <tr ><td colSpan='3'><textarea className='Text'value={this.state.textar} onChange={this.handleChange}>Введите описание заявки</textarea></td></tr>
                             <tr><td><button onClick={this.onSubmith}  type='submit'>Отправить</button></td>
                             <td><button onClick={this.props.showM} type='reset'>Выйти</button></td>
                             </tr>

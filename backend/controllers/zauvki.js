@@ -4,11 +4,11 @@ const Zauvki = require('../models/zauvki.js');
 exports.all_zauvki = function(req,res) {
     Zauvki.all_zauvki(req.body,function(err,docs){
         if (err) {
-            console.log(err);
+          //  console.log(err);
             return res.sendStatus(500);
         }
         //console.log(docs.rows);
-        res.send(docs.rows);
+        res.send(docs);
     })
 }
 
