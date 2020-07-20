@@ -67,15 +67,32 @@ exports.all = function (cb) {
     });
 };
 
-exports.kat = function (cb) {
-    pool.query(`SELECT * FROM kategor_spr`
-    , (err,res)=>{
-       cb(err,res);
-    });
+exports.kat = async function (cb) {
+    await pool.query(`SELECT * FROM kategor_spr`).then( res => {
+        cb('', res)
+    }).catch( err => {
+        cb(err, '')
+    })
 }
 
-exports.equip_fullname = function (cb) {
-    pool.query(`SELECT eq.eq_id as id,
+exports.marka = async function (cb) {
+    await pool.query(`SELECT * FROM marka_equip_spr`).then( res => {
+        cb('', res)
+    }).catch( err => {
+        cb(err, '')
+    })
+}
+
+exports.type = async function (cb) {
+    await pool.query(`SELECT * FROM type_equip_spr`).then( res => {
+        cb('', res)
+    }).catch( err => {
+        cb(err, '')
+    })
+}
+
+exports.equip_fullname = async function (cb) {
+    await pool.query(`SELECT eq.eq_id as id,
                 (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item, *
                 FROM equip_spr eq
                 
@@ -83,17 +100,19 @@ exports.equip_fullname = function (cb) {
                 on ma.ma_id = eq.eq_mark_id
                 
                 inner join type_equip_spr te
-                on te.te_id = eq_type_id`
-    , (err,res)=>{
-       cb(err,res);
-    });
+                on te.te_id = eq_type_id`).then( res => {
+                    cb('', res)
+                }).catch( err => {
+                    cb(err, '')
+                })
 }
 
-exports.equip_name = function (cb) {
-    pool.query(`SELECT eq_name as item, * FROM equip_spr`
-    , (err,res)=>{
-       cb(err,res);
-    });
+exports.equip_name = async function (cb) {
+    await pool.query(`SELECT eq_name as item, * FROM equip_spr`).then( res => {
+        cb('', res)
+    }).catch( err => {
+        cb(err, '')
+    })
 }
 
 exports.spr_save = function(req,cb) {

@@ -11,18 +11,61 @@ import {BrowserRouter} from 'react-router-dom';
 
 import { setUserId, setAt, setRt, setAuthorize, setUserName, setUserRole} from './store/auth/action';
 import {connect} from 'react-redux';
+import axio from 'axios';
+const axiosApiInstance = axio.create();
 
 class AppContainer extends React.Component {
     
-    componentDidMount (){
+    componentDidMount = async() => {
         //console.log(localStorage.getItem('at'))
         if(localStorage.getItem('at')){
             this.props.setAuthorize(true);
-            this.props.setAt(localStorage.getItem('At'));
-            this.props.setRt(localStorage.getItem('Rt'));
-            this.props.setUserName(localStorage.getItem('userName'))
-            this.props.setUserRole(localStorage.getItem('role'))
+            let data = {
+                us_id: localStorage.getItem('user'),
+                at: localStorage.getItem('at'),
+                rt: localStorage.getItem('rt'),
+            }
+            await axio.post('/auth/logCheck', {data}).then(res=>{
+                if(res.status === 200){
+                    this.props.setAuthorize(true);
+                    this.props.setAt(localStorage.getItem('at'));
+                    this.props.setRt(localStorage.getItem('rt'));
+                    this.props.setUserName(localStorage.getItem('userName'))
+                    this.props.setUserRole(localStorage.getItem('role'))
+                }else{
+                    this.props.setAuthorize(false);
+                    //window.location.href = 'http://localhost:3000/auth'
+                }
+            });
+            
         }
+    }
+    componentDidUpdate = () => {
+        //модификация заголовков
+        /*axio.interceptors.request.use(
+            config => {
+                const token = localStorage.getItem('rt');
+                //console.log(token)
+                if (token) {
+                    config.headers['Authorization'] = token;
+                }
+                // config.headers['Content-Type'] = 'application/json';
+                return config;
+            },
+            error => {
+                Promise.reject(error)
+            });*/
+        axio.interceptors.response.use( (res) => {
+            return res
+        }, function (err) {
+            if (err.response){
+                if (err.response.status === 403){
+                    window.location.href = '/auth'
+                }
+            }
+           
+            return Promise.reject(err)
+        })
     }
 
     render(){

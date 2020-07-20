@@ -4,7 +4,7 @@ const Restore = require('../models/restore.js');
 
 exports.downlFrFile = async function (req, cb){
     try{
-        /*await workbook.xlsx.readFile('./docs/restore/Сводная по ОС.xlsx').then( async function(){
+        await workbook.xlsx.readFile('./docs/restore/Сводная по ОС.xlsx').then( async function(){
             var ws = workbook.getWorksheet(1);
             //console.log(ws.columns)
             await Restore.deleteAllBalance(function (err,docs) {
@@ -14,7 +14,7 @@ exports.downlFrFile = async function (req, cb){
                 }
                
             });
-            console.log('Waite delete');
+            console.log('Waite delete balance');
             await sleep(4000);
             console.log('Continue...');
             let i = 2,
@@ -25,6 +25,9 @@ exports.downlFrFile = async function (req, cb){
                 data.inv_num = ws.getCell(i,7).value;
                 data.ot_name = ws.getCell(i,1).value;
                 data.mo_name = ws.getCell(i,2).value;
+                if (data.inv_num === null){
+                    data.inv_num = ''
+                }
                 await Restore.otdNewInsert(data, function (err,docs) {
                     if (err){
                         console.log(err);
@@ -53,7 +56,8 @@ exports.downlFrFile = async function (req, cb){
             }
             console.log(i)
             
-        })*/
+        })
+        console.log('Balance download complite')
         data = {}
         await workbook.xlsx.readFile('./docs/restore/учет_v3_.xlsm').then( async function(){
             var ws = workbook.getWorksheet(4);
@@ -66,7 +70,7 @@ exports.downlFrFile = async function (req, cb){
                
             });
             
-            console.log('Waite delete');
+            console.log('Waite delete storage');
             await sleep(4000);
             console.log('Continue...');
             let i = 4,

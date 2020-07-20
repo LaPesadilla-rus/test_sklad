@@ -10,10 +10,11 @@
     background-color: #afbebe;
 
     position:absolute;
-    width: 100vw;
-    height: 100vh;
+    left: 0;
+    right: 0;
+    height: 100%;
 
-    z-index: 150;
+    z-index: 250;
 }
 
 .auth_form{

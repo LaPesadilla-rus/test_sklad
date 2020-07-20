@@ -28,19 +28,22 @@ app.use( async function (req, res, next) {
         }
     ).catch(function(err) {
     });
-    if (data.length > 0 || req.originalUrl === '/auth/login' || req.originalUrl === '/auth/out'){
+    if (data.length > 0 || req.originalUrl === '/auth/login' || req.originalUrl === '/auth/out' || req.originalUrl === '/auth/logCheck'){
         next()
     }else{
         let date = '';
         date = new Date().getTime();
-        console.log('ALERT user_id:' + req.headers.us_id+ ' URL://' + req.originalUrl + ' TIME:' + date);
-        res.sendStatus(500)
+        console.log('ALERT user_id:' + req.headers.us_id+ ' URL:' + req.originalUrl + ' TIME:' + date);
+        res.sendStatus(403)
     }
   });
 
 //---------------------------------------- AUTH
 
 app.post('/auth/login', authController.login);
+app.post('/auth/logCheck', authController.logCheck);
+app.get('/auth/access', authController.access);
+
 app.get('/auth/out', authController.authOut);
 
 //----------------------------------------
@@ -74,6 +77,7 @@ app.get('/spr/type', skladController.type_a);
 app.get('/spr/equip_name', sprController.equip_name);
 app.get('/spr/equip_all', sprController.equip_all);
 app.get('/spr/equip/fullname', sprController.equip_fullname);
+app.get('/spr/filter_data', sprController.filterData);
 
 app.post('/spr/equip', sprController.equip)
 app.post('/spr/save', sprController.spr_save);
