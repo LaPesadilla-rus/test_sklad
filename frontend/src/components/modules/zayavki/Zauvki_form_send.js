@@ -16,16 +16,24 @@ export default class Zauvki_form_send extends Component{
             sel_ar: [],
             textar: '',
             zav_n: '',
-            arr: []
+            arr: [],
+            zav_status: 'Отправлено'
         } 
         this.handleChange = this.handleChange.bind(this);
     }
-    handleChange(event) {
-        this.setState({textar: event.target.value});
+    handleChange(e) {
+        this.setState({textar: e.target.value});
+        //console.log(this.state.textar)
       }
+ChangeStatus(e){
+    this.setState({zav_status: e.target.value});
+
+} 
+
+
 componentDidMount (){
     axio.get('/sklad/new/kat').then(res=>{
-        console.log(res.data)
+     console.log(res.data)
         this.setState({
             cat: res.data
         });
@@ -36,18 +44,19 @@ componentDidMount (){
             });
         });   
     axio.get('/sklad/new/type').then(res=>{
-        console.log(res.data)
+    //    console.log(res.data)
         this.setState({
             type: res.data
         });
     });  
 }
+
 changeKat = (e) => {
     this.setState({ val_cat: e.target.value});
     var arr = [];
     var val= e.target.value;
     this.state.type.map(id => {
-        console.log(id)
+     //   console.log(id)
         if (parseInt(val)=== id.te_kat_id){
             arr.push(id); }
         })
@@ -75,8 +84,9 @@ onSubmith = event => {
         val_cat: this.state.val_cat,
         val_type: this.state. val_type,
         val_mar: this.state.val_mar,
-        textar: this.state.value,
+        textar: this.state.textar,
         zav_n: this.state.zav_n,
+        zav_status: this.state.zav_status
     }
     console.log(data)      
     var err = '';
@@ -95,6 +105,7 @@ onSubmith = event => {
     }else{
             axio.post('/zauvki/new_zauvka', {data}).then(res => {
                 if (res.data === 'SAVE COMPLITE') {
+                    this.props.onReboot();
                     alert('Сохранено');
                 }else{
                    alert('Не сохранено');
@@ -102,7 +113,8 @@ onSubmith = event => {
             });
     }
 }
- render() {
+
+ render() { console.log(this.state.textar)
         return (
             <div className='background_modal background_modal_pos'>
                 <div className="modal modal_pos">     
@@ -131,7 +143,7 @@ onSubmith = event => {
                             </select>
                               </td> 
                              </tr>
-                            <tr ><td colSpan='3'><textarea className='Text'value={this.state.textar} onChange={this.handleChange}>Введите описание заявки</textarea></td></tr>
+                            <tr ><td colSpan='3'><textarea name='textar'className='Text'value={this.state.textar} onChange={this.handleChange} >Введите описание заявки</textarea></td></tr>
                             <tr><td><button onClick={this.onSubmith}  type='submit'>Отправить</button></td>
                             <td><button onClick={this.props.showM} type='reset'>Выйти</button></td>
                             </tr>
