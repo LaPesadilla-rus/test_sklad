@@ -29,8 +29,8 @@ exports.update_zauvka = function(req,res) {
             console.log(err);
             return res.sendStatus(500);
         }
-        //console.log(docs.rows);
-        res.send(docs.rows);
+        console.log(docs);
+        res.send(docs);
     })
 }
 

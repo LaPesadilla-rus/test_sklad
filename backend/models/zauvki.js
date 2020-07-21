@@ -31,27 +31,10 @@ exports.new_zauvka = function(req, cb) {
 }
 
 exports.update_zauvka= function(req,cb) {
-    var sql;
-    if(!req.body) return res.sendStatus(400);
-    switch(req.body) {
-        case 'cat': sql =  `UPDATE zauavki
-                                    SET za_kat_id ='`+req.body.val_cat+`'
-                                    WHERE za_num = `+req.body.zav_n+``;
-                                    break;
-        case 'marka': sql =  `UPDATE zauavki
-                                    SET za_marka_id ='`+req.body.val_mar+`'
-                                    WHERE za_num = `+req.body.za_num+``;
-                                    break;
-        case 'type': sql =  `UPDATE zauavki
-                                    SET za_type_id ='`+req.body.val_type+`'
-                                    WHERE za_num = `+req.body.za_num+``;
-                                    break;
-        case 'textar': sql =  `UPDATE zauavki
-                                    SET za_txt ='`+req.body.textar+`'
-                                    WHERE za_num = `+req.body.za_num+``;
-                                    break;
-        default: cb('','POST COMPLITE');
-   
+   console.log(req)
+    var data=req.data;
+    var sql = `Update zauavki SET za_kat_id=`+data.val_cat_ch+`,za_type_id=`+data.val_type_ch+`,za_marka_id=`+data.val_mar_ch+`,za_txt='`+data.sel_per_ch+`'where za_id=`+data.za_id+``;
+    console.log(sql)
     if (sql){
         pool.query(sql
             , (err,res)=>{
@@ -62,7 +45,7 @@ exports.update_zauvka= function(req,cb) {
                 }
             });
     }
-} }
+} 
 
 
 exports.delete_zauvka=function(req,cb){
