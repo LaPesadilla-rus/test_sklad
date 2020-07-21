@@ -15,6 +15,8 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);*/
+    position: fixed;
+    margin-top: 10px;
     
 }
 
@@ -22,7 +24,6 @@
     background-color: rgba(146, 146, 146, 0.658);
     display: flex;
     justify-content: center;
-    align-items: center;
     z-index: 150;
 }
 

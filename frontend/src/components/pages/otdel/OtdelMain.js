@@ -27,25 +27,28 @@ class OtdelMain extends Component{
     }
 
     componentDidMount = async () => {
-        //this.props.setLoaderShow();
-        var data = [];
-        axio.get('/otdel/all2').then(res=>{
+        this.props.setLoaderShow();
+        var data = [],
+            arr = [];
+        await axio.get('/otdel/all2').then(res=>{
             this.setState({
                 data: res.data
             });
         });
-        axio.get('/otdel/filter_data').then(res=>{
+        await axio.get('/otdel/filter_data').then( async (res)=>{
             res.data.eq_data.forEach(row => {
                 //console.log(row)
                 data.push(row.equip_name);
             });
+            arr = res.data;
             //console.log(res.data)
-            this.setState({
-                filter_data: res.data,
-                equip_data: data
-            });
+            
         });
-        //await this.props.setLoaderHide();
+        this.setState({
+            filter_data: arr,
+            equip_data: data
+        });
+        this.props.setLoaderHide();
     }
 
     onReboot = () => {

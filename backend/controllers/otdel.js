@@ -94,7 +94,7 @@ exports.all2 = async function(req, res) {
     var out_equip;
     var docs = {}; 
 
-    data = await Otdel.otd_data_otd1();
+    data = await Otdel.otd_data_otd1(1);
     docs.otd_data = data;
     for (var i = 0; i < data.length; i++){
         mol_data = await Otdel.otd_data_mol1(data[i].ot_id);
@@ -104,6 +104,7 @@ exports.all2 = async function(req, res) {
             mol_data[n].equip_data = equip_data;
             mol_data[n].out_equip = out_equip;
         }
+        
         otd_equip = await Otdel.otd_data_equip1('', data[i].ot_id, 'otd');
         data[i].otd_equip = otd_equip;
         data[i].mol_data = mol_data;

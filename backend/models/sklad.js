@@ -9,19 +9,19 @@ exports.all = function (cb) {
                     
                     FROM storage st
                     
-                    inner join equip_spr eq
+                    left outer join equip_spr eq
                     on eq.eq_id = st.st_eq_id
 
-                    inner join type_equip_spr te
+                    left outer join type_equip_spr te
                     on te.te_id = eq.eq_type_id
                     
-                    inner join marka_equip_spr ma
+                    left outer join marka_equip_spr ma
                     on ma.ma_id = eq.eq_mark_id
                     
-                    inner join provider_spr pr
+                    left outer join provider_spr pr
                     on pr.pr_id = st.st_pr_id
                     
-                    inner join kategor_spr kat
+                    left outer join kategor_spr kat
                     on kat.kat_id = eq.eq_kat_id
                     
                     inner join units_spr un

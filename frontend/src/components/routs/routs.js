@@ -33,7 +33,7 @@ export default class Routs extends Component {
 
                     <Route path='/otdel' component={OtdelMain}/>
 
-                    <Route path='/zurnal' component={Zurnal}/>
+                    {<Route path='/zurnal' component={Zurnal}/>}
 
                     <Route path='/auth' component={Auth}/>
 

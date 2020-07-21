@@ -136,3 +136,41 @@ exports.relation_add = function(req, res) {
         
     })
 }
+
+exports.filterData = async function(req, res) {
+    let data = {};
+    await Spr.kat( function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.kat = docs.rows;
+    });
+    await Spr.equip_name( function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        let arr = []
+        docs.rows.map(row => {
+            arr.push(row.eq_name)
+        })
+        data.equip_name = arr;
+    });
+    await Spr.marka( function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.marka = docs.rows;
+    });
+    await Spr.type( function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        data.type = docs.rows;
+    });
+    //console.log(data)
+    res.send(data)
+}

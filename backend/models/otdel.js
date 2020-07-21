@@ -68,13 +68,13 @@ exports.all = function (cb) {
                 mo.mo_otd_id as mol_otd, ot.ot_name, un.un_name, kat.kat_name  
                 FROM balance bl
 
-                inner join equip_spr eq
+                right outer join equip_spr eq
                 on eq.eq_id = bl_eq_id
     
-                inner join marka_equip_spr ma
+                right outer marka_equip_spr ma
                 on ma.ma_id = eq.eq_mark_id
                 
-                inner join type_equip_spr te
+                right outer type_equip_spr te
                 on te.te_id = eq_type_id
 
                 inner join mol_spr mo
@@ -145,9 +145,15 @@ exports.moveEqLog = async function (data, us_id, cb) {
     });
 }
 
-exports.otd_data_otd1 = async() => {
+exports.otd_data_otd1 = async(reg) => {
     var docs = [];
-    await pool.query('SELECT * FROM otd_spr ORDER BY ot_name')
+    var sql = ``;
+    if (reg === 0) {
+        sql = `SELECT * FROM otd_spr WHERE ot_id = 1 ORDER BY ot_name`
+    }else{
+        sql = `SELECT * FROM otd_spr ORDER BY ot_name`
+    }
+    await pool.query(sql)
         .then(
             (res) => {
                 docs = res;
@@ -230,22 +236,22 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
                 on mo.mo_id = bl.bl_mol_id
 
 
-                inner join equip_spr eq
+                left outer join equip_spr eq
                 on eq.eq_id = bl_eq_id
 
-                inner join marka_equip_spr ma
+                left outer join marka_equip_spr ma
                 on ma.ma_id = eq.eq_mark_id
                 
-                inner join type_equip_spr te
+                left outer join type_equip_spr te
                 on te.te_id = eq_type_id  
 
                 inner join otd_spr ot
                 on bl.bl_otd_id = ot.ot_id
 
-                inner join units_spr un
+                left outer join units_spr un
                 on un.un_id = bl.bl_un_id
 
-                inner join kategor_spr kat
+                left outer join kategor_spr kat
                 on kat.kat_id = eq.eq_kat_id
     `;
     if (reg === 'main'){
@@ -265,6 +271,7 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
     //console.log(sql)
     await pool.query(sql).then ((res) =>{
         docs = res;
+        //console.log(res.rows)
     }).catch( function(err) {
         console.log(err)
     });

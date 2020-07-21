@@ -1,6 +1,8 @@
 const Sklad = require('../models/sklad.js');
 const Hyst = require('../models/hyst.js');
 
+const Download = require('../docsWorker/downloadFromFile');
+
 exports.all = function(req, res) {
     Sklad.all(function(err, docs){
         if (err) {
@@ -306,4 +308,16 @@ exports.out_data = async function(req, res) {
         data.equip_data = docs.rows;
     });
     res.send(data);
+}
+
+exports.downlFrFile = function (req, res) {
+    Download.downlFrFile(req.body.data, (err,docs) => {
+        if (err){
+            console.log(err)
+            return res.sendStatus(500)
+        }
+        console.log(docs)
+        res.sendStatus(200);
+    })
+    
 }
