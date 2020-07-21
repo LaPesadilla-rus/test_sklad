@@ -26,7 +26,16 @@ componentDidMount (){
         this.setState({
             arr: res.data.rows
         });
-    });}
+    });
+}
+    onReboot = () =>{
+        axio.get('/zauvki/all_zauvki').then(res=>{
+          //console.log(res.data.rows)
+              this.setState({
+                  arr: res.data.rows
+              });
+          });
+        }
 Look = (arr) => {
     this.setState({clf: !this.state.clf})	 ;
     this.arr = arr;       
@@ -36,7 +45,7 @@ Look = (arr) => {
         <div className='Table_pol'>
             <div className='back'>
                     <button className='buttons' onClick={this.show}>Создать</button>
-                    <button className='buttons' >Кнопка стратегического значения</button>
+                    <button className='buttons' onClick={this.onReboot} >Кнопка стратегического значения</button>
             </div>
                 <div className='ForB'>
                 <table className='Table' border='1' >
@@ -54,10 +63,11 @@ Look = (arr) => {
                     <tbody>
                     {this.state.arr.map(id => <Zauvki_nap key={id.za_id} 
                                                        row={id}
-                                                    Look={this.Look}/>)}</tbody>
+                                                    Look={this.Look}/>)}
+                    </tbody>
                 </table>
-                {this.state.clf &&  <Zauvki_form_change arr={this.arr} clf={this.Look} />}
-                {this.state.showM &&  <Zauvki_form_send showM={this.show}  />}
+                {this.state.clf &&  <Zauvki_form_change arr={this.arr} clf={this.Look} onReboot={this.onReboot}  />}
+                {this.state.showM &&  <Zauvki_form_send showM={this.show} onReboot={this.onReboot} />}
                 </div>
         </div>
     );
