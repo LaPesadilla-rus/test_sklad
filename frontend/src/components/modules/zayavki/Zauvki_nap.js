@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axio from 'axios';
+import './Zauvki_form.css'
 export default class Zauvki_nap extends React.Component {
         constructor() {
             super();  
@@ -13,20 +14,17 @@ export default class Zauvki_nap extends React.Component {
         this.props.Look(this.props.row);
     }
 
-   /* Delete_za = event =>{
-        event.preventDefault();
+   Delete_za = ()=>{
         axio.post('/zauvki/delete_zauvka').then(res => {
             if (res=== 'DELETE COMPLITE') {
-                alert('elf');
+                alert('Заявка удалена');
             }else{
-               alert('Не khfsd');
+               alert('Ошибка удаления заявки');
             }
         });
-    }*/
-    
-
+    }
 	render (){ 
-     // console.log(this.props)
+    console.log(this.props)
     return ( <tr width='100%' className='oi' onClick={this.onClick}> 
     <td>{this.props.row.za_num}</td>
     <td>{this.props.row.kat_name}</td>

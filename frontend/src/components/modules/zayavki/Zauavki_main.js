@@ -22,7 +22,7 @@ export default class Zauavki_main extends Component {
 }
 componentDidMount (){
     axio.get('/zauvki/all_zauvki').then(res=>{
-      //  console.log(res.data.rows)
+       console.log(res.data.fields)
         this.setState({
             arr: res.data.rows
         });
@@ -30,7 +30,7 @@ componentDidMount (){
 }
     onReboot = () =>{
         axio.get('/zauvki/all_zauvki').then(res=>{
-          //console.log(res.data.rows)
+          console.log(res.data)
               this.setState({
                   arr: res.data.rows
               });
@@ -38,7 +38,7 @@ componentDidMount (){
         }
 Look = (arr) => {
     this.setState({clf: !this.state.clf})	 ;
-    this.arr = arr;       
+    this.arr = arr;        
 }
     render(){
         return (
@@ -62,7 +62,7 @@ Look = (arr) => {
                     </thead>
                     <tbody>
                     {this.state.arr.map(id => <Zauvki_nap key={id.za_id} 
-                                                       row={id}
+                                                            row={id}
                                                     Look={this.Look}/>)}
                     </tbody>
                 </table>

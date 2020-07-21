@@ -94,6 +94,7 @@ app.delete('/spr/delete', sprController.spr_delete);
 app.get('/zauvki/all_zauvki',zauvkiController.all_zauvki)
 app.post('/zauvki/new_zauvka',zauvkiController.new_zauvka)
 app.post('/zauvki/update_zauvka',zauvkiController.update_zauvka)
+app.post('/zauvki/delete_zauvka',zauvkiController.delete_zauvka)
 //app.post('/zauvki/delete_zauvka',zauvkiController.delete_zauvka)
 
 //------------------------------

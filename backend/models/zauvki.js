@@ -4,15 +4,18 @@ const conn = require('../db_con.js');
 
 const pool = new Pool (conn.conn_str);
 
-exports.all_zauvki = function(data,cb) {
-    pool.query(`SELECT za_kat_id,za_type_id,za_marka_id, za_id, za_num, kat_name,te_name,ma_name,za_txt,za_status 
+exports.all_zauvki = function(us_id,cb) {
+    pool.query(`SELECT za_kat_id,za_type_id,za_marka_id, za_id, za_num, kat_name,te_name,ma_name,za_txt,za_status, za_user_id 
     FROM zauavki z
     inner join marka_equip_spr mes
     on mes.ma_id=z.za_marka_id
     inner join kategor_spr ks
     on ks.kat_id=z.za_kat_id 
+    inner join users u
+    on u.us_id=z.za_user_id
     inner join type_equip_spr tes
-    on tes.te_id=z.za_type_id`,
+    on tes.te_id=z.za_type_id
+    where za_user_id=`+us_id+``,
      (err,res)=>{
         cb(err, res);
     }); 
@@ -33,7 +36,7 @@ exports.new_zauvka = function(req, cb) {
 exports.update_zauvka= function(req,cb) {
    console.log(req)
     var data=req.data;
-    var sql = `Update zauavki SET za_kat_id=`+data.val_cat_ch+`,za_type_id=`+data.val_type_ch+`,za_marka_id=`+data.val_mar_ch+`,za_txt='`+data.sel_per_ch+`'where za_id=`+data.za_id+``;
+    var sql = `Update zauavki SET za_kat_id=`+data.val_cat_ch+`,za_type_id=`+data.val_type_ch+`,za_marka_id=`+data.val_mar_ch+`,za_txt='`+data.sel_per_ch+`',za_user_id=`+data.headers.us_id+` where za_id=`+data.za_id+``;
     console.log(sql)
     if (sql){
         pool.query(sql
@@ -49,9 +52,9 @@ exports.update_zauvka= function(req,cb) {
 
 
 exports.delete_zauvka=function(req,cb){
+    console.log(req)
     var sql =  `DELETE FROM zauavki
-    WHERE za_id = `+req.body.za_id+``;                        
-
+    WHERE za_id = `+req.data.za_id+``;                        
 if (sql){
     pool.query(sql
         , (err,res)=>{
