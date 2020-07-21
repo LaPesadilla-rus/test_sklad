@@ -7,11 +7,11 @@ const pool = new Pool (conn.conn_str);
 exports.login = async(data,cb) => {
     var sql = '';
     sql = `SELECT * FROM users WHERE us_login LIKE '`+data.login+`' AND us_pas LIKE '`+data.password+`'`;
-    console.log(sql)
+    //console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);
-            console.log(res.rows)
+            //console.log(res.rows)
         }
     ).catch(function(err) {
         console.log(err)

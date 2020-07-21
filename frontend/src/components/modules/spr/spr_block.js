@@ -10,8 +10,8 @@ import NewUser from './new_user/new_user';
 import { connect } from 'react-redux';
 import { setLoaderShow, setLoaderHide } from '../../.././store/loader/actions';
 
-import CryptoJS from 'crypto-js';
-import config from '../../../config/config';
+/*import CryptoJS from 'crypto-js';
+import config from '../../../config/config';*/
 
 class Spr_block extends Component {
     constructor(props) {

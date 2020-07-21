@@ -12,7 +12,7 @@ import {BrowserRouter} from 'react-router-dom';
 import { setUserId, setAt, setRt, setAuthorize, setUserName, setUserRole} from './store/auth/action';
 import {connect} from 'react-redux';
 import axio from 'axios';
-const axiosApiInstance = axio.create();
+//const axiosApiInstance = axio.create();
 
 class AppContainer extends React.Component {
     
