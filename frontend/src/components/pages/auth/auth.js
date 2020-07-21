@@ -2,10 +2,10 @@ import React from 'react';
 import './auth.css';
 import axio from 'axios';
 import {Redirect} from 'react-router-dom';
-import sha256 from 'crypto-js/sha256';
+/*import sha256 from 'crypto-js/sha256';
 import aes from 'crypto-js/aes';
 import CryptoJS from 'crypto-js';
-import config from '../../../config/config';
+import config from '../../../config/config';*/
 
 export default class Auth extends React.Component{
     constructor() {

@@ -20,6 +20,7 @@ app.use(express.json());
 app.use( async function (req, res, next) {
     var sql = '';
     var data = [];
+    //console.log()
     sql = `SELECT * FROM users WHERE us_id = `+req.headers.us_id+` and us_rt = '`+req.headers.rt+`'`;
     //console.log(sql)
     await pool.query(sql).then (
