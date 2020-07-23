@@ -59,7 +59,7 @@ exports.file_14_23 = function (data, req, docNum, res) {
             ws.getCell(n,2).value =row.equip_text;
             ws.getCell(n,5).value = row.bl_inv_num;
             ws.getCell(n,7).value = row.un_name;
-            ws.getCell(n,9).value = '1';
+            ws.getCell(n,9).value = row.sp_amount;
 
             ws.getCell(n,1).border = border;
             ws.getCell(n,2).border = border;

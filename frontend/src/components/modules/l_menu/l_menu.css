@@ -7,7 +7,7 @@
     flex-direction: column;
     position: fixed;
     z-index: 101;
-    transition: all .05s;
+    transition: all 1s;
     margin: 0 0 0 0;
 }
 
@@ -24,9 +24,7 @@
     border-top: 2px solid #354161;
     border-bottom: 2px solid #354161;
     display: flex;
-    align-items: center;
-    transition: all 0.5s;
-    
+    align-items: center;  
 }
 
 
@@ -39,10 +37,8 @@
     color: #ffffff;
     text-transform: uppercase;
     text-decoration: none;
-    transition: all 1s;
     display: flex;
     align-items: center;
-    transition: all 0.5s;
 }
 
 
@@ -52,11 +48,9 @@
 .button_block:hover {
     box-shadow:  0 0 10px rgb(180, 179, 178);
     background-color: #2764aa;
-    transition: all 1s;
   }
 .button_block.act{
     background-color: #2764aa;;
-    transition: all 0.5s;
 }
 .Animat {
     width: 20%;
@@ -68,13 +62,13 @@
 .wrapper.is-open{
     /*margin-left: -195px;*/
     width:50px;
-    transition: all 0.5s;
+    transition: all 1s;
 }
 .vv.is-open{
     /*margin-left: -195px;*/
     width:50px;
     padding-left: 10px;
-    transition: all 0.5s;
+    transition: all 1s;
     
 
 }
@@ -83,5 +77,5 @@
 background-color: #692828;
 width: 260px;
 height: 100%;
-transition: all 0.5s;
+transition: all 1s;
 }
