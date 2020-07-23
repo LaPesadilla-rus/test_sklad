@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import axio from 'axios';
-import Header from '../header/header'
 export default class Zauvki_form_send extends Component{
     constructor() {
         super();

@@ -4,6 +4,7 @@ const Files_14_23 = require('../docsWorker/14-23');
 const Files_14_25 = require('../docsWorker/14-25');
 const Files_14_27 = require('../docsWorker/14-27');
 const Files_14_29 = require('../docsWorker/14-29');
+const Files_14_31 = require('../docsWorker/14-31');
 
 exports.primUpd = function(req, res) {
     Otdel.primUpd(req.body.data ,function(err,docs){
@@ -303,5 +304,38 @@ exports.spisat14_25 = async function(req, res) {
     });
 
     Files_14_25.file_14_25(data, req, docNum, res);
+}
+exports.spisat14_31 = async function(req, res) {
+    let docNum;
+    var data = req.body.data;
+    await Otdel.spisatDocNum(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //console.log(docs.rows[0].max + ' max')
+        if (docs.rows[0].max == false){
+            docNum = docs.rows[0].max;
+        }else{
+            docNum = docs.rows[0].max + 1;
+        }
+        
+    });
+    for (i = 0; i < req.body.data.equip.length; i++){
+        await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+        });
+    }
+    await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
+
+    Files_14_31.file_14_31(data, req, docNum, res);
 }
 

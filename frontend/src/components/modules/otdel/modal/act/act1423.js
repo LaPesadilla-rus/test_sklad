@@ -121,7 +121,7 @@ class Act1423 extends Component{
                             <label className='act_container_text'>{this.props.row.mol_name}</label>
                         </div>
                         <div className='combo_div'>
-                            <label>Мы нижуподписавшиеся: </label>
+                            <label>Мы нижеподписавшиеся: </label>
                         </div>
                         <div className='combo_div'>
                             <label>1: </label>

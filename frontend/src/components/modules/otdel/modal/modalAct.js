@@ -17,8 +17,8 @@ export default class ModalAct extends Component{
                             <button className='button' onClick={this.clickAct} value='2'>Акт 14-25</button>
                             <button className='button' onClick={this.clickAct} value='3'>Акт 14-27</button>
                             <button className='button' onClick={this.clickAct} value='4'>Акт 14-29</button>
-                            <button className='button'>Акт 14-31</button>
-                            <button className='button'>Акт 14-33</button>
+                            <button className='button' onClick={this.clickAct} value='5'>Акт 14-31</button>
+                            <button className='button' onClick={this.clickAct} value='6'>Акт 14-33</button>
                         </div>;
         let defButtons = <div className='otdel_workspace_equip'>
                             <button className='button'>Дефектная ведомость</button>
