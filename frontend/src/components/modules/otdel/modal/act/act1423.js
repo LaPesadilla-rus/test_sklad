@@ -35,7 +35,11 @@ class Act1423 extends Component{
         this.props.onClose();
     }
 
-    onSubmith = async () => {
+    onSubmith = async () => {    
+        if (this.state.osn_upload.length === 0){
+            alert('Основное средство не выбрано');
+            return 0;
+        }
         this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
@@ -44,7 +48,8 @@ class Act1423 extends Component{
             mol_name: this.props.row.mol_name,
             act_id: 1,
             prim: '',
-            equip: this.state.dop_upload
+            equip: this.state.dop_upload,
+            ot_name: this.props.data.ot_name
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
@@ -92,6 +97,15 @@ class Act1423 extends Component{
         });
         this.setState({dop_upload: this.state.dop_upload.concat(arr)})
         this.dopUpload.push(arr);
+    }
+
+    changeAmount = (val, indx) => {
+        let arr = this.state.dop_upload;
+        arr[indx].sp_amount = val;
+        this.setState({
+            dop_upload: arr
+        })
+        
     }
 
     render() {
@@ -169,11 +183,12 @@ class Act1423 extends Component{
                                         <th>Наименование МЦ</th>
                                         <th>Инвентарный номер</th>
                                         <th>Единица измерения</th>
+                                        <th>Текущее кол-во</th>
                                         <th>Количество</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                    { this.state.dop_upload.map((row, indx) => <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
                         </div>

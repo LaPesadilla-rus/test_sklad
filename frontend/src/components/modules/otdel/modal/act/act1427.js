@@ -37,6 +37,10 @@ class Act1427 extends Component{
     }
 
     onSubmith = async () => {
+        if (this.state.osn_upload.length === 0){
+            alert('Основное средство не выбрано');
+            return 0;
+        }
         this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
@@ -98,6 +102,13 @@ class Act1427 extends Component{
         this.setState({dop_upload: this.state.dop_upload.concat(arr)})
         this.dopUpload.push(arr);
         //console.log(this.dopUpload);
+    }
+    changeAmount = (val, indx) => {
+        let arr = this.state.dop_upload;
+        arr[indx].sp_amount = val;
+        this.setState({
+            dop_upload: arr
+        })
     }
 
     render() {
@@ -174,7 +185,7 @@ class Act1427 extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map(row => <Column1427 key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                    { this.state.dop_upload.map((row, indx) => <Column1427 key={this.nextUniqueId()} data={row} indx={indx} />)}
                                 </tbody>
                             </table>
                         </div>
@@ -197,7 +208,7 @@ class Act1427 extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                    { this.state.dop_upload.map((row, indx) => <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
                         </div>
