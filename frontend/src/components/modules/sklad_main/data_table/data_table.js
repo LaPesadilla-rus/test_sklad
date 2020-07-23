@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './data_table.css';
 import axio from 'axios';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; //------
 
 import Actions from '../../actions_bar/action_new';
 import DataRow from './data_row';
@@ -12,7 +12,7 @@ import DataFilter from './data_filter';
 
 
 
-class Data extends Component{
+class Data extends Component{ //убрать экспорт
     constructor() {
         super();
         this.table = {
@@ -148,7 +148,7 @@ export default connect(
         testDispatch: dispatch
     }),
 
-)(Data)
+)(Data) // название класса
 
 /**
  * <tr className="data-table__body data-table__body_pos">

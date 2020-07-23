@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axio from 'axios';
-
+import Header from '../header/header'
 export default class Zauvki_form_send extends Component{
     constructor() {
         super();
@@ -17,7 +17,8 @@ export default class Zauvki_form_send extends Component{
             textar: '',
             zav_n: '',
             arr: [],
-            zav_status: 'Отправлено'
+            zav_status: 'Отправлено',
+            us_id: ''
         } 
         this.handleChange = this.handleChange.bind(this);
     }
@@ -29,8 +30,6 @@ ChangeStatus(e){
     this.setState({zav_status: e.target.value});
 
 } 
-
-
 componentDidMount (){
     axio.get('/sklad/new/kat').then(res=>{
      console.log(res.data)
@@ -86,7 +85,8 @@ onSubmith = event => {
         val_mar: this.state.val_mar,
         textar: this.state.textar,
         zav_n: this.state.zav_n,
-        zav_status: this.state.zav_status
+        zav_status: this.state.zav_status,
+        us_id: this.state.us_id
     }
     console.log(data)      
     var err = '';

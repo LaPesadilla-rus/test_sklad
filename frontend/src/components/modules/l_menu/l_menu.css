@@ -1,22 +1,14 @@
-.Menu {
+.vv {
     background-color: #2e2e2e;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-
     width: 220px;
     height: 100%;
     display: flex;
     flex-direction: column;
     position: fixed;
     z-index: 101;
-    /*position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;*/
-}
-
-.absolute_block{
-    /*width: 210px;
-    position: fixed;*/
+    transition: all .05s;
+    margin: 0 0 0 0;
 }
 
 .button_block {
@@ -25,25 +17,38 @@
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
-    /*vertical-align: middle;*/
-    /*background: #082164;*/
     color: #ffffff;
     text-transform: uppercase;
     text-decoration: none;
-    /*box-shadow: 0 0 10px rgb(7, 58, 92);*/
     transition: all 1s;
     border-top: 2px solid #354161;
     border-bottom: 2px solid #354161;
-
     display: flex;
     align-items: center;
+    transition: all 0.5s;
+    
 }
+
+
+.button_block_new {
+    min-width: 210px;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 1s;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s;
+}
+
 
 .button_block label {
     margin-left: 5px;
 }
-
-
 .button_block:hover {
     box-shadow:  0 0 10px rgb(180, 179, 178);
     background-color: #2764aa;
@@ -53,4 +58,30 @@
     background-color: #2764aa;;
     transition: all 0.5s;
 }
+.Animat {
+    width: 20%;
+    height: 2%;
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+}
+.wrapper.is-open{
+    /*margin-left: -195px;*/
+    width:50px;
+    transition: all 0.5s;
+}
+.vv.is-open{
+    /*margin-left: -195px;*/
+    width:50px;
+    padding-left: 10px;
+    transition: all 0.5s;
+    
 
+}
+
+.wrapper{
+background-color: #692828;
+width: 260px;
+height: 100%;
+transition: all 0.5s;
+}
