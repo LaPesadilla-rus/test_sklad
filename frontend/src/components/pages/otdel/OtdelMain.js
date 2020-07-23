@@ -180,7 +180,6 @@ const pushDispatchToProps = {
 export default connect(
     '',
     pushDispatchToProps,
-
 )(OtdelMain)
 /**
  * <button onClick={this.Click}>asdsad</button>

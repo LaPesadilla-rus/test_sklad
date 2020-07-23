@@ -5,7 +5,10 @@ import UnicId from 'react-html-id';
 import Autocomplite from '../../../simple_comp/autocomplite/autocomplite';
 import OutFromRow from './out_form_row.js';
 
-export default class OutForm extends Component{
+import { connect } from 'react-redux';
+import { setLoaderShow, setLoaderHide } from '../../../../store/loader/actions';
+
+class OutForm extends Component{
     constructor() {
         super();
         UnicId.enableUniqueIds(this);
@@ -32,10 +35,10 @@ export default class OutForm extends Component{
         };
     }
 
-    componentDidMount () {
+    componentDidMount = async () => {
         var arr = [];
         var arr_inv = [];
-        axio.get('/sklad/out_data').then(res=>{
+        await axio.get('/sklad/out_data').then(res=>{
             res.data.equip_data.map(row => {
                 arr.push(row.equip_name);
                 arr_inv.push(row.st_inv_num)
@@ -230,50 +233,40 @@ export default class OutForm extends Component{
         }
     }
 
-    outTreb = () => {
+    outTreb = async () => {
         if (!this.state.out_arr.otd_id){
             alert('Заполните все поля! ');
             return 0;
         }
+        this.props.setLoaderShow();
         var data = this.state.out_arr;
+        let mas = {};
         data.user = 'admin';
-        axio.post('/sklad/out', {data}).then(res=>{
+        await axio.post('/sklad/out', {data}).then(res=>{
             console.log(res.data)
-            if (res.data.errTxt) {
-                //console.log(this.state.out_arr.equip[res.data.errPos]);
-                var arr = this.state.out_arr;
-                arr.equip[res.data.errPos].error = true;
-                this.err_id = arr.equip[res.data.errPos].st_id;
-                this.setState({
-                    out_arr: arr 
-                });
-                this.onReboot();
-                this.props.onReboot();
-                return 0;
-            }else{
-                axio.post('/sklad/out_file', {data},  { responseType: 'arraybuffer' }).then(res=>{
-                    const FileDownload = require('js-file-download');
-                    FileDownload(res.data, 'Trebovanie.xlsx');
-                });
-                this.props.onReboot();
-                this.props.onClose();
-            }
-
-            //const FileDownload = require('js-file-download');
-            
-            //var decodedString = String.fromCharCode.apply(null, new Uint16Array(res.data));
-            //var obj = JSON.parse(decodedString);
-            //console.log('True');
-            //FileDownload(res.data, 'Trebovanie.xlsx');
-            //console.log(res.data)
-           /*if (res.data !== 'OK'){
-            alert(res.data);
+            mas = res.data
+        });
+        if (mas.errTxt) {
+            //console.log(this.state.out_arr.equip[res.data.errPos]);
+            var arr = this.state.out_arr;
+            arr.equip[mas.errPos].error = true;
+            this.err_id = arr.equip[mas.errPos].st_id;
+            this.setState({
+                out_arr: arr 
+            });
+            this.props.setLoaderHide();
+            this.onReboot();
             this.props.onReboot();
-           }else{
+            return 0;
+        }else{
+            await axio.post('/sklad/out_file', {data},  { responseType: 'arraybuffer' }).then(res=>{
+                const FileDownload = require('js-file-download');
+                FileDownload(res.data, 'Trebovanie.xlsx');
+            });
+            this.props.setLoaderHide();
             this.props.onReboot();
             this.props.onClose();
-           }*/
-        });
+        }
     }
 
     delRow = (row) => {
@@ -388,3 +381,13 @@ export default class OutForm extends Component{
         );
     }
 }
+
+const pushDispatchToProps = {
+    setLoaderShow,
+    setLoaderHide
+};
+
+export default connect(
+    '',
+    pushDispatchToProps,
+)(OutForm)

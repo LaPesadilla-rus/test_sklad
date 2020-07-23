@@ -4,6 +4,7 @@ import './act.css';
 import axio from 'axios';
 import { connect } from 'react-redux';
 import { setLoaderShow, setLoaderHide } from '../../../../../store/loader/actions';
+import { setMessageShow } from '../../../../../store/message/actions';
 
 import Column from './column1423';
 
@@ -58,6 +59,7 @@ class Act1423 extends Component{
         
         await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
             FileDownload(res.data, '14-23.xlsx');
+            this.props.setMessageShow('Выписка успешка');
         });
         await this.props.setLoaderHide();
         await this.props.onClose();
@@ -206,7 +208,8 @@ class Act1423 extends Component{
 
 const pushDispatchToProps = {
     setLoaderShow,
-    setLoaderHide
+    setLoaderHide,
+    setMessageShow
 };
 
 export default connect(

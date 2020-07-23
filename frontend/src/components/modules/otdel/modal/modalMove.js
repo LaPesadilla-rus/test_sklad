@@ -3,7 +3,10 @@ import './otdelModal.css';
 
 import axio from 'axios';
 
-export default class ModalMove extends Component{
+import { connect } from 'react-redux';
+import { setMessageShow } from '../../../../store/message/actions';
+
+class ModalMove extends Component{
     constructor(){
         super();
         this.state = {
@@ -86,8 +89,9 @@ export default class ModalMove extends Component{
             }
             axio.post('/otdel/moveEQ', {data}).then(res=>{
                if (res.data !== 'MOVE COMPLITE'){
-                   alert('Ошибка перемещения');
+                   this.props.setMessageShow('Ошибка передачи', 0)
                }else{
+                    this.props.setMessageShow('Передача выполнена')
                     this.props.onClose();
                     this.props.onReboot();
                     
@@ -131,3 +135,13 @@ export default class ModalMove extends Component{
         );
     }
 }
+
+const pushDispatchToProps = {
+    setMessageShow
+};
+
+export default connect(
+    '',
+    pushDispatchToProps,
+
+)(ModalMove)

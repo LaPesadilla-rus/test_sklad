@@ -1,7 +1,7 @@
 const defState = {
-    message_state: false,
+    message_state: true,
     txt: 'Default Message',
-    color: 1
+    color: 2
 };
 
 export const messageReducer = (state = defState, action) => {

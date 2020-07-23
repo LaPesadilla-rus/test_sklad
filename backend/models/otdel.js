@@ -71,11 +71,11 @@ exports.all = function (cb) {
                 right outer join equip_spr eq
                 on eq.eq_id = bl_eq_id
     
-                right outer marka_equip_spr ma
+                right outer join marka_equip_spr ma
                 on ma.ma_id = eq.eq_mark_id
                 
-                right outer type_equip_spr te
-                on te.te_id = eq_type_id
+                right outer join type_equip_spr te
+                on te.te_id = eq.eq_type_id
 
                 inner join mol_spr mo
                 on bl.bl_mol_id = mo.mo_id
