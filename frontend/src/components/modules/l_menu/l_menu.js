@@ -57,7 +57,7 @@ export default class Menu extends Component{
                     <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }  onClick={this.exitButton} to="/">
                     <MdExitToApp  />{(this.state.show ===false)?<label>Выход</label> : <label></label> }
                     </NavLink>
-                    <div className='Animat' onClick={() => this.onClick()} ><MdCompareArrows/> </div>
+                    <div className={(this.state.show ===false)?'button_block' : 'button_block_new' }onClick={() => this.onClick()} ><MdCompareArrows/> </div>
                     </div>
             </div>
         );
