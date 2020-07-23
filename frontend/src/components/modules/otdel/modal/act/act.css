@@ -31,9 +31,10 @@
 .act_line_div select {
     width: 250px;
 }
-.Text{
+.Texts{
     resize: none;
-    height: 50px;
+    width: 200px;
+    height: 15px;
 }
 .act_line_lab{
     display: flex;

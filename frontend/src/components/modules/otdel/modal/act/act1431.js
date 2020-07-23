@@ -142,11 +142,11 @@ class Act1431 extends Component{
                         </div>
                         <div className='act_line_lab'>
                             <label>Было сформировано основное средство: </label>
-                           <textarea className='Text' name='neof_name' value={this.state.neof_name} onChange={this.GetNeofName}></textarea>
+                           <textarea className='Texts' name='neof_name' value={this.state.neof_name} onChange={this.GetNeofName}></textarea>
                         </div>
                         <div className='act_line_div'>
                         <label>Новый инвентарный номер: </label>
-                        <textarea className='Text' name='new_inv_nb' value={this.state.new_inv_nb} onChange={this.GetNewInvNB}></textarea>
+                        <textarea className='Texts' name='new_inv_nb' value={this.state.new_inv_nb} onChange={this.GetNewInvNB}></textarea>
                         </div>
                     </div>
                     <div className='combo_div'>
