@@ -90,7 +90,7 @@ export default class Zauvki_form_change extends Component{
                 axio.post('/zauvki/update_zauvka', {data}).then(res => {
                     console.log(res)
                     if (res.data === 'UPDATE COMPLITE') {
-                        
+                        this.props.onReboot();
                         alert('Изменения приняты');
                         this.props.onReboot();
                     }else{
@@ -99,6 +99,7 @@ export default class Zauvki_form_change extends Component{
                 });
         }
     }
+    
     render() {
         return (
             <div className='background_modal background_modal_pos'>

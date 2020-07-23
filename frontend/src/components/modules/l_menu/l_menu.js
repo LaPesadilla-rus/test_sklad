@@ -1,11 +1,28 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import { NavLink } from 'react-router-dom';
 import './l_menu.css';
-import { MdAssignment, MdPersonPin, MdDvr, MdExitToApp, MdFilterFrames } from "react-icons/md";
+import { MdAssignment, MdPersonPin, MdDvr, MdExitToApp, MdFilterFrames,MdCompareArrows } from "react-icons/md";
 import axio from 'axios';
 
 export default class Menu extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            show: false
+        }
+        this.wrapperRef = React.createRef();
+        this.vvRef = React.createRef();
+    }
+    onClick() {
+        const wrapper = this.wrapperRef.current;
+        const vv = this.vvRef.current;
+        wrapper.classList.toggle('is-open');
+        vv.classList.toggle('is-open');
+        this.setState({show: !this.state.show})
+    
 
+        //button_block.classList.toggle('small');
+    }
     exitButton = () =>{
         this.props.setAuthorize(false);
         /*localStorage.setItem('user', '');
@@ -15,33 +32,33 @@ export default class Menu extends Component{
         this.props.setUserId('');
         this.props.setAt('');
         this.props.setRt('');
-
         axio.get('/auth/out').then(res=>{
             console.log(res)
         });
     }
-
     render (){
-        return (
-            <div className="Menu">
-                <div className="absolute_block">
+        return (<div ref={this.wrapperRef} className="wrapper">
+            <div ref={this.vvRef} className="vv">
                     <p>Меню</p>
-                    <NavLink className="button_block" activeClassName="act" to="/sklad/all">
-                        <MdAssignment/><label>Склад</label>
+                    <NavLink  className={(this.state.show ===false)?'button_block' : 'button_block_new' } activeClassName="act" to="/sklad/all">
+                        <MdAssignment />
+                        {(this.state.show ===false)?<label>Склад</label> : <label></label> }
                     </NavLink> 
-                    <NavLink className="button_block" activeClassName="act" to="/otdel">
-                        <MdPersonPin/><label>Отделение</label>
+                    <NavLink  className={(this.state.show ===false)?'button_block' : 'button_block_new' }  activeClassName="act" to="/otdel">
+                        <MdPersonPin />
+                        {(this.state.show ===false)?<label>Отделение</label> : <label></label> }
                     </NavLink>
-                    <NavLink className="button_block" activeClassName="act" to="/zurnal">
-                        <MdFilterFrames/><label>Журналы</label>
+                    <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }   activeClassName="act" to="/zurnal">
+                        <MdFilterFrames/>{(this.state.show ===false)?<label>Журналы</label> : <label></label> }
                     </NavLink>
-                    <NavLink className="button_block" activeClassName="act" to="/reports/all">
-                        <MdDvr/><label>Заявки</label>
+                    <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }  activeClassName="act" to="/reports/all">
+                        <MdDvr/>{(this.state.show ===false)?<label>Заявки</label> : <label></label> }
                     </NavLink> 
-                    <NavLink className="button_block" onClick={this.exitButton} to="/">
-                        <MdExitToApp/><label>Выход</label>
-                    </NavLink> 
-                </div>
+                    <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }  onClick={this.exitButton} to="/">
+                    <MdExitToApp  />{(this.state.show ===false)?<label>Выход</label> : <label></label> }
+                    </NavLink>
+                    <div className='Animat' onClick={() => this.onClick()} ><MdCompareArrows/> </div>
+                    </div>
             </div>
         );
     }

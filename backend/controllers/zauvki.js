@@ -13,7 +13,7 @@ exports.all_zauvki = function(req,res) {
 }
 
 exports.new_zauvka = function(req,res) {
-    Zauvki.new_zauvka(req.body,function(err,docs){
+    Zauvki.new_zauvka(req,function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -39,7 +39,7 @@ exports.delete_zauvka = function(req, res) {
     Zauvki.delete_zauvka(req.body, function(err,docs){
         if (err) {
             console.log(err);
-            res.send(err);
+            return res.sendStatus(500);
         }
         res.send(docs);
     })

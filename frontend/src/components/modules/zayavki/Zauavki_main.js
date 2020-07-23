@@ -22,7 +22,7 @@ export default class Zauavki_main extends Component {
 }
 componentDidMount (){
     axio.get('/zauvki/all_zauvki').then(res=>{
-       console.log(res.data.fields)
+     //  console.log(res.data.fields)
         this.setState({
             arr: res.data.rows
         });
