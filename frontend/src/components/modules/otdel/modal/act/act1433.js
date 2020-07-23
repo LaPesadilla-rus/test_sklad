@@ -7,7 +7,7 @@ import { setLoaderShow, setLoaderHide } from '../../../../../store/loader/action
 
 import Column from './column1423';
 
-class Act1423 extends Component{
+class Act1433 extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
@@ -51,8 +51,8 @@ class Act1423 extends Component{
         })
         const FileDownload = require('js-file-download');
         
-        await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-23.xlsx');
+        await axio.post('/otdel/spisat14_33', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            FileDownload(res.data, '14-33.xlsx');
         });
         await this.props.setLoaderHide();
         await this.props.onClose();
@@ -100,7 +100,7 @@ class Act1423 extends Component{
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
                 <div className="act_main">
-                    <p>Акт 14-23 </p>
+                    <p>Акт 14-33 </p>
                     <div className='act_container'>
                         <div className='combo_div'>
                             <label>Материально-ответственное лицо: </label>
@@ -126,7 +126,7 @@ class Act1423 extends Component{
                             <label className='act_container_text'>{this.props.row.mol_name}</label>
                         </div>
                         <div className='act_line_div'>
-                            <label>подтверждаем, что в следующем основном средстве: </label>
+                            <label>подтверждаем, что из следующих материальных ценностей: </label>
                             <select onChange={this.changeOsn} value={this.state.osn_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.osn_equip.map( id => <option key={id.bl_id} value={id.bl_id}>{id.equip_name}</option>)}
@@ -155,27 +155,11 @@ class Act1423 extends Component{
                             </table>
                         </div>
                         <div className='act_line_div'>
-                            <label>были установлены следующие материальные ценности: </label>
+                            <label>Было сформировано основное средство: </label>
                             <select onChange={this.changeDop} value={this.state.dop_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
                             </select>
-                        </div>
-                        <div className='combo_div'>
-                            <table className='act_table'>
-                                <thead>
-                                    <tr>
-                                        <th>№ п/п</th>
-                                        <th>Наименование МЦ</th>
-                                        <th>Инвентарный номер</th>
-                                        <th>Единица измерения</th>
-                                        <th>Количество</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                     <div className='combo_div'>
@@ -198,5 +182,5 @@ export default connect(
     '',
     pushDispatchToProps,
 
-)(Act1423)
+)(Act1433)
 

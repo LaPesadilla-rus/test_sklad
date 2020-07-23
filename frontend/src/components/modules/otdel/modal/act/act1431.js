@@ -4,78 +4,71 @@ import './act.css';
 import axio from 'axios';
 import { connect } from 'react-redux';
 import { setLoaderShow, setLoaderHide } from '../../../../../store/loader/actions';
-
 import Column from './column1423';
 
-class Act1423 extends Component{
+class Act1431 extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
-        this.osnUpload = [];
+        this.newUpload = [];
         this.dopUpload = [];
         this.dopData = [];
         this.loader = false;
         this.state = {
-            osn_sel: '',
             dop_sel: '',
-            osn_upload: [],
+            new_upload: [],
             dop_upload: [],
+            neof_name: '',
+            new_inv_nb: ''
         }
     }
-
     componentDidMount () {
         this.dopData = this.props.dop_equip;
         this.dopUpload.push(this.props.row);
         var arr = [];
         arr[0] = this.props.row;
-        this.setState({dop_upload: arr })
+        this.setState({dop_upload: arr })   
     }
 
     onClose = () => {
         this.props.onClose();
     }
 
+    GetNeofName =(e)=>{
+        this.setState({neof_name: e.target.value})
+    }
+
+    GetNewInvNB =(e)=>{
+        this.setState({new_inv_nb: e.target.value})
+    }
     onSubmith = async () => {
-        this.props.setLoaderShow();
+        //this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
-            osn_upload: this.state.osn_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
-            act_id: 1,
+            act_id: 5,
             prim: '',
-            equip: this.state.dop_upload
+            equip: this.state.dop_upload,
+            ot_name: this.props.row.ot_name,
+            neof_name: this.state.neof_name,
+            new_inv_nb: this.state.new_inv_nb
+            
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
         const FileDownload = require('js-file-download');
         
-        await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-23.xlsx');
+        await axio.post('/otdel/spisat14_31', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            FileDownload(res.data, '14-31.xlsx');
         });
-        await this.props.setLoaderHide();
+        //await this.props.setLoaderHide();
         await this.props.onClose();
         await this.props.modalActClose();
         await this.props.onReboot();
-        
     }
-
-    changeOsn = (e) => {
-        var arr = [],
-        val = parseInt(e.target.value);
-        this.props.osn_equip.forEach(row => {
-            if (row.bl_id === val){
-                arr.push(row);
-            }
-        });
-        this.setState({ 
-            osn_sel: e.target.value,
-            osn_upload: arr,
-        });
-        this.osnUpload = arr;
-    }
-
+   
     changeDop = (e) => {
         var arr = [],
         val = parseInt(e.target.value),
@@ -93,14 +86,13 @@ class Act1423 extends Component{
         this.setState({dop_upload: this.state.dop_upload.concat(arr)})
         this.dopUpload.push(arr);
     }
-
     render() {
         var indx = 1;
         return (
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
                 <div className="act_main">
-                    <p>Акт 14-23 </p>
+                    <p>Акт 14-31 </p>
                     <div className='act_container'>
                         <div className='combo_div'>
                             <label>Материально-ответственное лицо: </label>
@@ -126,43 +118,14 @@ class Act1423 extends Component{
                             <label className='act_container_text'>{this.props.row.mol_name}</label>
                         </div>
                         <div className='act_line_div'>
-                            <label>подтверждаем, что в следующем основном средстве: </label>
-                            <select onChange={this.changeOsn} value={this.state.osn_sel}>
-                                <option placeholder='----' value='-1'></option>
-                                {this.props.osn_equip.map( id => <option key={id.bl_id} value={id.bl_id}>{id.equip_name}</option>)}
-                            </select>
-                        </div>
-                        <div className='combo_div'>
-                            <table className='act_table'>
-                                <thead>
-                                    <tr>
-                                        <th>№ п/п</th>
-                                        <th>Наименование ОС</th>
-                                        <th>Инвентарный номер</th>
-                                        <th>Единица измерения</th>
-                                        <th>Количество</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{(this.osnUpload.length > 0) ? 1 : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? this.osnUpload[0].equip_text : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? this.osnUpload[0].bl_inv_num : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? this.osnUpload[0].un_name : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? 1 : ''}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className='act_line_div'>
-                            <label>были установлены следующие материальные ценности: </label>
+                            <label >подтверждаем, что из следующих основных средств и материальных ценностей </label>
                             <select onChange={this.changeDop} value={this.state.dop_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
                             </select>
                         </div>
                         <div className='combo_div'>
-                            <table className='act_table'>
+                            <table className='act_table'> 
                                 <thead>
                                     <tr>
                                         <th>№ п/п</th>
@@ -176,6 +139,14 @@ class Act1423 extends Component{
                                     { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className='act_line_lab'>
+                            <label>Было сформировано основное средство: </label>
+                           <textarea className='Text' name='neof_name' value={this.state.neof_name} onChange={this.GetNeofName}></textarea>
+                        </div>
+                        <div className='act_line_div'>
+                        <label>Новый инвентарный номер: </label>
+                        <textarea className='Text' name='new_inv_nb' value={this.state.new_inv_nb} onChange={this.GetNewInvNB}></textarea>
                         </div>
                     </div>
                     <div className='combo_div'>
@@ -198,5 +169,5 @@ export default connect(
     '',
     pushDispatchToProps,
 
-)(Act1423)
+)(Act1431)
 
