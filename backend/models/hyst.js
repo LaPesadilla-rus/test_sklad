@@ -18,7 +18,7 @@ exports.spisatHystory = async function (docNum,data, us_id, cb) {
                 hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
                 hy_mol_id1, hy_otd_id1, hy_in_osn_id, 
                 hy_act_id, hy_act_num, hy_user, hy_poyasn, hy_usr_id)
-                VALUES ( `+row.bl_eq_id+`, `+row.bl_pr_id+`, `+row.bl_un_id+`, `+row.bl_amount+`, 
+                VALUES ( `+row.bl_eq_id+`, `+row.bl_pr_id+`, `+row.bl_un_id+`, `+row.sp_amount+`, 
                             '`+row.bl_inv_num+`', '`+row.bl_contr_num+`', '`+row.bl_prim+`', '`+row.bl_inp_usr+`', 
                             `+row.bl_mol_id+`, `+row.bl_otd_id+`, `+data.equip[0].bl_id+`, 
                             `+data.act_id+`, `+docNum+`, '`+data.user+`', 'Списано', `+us_id+`);
