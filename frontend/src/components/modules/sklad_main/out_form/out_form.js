@@ -147,8 +147,6 @@ export default class OutForm extends Component{
                 buh_name: '-'
             });
         }
-        
-        
     }
 
     findRowEquip = (eq_val, inv_val) => {

@@ -84,7 +84,9 @@ app.post('/spr/equip', sprController.equip)
 app.post('/spr/save', sprController.spr_save);
 app.post('/spr/update', sprController.spr_update);
 app.post('/equip/update', sprController.equip_update);
+
 app.post('/spr/relation/add', sprController.relation_add);
+app.post('/spr/relation/watch', sprController.watch);
 
 app.post('/users/new', sprController.newUser);
 app.post('/users/upd', sprController.updUser);

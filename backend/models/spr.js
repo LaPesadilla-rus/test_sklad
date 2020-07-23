@@ -345,3 +345,21 @@ exports.relation_add = function(req,cb) {
             });
     } 
 }
+
+exports.watch = function(req,cb) {
+    console.log(req.body.data)
+    var sql = `SELECT re.*, eq.eq_name, eq2.eq_name as dop_name FROM relation_spr re
+        inner join equip_spr eq
+        on eq.eq_id = re.re_id_osn
+
+        inner join equip_spr eq2
+        on eq2.eq_id = re.re_id_dop
+    WHERE re_id_osn=`+req.body.data.row.st_id+``;
+    console.log(sql)
+    if (sql){
+        pool.query(sql
+            , (err,res)=>{
+                cb(err,res)
+            });
+    } 
+}

@@ -121,6 +121,19 @@ exports.updUser = function(req, res) {
     })
 }
 
+exports.watch = function(req, res) {
+    let data = [];
+    Spr.watch(req, function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        console.log(docs.rows)
+        data = docs.rows;
+        res.send(data);
+    })
+}
+
 exports.relation_add = function(req, res) {
     Spr.relation_add(req, function(err,docs){
         if (err) {
