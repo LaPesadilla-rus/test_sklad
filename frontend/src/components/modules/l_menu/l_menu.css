@@ -1,32 +1,32 @@
-.vv {
+.left_menu {
     background-color: #2e2e2e;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 220px;
+    width: 210px;
     height: 100%;
     display: flex;
     flex-direction: column;
     position: fixed;
     z-index: 101;
     transition: all 1s;
-    margin: 0 0 0 0;
 }
 
-.wrapper.is-open{
+.left_menu_back.is-open{
     /*margin-left: -195px;*/
     width:50px;
     transition: all 1s;
 }
-.vv.is-open{
+.left_menu.is-open{
     /*margin-left: -195px;*/
     width:50px;
     transition: all 1s;
 }
 
-.wrapper{
+.left_menu_back{
     background-color: #692828;
-    width: 260px;
+    min-width: 210px;
     height: 100%;
     transition: all 1s;
+    display: flex;
 }
 
 

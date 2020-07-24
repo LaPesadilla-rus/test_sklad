@@ -77,6 +77,9 @@ export default class UpdateUser extends Component {
                 show: this.props.style,
             })
         }
+        axio.get('/user/list').then( res => {
+            console.log(res.data)
+        })
     }
 
     showMessage = (val) => {
@@ -87,6 +90,9 @@ export default class UpdateUser extends Component {
         return (
                 <div className='background_modal background_modal_pos'>
                     <div className="modal modal_pos">
+                        <div>
+                            <label>Обновление данных</label>
+                        </div>
                         <div>
                             <label>Логин: </label>
                             <input onChange={(e) => {this.setState({ login: e.target.value})}} value={this.state.login}></input>

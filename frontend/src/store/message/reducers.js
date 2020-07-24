@@ -1,5 +1,5 @@
 const defState = {
-    message_state: true,
+    message_state: false,
     txt: 'Default Message',
     color: 2
 };

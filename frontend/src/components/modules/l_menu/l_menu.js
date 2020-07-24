@@ -32,8 +32,8 @@ export default class Menu extends Component{
     }
     render (){
         return (
-            <div ref={this.wrapperRef} className="wrapper">
-                <div ref={this.vvRef} className="vv">
+            <div ref={this.wrapperRef} className="left_menu_back">
+                <div ref={this.vvRef} className="left_menu">
                         <p>Меню</p>
                         <NavLink className='button_block' activeClassName="act" to="/sklad/all">
                             <MdAssignment />

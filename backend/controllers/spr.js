@@ -122,15 +122,12 @@ exports.updUser = function(req, res) {
 }
 
 exports.watch = function(req, res) {
-    let data = [];
     Spr.watch(req, function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        console.log(docs.rows)
-        data = docs.rows;
-        res.send(data);
+        res.send(docs.rows);
     })
 }
 
@@ -186,4 +183,14 @@ exports.filterData = async function(req, res) {
     });
     //console.log(data)
     res.send(data)
+}
+
+exports.userList = function(req, res) {
+    Spr.userList(function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs);
+    })
 }

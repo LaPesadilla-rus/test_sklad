@@ -90,6 +90,7 @@ app.post('/spr/relation/watch', sprController.watch);
 
 app.post('/users/new', sprController.newUser);
 app.post('/users/upd', sprController.updUser);
+app.get('/user/list', sprController.userList);
 
 app.delete('/spr/delete', sprController.spr_delete);
 

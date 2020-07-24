@@ -7,6 +7,7 @@ import Relation from './relation/relationContainer';
 import RelationWatch from './relation/relationWatch'
 import SprButton from './spr_button_spr';
 import NewUser from './new_user/new_user';
+import UpdUser from './new_user/update_user';
 import { connect } from 'react-redux';
 import { setLoaderShow, setLoaderHide } from '../../.././store/loader/actions';
 
@@ -23,6 +24,7 @@ class Spr_block extends Component {
             isRelationOpen: false,
             isWatchRelation: false,
             isNewUser: false,
+            isUpdUser: false,
             actSpr: [],
             acrRow: [],
             reg: '',
@@ -77,7 +79,7 @@ class Spr_block extends Component {
     }
 
     updateUser = () => {
-        this.setState(state => ({ isNewUser: !state.isNewUser, reg: 'upd'}))
+        this.setState(state => ({ isUpdUser: !state.isUpdUser, reg: 'upd'}))
     }
 
     changeSpr = (row) => {
@@ -125,6 +127,8 @@ class Spr_block extends Component {
                 {this.state.isWatchRelation && <RelationWatch onClose={this.changeWatchRelation}/>}
 
                 {this.state.isNewUser && <NewUser onClose={this.changeNewUser} reg={this.state.reg} />}
+
+                {this.state.isUpdUser && <UpdUser onClose={this.updateUser}/>}
             </div>
         )
     }          
