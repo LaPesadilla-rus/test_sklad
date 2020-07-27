@@ -35,6 +35,8 @@
     resize: none;
     width: 200px;
     height: 15px;
+    margin-left: 10px;
+    align-items: left;
 }
 .act_line_lab{
     display: flex;

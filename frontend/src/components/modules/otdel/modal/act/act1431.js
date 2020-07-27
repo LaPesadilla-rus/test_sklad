@@ -12,22 +12,29 @@ class Act1431 extends Component{
         UnicId.enableUniqueIds(this);
         this.newUpload = [];
         this.dopUpload = [];
+        this.osnUpload = [];
         this.dopData = [];
+        this.OsnData =[];
         this.loader = false;
         this.state = {
+            osn_sel:'',
             dop_sel: '',
+            osn_upload: [],
             new_upload: [],
             dop_upload: [],
             neof_name: '',
-            new_inv_nb: ''
+            new_inv_nb: '',
+            all_mas:''
         }
     }
     componentDidMount () {
+        this.OsnData = this.props.osn_equip;
         this.dopData = this.props.dop_equip;
         this.dopUpload.push(this.props.row);
         var arr = [];
         arr[0] = this.props.row;
-        this.setState({dop_upload: arr })   
+        this.setState({dop_upload: arr,})   
+        console.log(this.props.row)
     }
 
     onClose = () => {
@@ -52,23 +59,33 @@ class Act1431 extends Component{
             equip: this.state.dop_upload,
             ot_name: this.props.row.ot_name,
             neof_name: this.state.neof_name,
-            new_inv_nb: this.state.new_inv_nb
+            new_inv_nb: this.state.new_inv_nb,
+            amount: this.props.row.bl_amount,
+            mol: this.props.row.bl_mol_id,
+            idotd: this.props.row.bl_otd_id,
+            dop_sel: this.state.dop_sel, 
+            eqid: this.props.row.bl_id
             
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
         const FileDownload = require('js-file-download');
-        
+        console.log(this.props.row)
         await axio.post('/otdel/spisat14_31', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-31.xlsx');
+           FileDownload(res.data, '14-31.xlsx');
         });
+        axio.post('/otdel/New_eq', {data})
+      /*  if (data.amount<=1) {axio.post('/otdel/Delete_used', {data})}
+        else { axio.post('/otdel/Update_used', {data})}*/
+        console.log(data.amount)
+      // 
         //await this.props.setLoaderHide();
         await this.props.onClose();
         await this.props.modalActClose();
         await this.props.onReboot();
     }
-   
+
     changeDop = (e) => {
         var arr = [],
         val = parseInt(e.target.value),
@@ -80,11 +97,22 @@ class Act1431 extends Component{
             }
             indx ++;
         });
+
         this.setState({ 
             dop_sel: e.target.value,
         });
         this.setState({dop_upload: this.state.dop_upload.concat(arr)})
         this.dopUpload.push(arr);
+    }
+ 
+
+
+    changeAmount = (val, indx) => {
+        let arr = this.state.dop_upload;
+        arr[indx].sp_amount = val;
+        this.setState({
+            dop_upload: arr
+        })
     }
     render() {
         var indx = 1;
@@ -136,7 +164,7 @@ class Act1431 extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map(row => <Column key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                    { this.state.dop_upload.map((row, indx )=> <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
                         </div>

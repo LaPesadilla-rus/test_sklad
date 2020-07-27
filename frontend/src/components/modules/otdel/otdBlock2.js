@@ -12,7 +12,8 @@ import Act1423 from './modal/act/act1423';
 import Act1427 from './modal/act/act1427';
 import Act1429 from './modal/act/act1429';
 import Act1425 from './modal/act/act1425';
-import Act1431 from './modal/act/act1431'
+import Act1431 from './modal/act/act1431';
+import Act1433 from './modal/act/act1433'
 
 
 export default class OtdBlock2 extends Component{
@@ -27,6 +28,7 @@ export default class OtdBlock2 extends Component{
             isAct1427Open: false,
             isAct1429Open: false,
             isAct1431Open: false,
+            isAct1433Open: false,
             selEquip: [],
             act_data: [],
             osn_equip: [],
@@ -64,6 +66,10 @@ export default class OtdBlock2 extends Component{
     }
     changeAct1431 = () =>{
         this.setState(state => ({ isAct1431Open: !state.isAct1431Open}));
+        this.sortDopOsn();
+    }
+    changeAct1433 = () =>{
+        this.setState(state => ({ isAct1433Open: !state.isAct1433Open}));
         this.sortDopOsn();
     }
 
@@ -125,7 +131,10 @@ export default class OtdBlock2 extends Component{
         }
         if (reg === '5'){
             this.changeAct1431();
-        }console.log(reg)
+        }
+        if (reg === '6'){
+            this.changeAct1433();
+        }
     }
             
     render() {
@@ -229,6 +238,17 @@ export default class OtdBlock2 extends Component{
                 {this.state.isAct1431Open &&
                     <Act1431 key={this.nextUniqueId()}
                                 onClose={this.changeAct1431}
+                                modalActClose={this.changeModalAct}
+                                onReboot={this.props.onReboot}
+                                row={this.state.act_data}
+                                actUser='Admin'
+                                data={this.props.row}
+                                osn_equip={this.state.osn_equip}
+                                dop_equip={this.state.dop_equip} />
+                }
+                 {this.state.isAct1433Open &&
+                    <Act1433 key={this.nextUniqueId()}
+                                onClose={this.changeAct1433}
                                 modalActClose={this.changeModalAct}
                                 onReboot={this.props.onReboot}
                                 row={this.state.act_data}
