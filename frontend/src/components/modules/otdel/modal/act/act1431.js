@@ -28,13 +28,23 @@ class Act1431 extends Component{
         }
     }
     componentDidMount () {
+        let arr1 = this.props.dop_equip,
+            arr2 = this.props.osn_equip,
+            arr3 = arr1.concat(arr2),
+            arr4 = [];
+        arr3.forEach( row =>{
+            if(row.bl_otd_id===row.mo_otd_id){
+                arr4.push(row)
+            }
+        })
         this.OsnData = this.props.osn_equip;
-        this.dopData = this.props.dop_equip;
-        this.dopUpload.push(this.props.row);
+        this.dopData = arr4;
+
         var arr = [];
         arr[0] = this.props.row;
-        this.setState({dop_upload: arr,})   
-        console.log(this.props.row)
+        this.setState({dop_upload: arr, new_upload: arr4}, () => {
+            this.changeAmount(1, 0)
+        })   
     }
 
     onClose = () => {
@@ -67,6 +77,7 @@ class Act1431 extends Component{
             eqid: this.props.row.bl_id
             
         }
+        console.log(data)
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
@@ -76,8 +87,8 @@ class Act1431 extends Component{
            FileDownload(res.data, '14-31.xlsx');
         });
         axio.post('/otdel/New_eq', {data})
-      /*  if (data.amount<=1) {axio.post('/otdel/Delete_used', {data})}
-        else { axio.post('/otdel/Update_used', {data})}*/
+      /*  if (data.amount<=1) {axio.post('/otdel/Delete_used', {data})}*/
+        /*{ axio.post('/otdel/Update_used', {data})}*/
         console.log(data.amount)
       // 
         //await this.props.setLoaderHide();
@@ -86,7 +97,7 @@ class Act1431 extends Component{
         await this.props.onReboot();
     }
 
-    changeDop = (e) => {
+    changeDop = async (e) => {
         var arr = [],
         val = parseInt(e.target.value),
         indx = 0;
@@ -97,12 +108,16 @@ class Act1431 extends Component{
             }
             indx ++;
         });
-
+        let l = this.state.dop_upload.length;
         this.setState({ 
             dop_sel: e.target.value,
+            dop_upload: this.state.dop_upload.concat(arr)
+        }, () => {
+            this.changeAmount(1, l++)
         });
-        this.setState({dop_upload: this.state.dop_upload.concat(arr)})
+        
         this.dopUpload.push(arr);
+        
     }
  
 
@@ -149,7 +164,7 @@ class Act1431 extends Component{
                             <label >подтверждаем, что из следующих основных средств и материальных ценностей </label>
                             <select onChange={this.changeDop} value={this.state.dop_sel}>
                                 <option placeholder='----' value='-1'></option>
-                                {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
+                                {this.state.new_upload.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
                             </select>
                         </div>
                         <div className='combo_div'>

@@ -324,21 +324,21 @@ exports.spisat14_31 = async function(req, res) {
             return res.sendStatus(500);
         }
         //console.log(docs.rows[0].max + ' max')
-       if (docs.rows[0].max == false){
+        if (docs.rows[0].max == false){
             docNum = docs.rows[0].max;
         }else{
             docNum = docs.rows[0].max + 1;
         }
         
     });
-  /*  for (i = 0; i < data.equip.length; i++){
+    for (i = 0; i < data.equip.length; i++){
         await Otdel.spisatInsert(docNum, data, data.equip[i], req.headers.us_id, function (err, docs) {
             if (err) {
                 console.log(err);
                 return res.sendStatus(500);
             }
         });
-    }*/
+    }
     /*await Hyst.spisatHystory( data,  function (err, docs) {
         if (err) {
             console.log(err);
@@ -372,7 +372,7 @@ exports.spisat14_33 = async function(req, res) {
             }
         });
     }
-   await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
+ /*  await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);

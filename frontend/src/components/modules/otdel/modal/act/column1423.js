@@ -10,7 +10,8 @@ export default class Column extends Component{
     }
 
     componentDidMount = () => {
-        this.props.changeAmount(1, this.props.indx);
+        /*console.log(this.props)
+        this.props.changeAmount(1, this.props.indx);*/
     }
 
     onChange = (e) => {
