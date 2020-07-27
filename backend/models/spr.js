@@ -348,12 +348,23 @@ exports.relation_add = function(req,cb) {
 
 exports.watch = function(req,cb) {
     console.log(req.body.data)
-    var sql = `SELECT re.*, eq.eq_name, eq2.eq_name as dop_name FROM relation_spr re
+    var sql = `SELECT re.*, eq.eq_name, eq2.eq_name as dop_name,
+                (te.te_name || ' ' || ma.ma_name || ' '|| eq2.eq_name) as equip_name
+        FROM relation_spr re
+
         inner join equip_spr eq
         on eq.eq_id = re.re_id_osn
 
         inner join equip_spr eq2
         on eq2.eq_id = re.re_id_dop
+
+        right outer join marka_equip_spr ma
+        on ma.ma_id = eq2.eq_mark_id
+        
+        right outer join type_equip_spr te
+        on te.te_id = eq2.eq_type_id
+
+
     WHERE re_id_osn=`+req.body.data.row.st_id+``;
     console.log(sql)
     if (sql){
@@ -362,4 +373,16 @@ exports.watch = function(req,cb) {
                 cb(err,res)
             });
     } 
+}
+
+exports.userList = function(cb) {
+    var sql =  `SELECT us_login, us_role, us_name 
+                FROM users
+                WHERE us_id > 0 AND us_login <> ''
+                `;
+    //console.log(sql)
+    pool.query(sql 
+        ,(err,res)=>{
+            cb(err,res.rows);
+        });
 }

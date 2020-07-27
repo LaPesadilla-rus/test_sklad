@@ -19,15 +19,9 @@ export default class Menu extends Component{
         wrapper.classList.toggle('is-open');
         vv.classList.toggle('is-open');
         this.setState({show: !this.state.show})
-    
-
-        //button_block.classList.toggle('small');
     }
     exitButton = () =>{
         this.props.setAuthorize(false);
-        /*localStorage.setItem('user', '');
-        localStorage.setItem('at', '');
-        localStorage.setItem('rt', '');*/
         localStorage.clear();
         this.props.setUserId('');
         this.props.setAt('');
@@ -37,29 +31,33 @@ export default class Menu extends Component{
         });
     }
     render (){
-        return (<div ref={this.wrapperRef} className="wrapper">
-            <div ref={this.vvRef} className="vv">
-                    <p>Меню</p>
-                    <NavLink  className={(this.state.show ===false)?'button_block' : 'button_block_new' } activeClassName="act" to="/sklad/all">
-                        <MdAssignment />
-                        {(this.state.show ===false)?<label>Склад</label> : <label></label> }
-                    </NavLink> 
-                    <NavLink  className={(this.state.show ===false)?'button_block' : 'button_block_new' }  activeClassName="act" to="/otdel">
-                        <MdPersonPin />
-                        {(this.state.show ===false)?<label>Отделение</label> : <label></label> }
-                    </NavLink>
-                    <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }   activeClassName="act" to="/zurnal">
-                        <MdFilterFrames/>{(this.state.show ===false)?<label>Журналы</label> : <label></label> }
-                    </NavLink>
-                    <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }  activeClassName="act" to="/reports/all">
-                        <MdDvr/>{(this.state.show ===false)?<label>Заявки</label> : <label></label> }
-                    </NavLink> 
-                    <NavLink className={(this.state.show ===false)?'button_block' : 'button_block_new' }  onClick={this.exitButton} to="/">
-                    <MdExitToApp  />{(this.state.show ===false)?<label>Выход</label> : <label></label> }
-                    </NavLink>
-                    <div className={(this.state.show ===false)?'button_block' : 'button_block_new' }onClick={() => this.onClick()} >
-                        <MdCompareArrows/>{(this.state.show ===false)?<label>Свернуть</label> : <label></label> } </div>
-                    </div>
+        return (
+            <div ref={this.wrapperRef} className="left_menu_back">
+                <div ref={this.vvRef} className="left_menu">
+                        <p>Меню</p>
+                        <NavLink className='button_block' activeClassName="act" to="/sklad/all">
+                            <MdAssignment />
+                            <label>{(this.state.show ===false)? 'Склад': ''}</label>
+                        </NavLink> 
+                        <NavLink className='button_block'  activeClassName="act" to="/otdel">
+                            <MdPersonPin />
+                            <label>{(this.state.show ===false)?'Отделение': ''}</label>
+                        </NavLink>
+                        <NavLink className='button_block'   activeClassName="act" to="/zurnal">
+                            <MdFilterFrames/>
+                            <label>{(this.state.show ===false)? 'Журналы' : ''}</label>
+                        </NavLink>
+                        <NavLink className='button_block'  activeClassName="act" to="/reports/all">
+                            <MdDvr/>
+                            <label>{(this.state.show ===false)? 'Заявки': ''}</label>
+                        </NavLink> 
+                        <NavLink className='button_block'  onClick={this.exitButton} to="/">
+                        <MdExitToApp  /><label>{(this.state.show ===false)?'Выход':''}</label>
+                        </NavLink>
+                        <div className='button_block down_button_block' onClick={() => this.onClick()} >
+                            <MdCompareArrows/><label>{(this.state.show ===false)?'Свернуть':''}</label>
+                        </div>
+                </div>
             </div>
         );
     }

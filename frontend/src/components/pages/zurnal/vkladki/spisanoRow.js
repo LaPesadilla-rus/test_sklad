@@ -24,6 +24,7 @@ export default class SpisanoRow extends Component {
                 <td>{this.props.row.lb_inv_num}</td>
                 <td>{this.props.row.equip_name}</td>
                 <td>{this.props.row.lb_buh_name}</td>
+                <td>{this.props.row.lb_amount}</td>
                 {/*<td>{this.props.row.un_name}</td>
                     <td>{this.props.row.lb_amount}</td>*/}
                 <td>{this.props.row.us_name}</td>
