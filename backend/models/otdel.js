@@ -128,7 +128,6 @@ exports.moveEQ = async function (data, cb) {
 };
 
 exports.moveEqLog = async function (data, us_id, cb) {
-    //console.log(data);
     if (!data.mol_id){
         data.mol_id = data.row.bl_mol_id
     }
@@ -281,6 +280,7 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
 exports.spisatDocNum = async function (data, cb) {
     //console.log(data.act_id + ' act')
     var sql = `SELECT MAX(lb_act_num) FROM logbook WHERE lb_act_id = `+data.act_id+` `
+    console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);
@@ -291,9 +291,12 @@ exports.spisatDocNum = async function (data, cb) {
 }
 
 exports.spisatInsert = async function (docNum,data, row, us_id, cb) {
+    //console.log(docNum)
     var sql = ` INSERT INTO public.logbook (lb_mol_name, lb_isp_name, lb_prim, lb_act_id, lb_act_num, lb_usr_id, lb_eq_id, lb_inv_num, lb_buh_name, lb_amount)
-                VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`, `+us_id+`, `+row.bl_eq_id+`, '`+row.bl_inv_num+`', '`+row.bl_buh_name+`', `+row.sp_amount+`);
+                VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`, 
+                `+us_id+`, `+row.bl_eq_id+`, '`+row.bl_inv_num+`', '`+row.bl_buh_name+`', `+row.sp_amount+`);
      `;
+     //console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);
@@ -343,3 +346,43 @@ exports.filter_data_eq = async function (cb) {
         cb(err,'');
     });
 }
+exports.New_eq = async function(data,cb) {
+var sql = `INSERT INTO public.balance(
+         bl_eq_id, bl_amount, bl_inv_num, bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id, bl_buh_name)
+VALUES (`+data.act_id+` , `+data.amount+` , '`+data.new_inv_nb+`', '`+data.user+`' , '`+data.prim+`' , `+data.mol+` , `+data.idotd+` , '`+data.neof_name+`');`
+                    console.log(sql)
+     pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+      //  console.log(err)
+        cb(err,'');
+    });
+}
+exports.Delete_used = async function(data,cb) {
+    var sql = `DELETE FROM public.balance WHERE bl_id =`+data.eqid+``
+    console.log(sql)
+         pool.query(sql).then (
+            (res) => {
+                cb('',res);
+            }
+        ).catch(function(err) {
+          //  console.log(err)
+            cb(err,'');
+        });
+    }
+
+    exports.Update_used = async function(data,row, cb) {
+        var sql = `UPDATE  public.balance SET bl_amount=bl_amount-`+row.sp_amount+`  WHERE bl_id =`+data.eqid+``
+        console.log(sql)
+             pool.query(sql).then (
+                (res) => {
+                    cb('',res);
+                }
+            ).catch(function(err) {
+              //  console.log(err)
+                cb(err,'');
+            });
+        }
+    
