@@ -376,7 +376,7 @@ exports.watch = function(req,cb) {
 }
 
 exports.userList = function(cb) {
-    var sql =  `SELECT us_login, us_role, us_name 
+    var sql =  `SELECT us_id, us_login, us_role, us_name 
                 FROM users
                 WHERE us_id > 0 AND us_login <> ''
                 `;

@@ -1,6 +1,7 @@
 import React, {Component}  from 'react';
 import './new_user.css';
 import axio from 'axios';
+import UnicId from 'react-html-id';
 
 import ModalInfo from '../../../simple_comp/modal_info/modalInfo';
 
@@ -8,6 +9,7 @@ export default class UpdateUser extends Component {
     
     constructor (props) {
         super(props);
+        UnicId.enableUniqueIds(this);
         this.state = {
             login: '',
             pass1: '',
@@ -16,7 +18,9 @@ export default class UpdateUser extends Component {
             isShowMessage: false,
             errTxt: '',
             color: '',
-            name: ''
+            name: '',
+            login_data: [],
+            log_id: ''
         };
     }
 
@@ -78,12 +82,32 @@ export default class UpdateUser extends Component {
             })
         }
         axio.get('/user/list').then( res => {
+            this.setState({
+                login_data: res.data
+            });
             console.log(res.data)
         })
     }
 
     showMessage = (val) => {
         this.setState(state => ({ isShowMessage : !state.isShowMessage, color: val}))
+    }
+
+    changeLogin = (e) => {
+        let val = e.target.value;
+        
+        this.state.login_data.forEach( row => {
+            if( row.us_id === parseInt(val)){
+                this.setState({
+                    name: row.us_name,
+                    role: row.us_role
+                })
+            }
+        })
+
+        this.setState({
+            log_id: val
+        })
     }
 
     render () {
@@ -95,7 +119,10 @@ export default class UpdateUser extends Component {
                         </div>
                         <div>
                             <label>Логин: </label>
-                            <input onChange={(e) => {this.setState({ login: e.target.value})}} value={this.state.login}></input>
+                            <select onChange={this.changeLogin} value={this.state.log_id}>
+                                <option value='-1'></option>
+                                {this.state.login_data && this.state.login_data.map( row => <option key={this.nextUniqueId()} value={row.us_id}>{row.us_login}</option>)}     
+                            </select>
                         </div>
                         <div>
                             <label>Пароль: </label>
