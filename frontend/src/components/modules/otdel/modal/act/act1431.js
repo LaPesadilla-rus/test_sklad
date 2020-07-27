@@ -130,7 +130,7 @@ class Act1431 extends Component{
         })
     }
     render() {
-        var indx = 1;
+        //var indx = 1;
         return (
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">

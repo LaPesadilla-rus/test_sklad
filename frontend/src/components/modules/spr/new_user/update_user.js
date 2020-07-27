@@ -28,18 +28,14 @@ export default class UpdateUser extends Component {
         event.preventDefault();
 
         const data = {
-            login: this.state.login,
             pass1: this.state.pass1,
             pass2: this.state.pass2,
             role: this.state.role,
             name: this.state.name,
+            log_id: this.state.log_id
         }
         console.log(data)      
         var err = '';
-        if (data.login === ''){
-            err = err + 'Логин не введен! ';
-            //console.log(err)
-        }
         if (data.pass1 !== data.pass2 || data.pass1 === '' || data.pass2 === ''){
             err = err + 'Пароли не совпадают! ';
         }
@@ -51,7 +47,7 @@ export default class UpdateUser extends Component {
             this.setState({ errTxt: err});
             this.showMessage(0);
         }else{
-            axio.post('/users/new', {data}).then(res => {
+            axio.post('/users/upd', {data}).then(res => {
                 if (res.data === 'SAVE COMPLITE') {
                 this.setState({ errTxt: 'Сохранение успешно'});
                 this.showMessage(1);
@@ -85,7 +81,6 @@ export default class UpdateUser extends Component {
             this.setState({
                 login_data: res.data
             });
-            console.log(res.data)
         })
     }
 

@@ -269,9 +269,9 @@ exports.sklad_out_midl1 = async function(data, mol_id, otd_id,cb) {
     });
 }
 
-exports.sklad_out_midl2 = async function(data,a,cb) {
-    var val = (a.st_amount - data.kol);
-    sql = `UPDATE public.storage SET st_amount = `+val+` WHERE st_id = `+data.st_id+``;
+exports.sklad_out_midl2 = async function(data,cb) {
+    //var val = (a.st_amount - data.kol);
+    sql = `UPDATE public.storage SET st_amount = st_amount - `+data.kol+` WHERE st_id = `+data.st_id+``;
     //console.log(sql)
     await pool.query(sql).then (
         (res) => {

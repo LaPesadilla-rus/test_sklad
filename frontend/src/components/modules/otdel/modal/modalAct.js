@@ -21,14 +21,18 @@ export default class ModalAct extends Component{
                             <button className='button' onClick={this.clickAct} value='6'>Акт 14-33</button>
                         </div>;
         let defButtons = <div className='otdel_workspace_equip'>
-                            <button className='button'>Дефектная ведомость</button>
+                            <button className='button' onClick={this.clickAct} value='100'>Дефектная ведомость</button>
                         </div>;
+        let refoundButton = <div className='otdel_workspace_equip'>
+                                <button className='button button_yellow'>Вернуть на склад</button>
+                            </div>
         return (
             <div className='background_modal background_modal_pos'>
                 <div className="modal modal_pos">
                     <div className="otdel_modal">
                         <p>Выбрать способ списания: </p>
                         {(this.props.data.eq_kat_id === 0) ? defButtons : actButtons}
+                        {(this.props.role === 0) ? refoundButton: null}
                         <div className='combo_div'>
                             <button className='button button_red' onClick={this.onClose}>Отмена</button>
                         </div>

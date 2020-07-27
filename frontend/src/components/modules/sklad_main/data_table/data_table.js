@@ -108,7 +108,7 @@ class Data extends Component{ //убрать экспорт
                     <form onSubmit={this.handleSubmit}>
                         <table className="sklad_table_body">
                             <thead className="sklad_table_head">
-                                <tr className="" onClick={this.handleSubmit} id='123'>
+                                <tr className="">
                                     <th className='sklad_table_cell_head'>Категория</th> 
                                     <th className='sklad_table_cell_head'>Инв номер</th> 
                                     <th className='sklad_table_cell_head'>Наименование</th>

@@ -24,6 +24,10 @@
     min-height: 100px;
 }*/
 
+.App textarea{
+    resize: none;
+}
+
 .input {
     border: 1px solid #8a8a8a;
     transition: all 1s;

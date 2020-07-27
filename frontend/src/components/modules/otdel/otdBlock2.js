@@ -13,7 +13,8 @@ import Act1427 from './modal/act/act1427';
 import Act1429 from './modal/act/act1429';
 import Act1425 from './modal/act/act1425';
 import Act1431 from './modal/act/act1431';
-import Act1433 from './modal/act/act1433'
+import Act1433 from './modal/act/act1433';
+import Defect from './modal/act/defect';
 
 
 export default class OtdBlock2 extends Component{
@@ -29,6 +30,7 @@ export default class OtdBlock2 extends Component{
             isAct1429Open: false,
             isAct1431Open: false,
             isAct1433Open: false,
+            isDefectOpen: false,
             selEquip: [],
             act_data: [],
             osn_equip: [],
@@ -70,6 +72,11 @@ export default class OtdBlock2 extends Component{
     }
     changeAct1433 = () =>{
         this.setState(state => ({ isAct1433Open: !state.isAct1433Open}));
+        this.sortDopOsn();
+    }
+
+    changeDefect = () =>{
+        this.setState(state => ({ isDefectOpen: !state.isDefectOpen}));
         this.sortDopOsn();
     }
 
@@ -135,6 +142,9 @@ export default class OtdBlock2 extends Component{
         if (reg === '6'){
             this.changeAct1433();
         }
+        if (reg === '100'){
+            this.changeDefect();
+        }
     }
             
     render() {
@@ -189,7 +199,8 @@ export default class OtdBlock2 extends Component{
                     <ModalAct key={this.nextUniqueId()} 
                                 onClose={this.changeModalAct} 
                                 onClickAct={this.onClickAct}
-                                data={this.state.act_data}/>
+                                data={this.state.act_data}
+                                role={this.props.role}/>
                 }
                 {this.state.isAct1423Open &&
                     <Act1423 key={this.nextUniqueId()}
@@ -248,6 +259,17 @@ export default class OtdBlock2 extends Component{
                 }
                  {this.state.isAct1433Open &&
                     <Act1433 key={this.nextUniqueId()}
+                                onClose={this.changeAct1433}
+                                modalActClose={this.changeModalAct}
+                                onReboot={this.props.onReboot}
+                                row={this.state.act_data}
+                                actUser='Admin'
+                                data={this.props.row}
+                                osn_equip={this.state.osn_equip}
+                                dop_equip={this.state.dop_equip} />
+                }
+                {this.state.isDefectOpen &&
+                    <Defect key={this.nextUniqueId()}
                                 onClose={this.changeAct1433}
                                 modalActClose={this.changeModalAct}
                                 onReboot={this.props.onReboot}

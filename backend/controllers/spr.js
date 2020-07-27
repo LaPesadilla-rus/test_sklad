@@ -112,7 +112,7 @@ exports.newUser = function(req, res) {
 }
 
 exports.updUser = function(req, res) {
-    Spr.updUser(req, function(err,docs){
+    Spr.updUser(req.body.data, function(err,docs){
         if (err) {
             console.log(err);
             return res.sendStatus(500);

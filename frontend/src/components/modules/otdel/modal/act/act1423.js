@@ -29,7 +29,9 @@ class Act1423 extends Component{
         this.dopUpload.push(this.props.row);
         var arr = [];
         arr[0] = this.props.row;
-        this.setState({dop_upload: arr })
+        this.setState({dop_upload: arr }, () => {
+            this.changeAmount(1, 0)
+        })
     }
 
     onClose = () => {
@@ -59,7 +61,7 @@ class Act1423 extends Component{
         
         await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
             FileDownload(res.data, '14-23.xlsx');
-            this.props.setMessageShow('Выписка успешка');
+            //this.props.setMessageShow('Списание успешно',2);
         });
         await this.props.setLoaderHide();
         await this.props.onClose();
@@ -97,7 +99,10 @@ class Act1423 extends Component{
         this.setState({ 
             dop_sel: e.target.value,
         });
-        this.setState({dop_upload: this.state.dop_upload.concat(arr)})
+        let l = this.state.dop_upload.length;
+        this.setState({dop_upload: this.state.dop_upload.concat(arr)}, () => {
+            this.changeAmount(1, l++)
+        })
         this.dopUpload.push(arr);
     }
 
@@ -111,7 +116,6 @@ class Act1423 extends Component{
     }
 
     render() {
-        var indx = 1;
         return (
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">

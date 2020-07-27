@@ -174,7 +174,7 @@ exports.sklad_out = async function(req, res) {
     }
     for(var i = 0; i < arr.length; i++){
         let mas = item_arr[i];
-        await Sklad.sklad_out_midl2(arr[i],mas, function(err,docs){
+        await Sklad.sklad_out_midl2(arr[i], function(err,docs){
             if (err) {
                 console.log(err);
                 errMes.row = err;
