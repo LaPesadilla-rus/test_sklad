@@ -23,29 +23,38 @@ exports.file_14_31 = function (data, req, docNum, res) {
         rows = ws.getRow(n);
         rows.height = 38;
         rows.commit();
+         
+        i=1
+        data.dop_upload.forEach(row => {
+            rows = ws.getRow(n);
+            rows.height = 38;
+            rows.commit();
+            ws.mergeCells(n,2,n,4);
+            ws.mergeCells(n,5,n,6);
+            ws.mergeCells(n,7,n,9);
+            ws.mergeCells(n,10,n,11);
 
-        ws.mergeCells(n,2,n,4);
-        ws.mergeCells(n,5,n,6);
-        ws.mergeCells(n,7,n,9);
-        ws.mergeCells(n,10,n,11);
+            ws.getCell(n,1).value = i;
+            ws.getCell(n,2).value =row.equip_text;
+            ws.getCell(n,5).value = row.bl_inv_num;
+            ws.getCell(n,7).value = row.un_name;
+            ws.getCell(n,10).value = row.sp_amount;
 
-        ws.getCell(20,1).value = '1';
-        ws.getCell(20,2).value = data.dop_upload[0].equip_text;
-        ws.getCell(20,5).value = data.dop_upload[0].bl_inv_num;
-        ws.getCell(20,7).value = data.dop_upload[0].un_name;
-        ws.getCell(20,10).value = '1';
+            ws.getCell(n,1).border = border;
+            ws.getCell(n,2).border = border;
+            ws.getCell(n,5).border = border;
+            ws.getCell(n,7).border = border;
+            ws.getCell(n,10).border = border;
 
-        ws.getCell(20,1).border = border;
-        ws.getCell(20,2).border = border;
-        ws.getCell(20,5).border = border;
-        ws.getCell(20,7).border = border;
-        ws.getCell(20,10).border = border;
+            ws.getCell(n,1).alignment = alligment;
+            ws.getCell(n,2).alignment = alligment;
+            ws.getCell(n,5).alignment = alligment;
+            ws.getCell(n,7).alignment = alligment;
+            ws.getCell(n,10).alignment = alligment;
 
-        ws.getCell(20,1).alignment = alligment;
-        ws.getCell(20,2).alignment = alligment;
-        ws.getCell(20,5).alignment = alligment;
-        ws.getCell(20,7).alignment = alligment;
-        ws.getCell(20,10).alignment = alligment;
+            n ++;
+            i++;
+        });
 
         n = n + 2;
         ws.mergeCells(n,1,n,6);
@@ -53,7 +62,13 @@ exports.file_14_31 = function (data, req, docNum, res) {
         ws.getCell(n,7).value = req.body.data.neof_name;
         ws.getCell(n,1).value = 'Было сформировано основное средство: ';
         n++;
-
+       
+        n = n + 1
+        ws.mergeCells(n,1,n,6);
+        ws.mergeCells(n,7,n,10);
+        ws.getCell(n,7).value = req.body.data.new_inv_nb;
+        ws.getCell(n,1).value = 'Новый инвентарный номер: ';
+       
         n = n +2;
         ws.mergeCells(n,1,n,9);
         ws.getCell(n,1).value = 'ФИО и подписи, ответственных за установку материальной ценности:';
