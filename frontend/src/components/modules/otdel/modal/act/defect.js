@@ -21,6 +21,11 @@ class Defect extends Component{
             dop_sel: '',
             osn_upload: [],
             dop_upload: [],
+            dateExp: '',
+            dateRazn: '',
+            defTxt: '',
+            zakTxt: '',
+
         }
     }
 
@@ -32,7 +37,55 @@ class Defect extends Component{
         this.setState({dop_upload: arr }, () => {
             this.changeAmount(1, 0)
         });
-        console.log(this.props)
+        //console.log(this.props.row)
+        //console.log(this.props.row.bl_inp_date)
+        let d = new Date(this.props.row.bl_inp_date)
+        let dd = new Date();
+        let str = ''
+        let fYear = dd.getFullYear() - d.getFullYear();
+        str += fYear;
+        if (fYear === 0){
+            str += ' Лет ';
+        }else if ( fYear === 1){
+            str += ' Год ';
+        }else if (fYear > 1 && fYear < 5){
+            str += ' Года ';
+        }else if (fYear > 4 || fYear === 1){
+            str += ' Лет '
+        }
+        let fMont = dd.getMonth() - d.getMonth();
+        str += fMont;
+        if (fMont === 0){
+            str += ' Месяцев ';
+        }else if ( fMont === 1){
+            str += ' Месяц ';
+        }else if (fMont > 1 && fMont < 5){
+            str += ' Месяца ';
+        }else if (fMont > 4 || fMont === 1){
+            str += ' Месяцев '
+        }
+        let fDay = dd.getDate() - d.getDate();
+        str += fDay;
+        if (fDay === 0){
+            str += ' Дней ';
+        }else if ( fDay === 1){
+            str += ' День ';
+        }else if (fDay > 1 && fDay < 5){
+            str += ' Дня ';
+        }else if (fDay > 4 || fDay === 1){
+            str += ' Дней '
+        }
+        //str += 'Год: ' + (dd.getFullYear() - d.getFullYear());
+        //str += ' Месяцы: ' + (dd.getMonth() - d.getMonth());
+        //str += ' Дни: ' + (dd.getDate() - d.getDate());
+        let row = this.props.row;
+        row.sp_amount = 1;
+        this.setState({
+            dateRazn: str,
+            dateExp: d.getFullYear(),
+            //dop_upload: row,
+        })
+        //console.log(str)
     }
 
     onClose = () => {
@@ -43,35 +96,39 @@ class Defect extends Component{
         /*if (this.state.osn_upload.length === 0){
             alert('Основное средство не выбрано');
             return 0;
-        }
-        this.props.setLoaderShow();
+        }*/
+        //this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.osn_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
-            act_id: 1,
+            act_id: 7,
             prim: '',
             equip: this.state.dop_upload,
-            ot_name: this.props.data.ot_name
+            ot_name: this.props.data.ot_name,
+            defTxt: this.state.defTxt,
+            zakTxt: this.state.zakTxt,
+            dateRazn: this.state.dateRazn,
+            dateExp: this.state.dateExp
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
         const FileDownload = require('js-file-download');
         
-        await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-23.xlsx');
+        await axio.post('/otdel/spisatDefect', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            FileDownload(res.data, 'Defect.xlsx');
             //this.props.setMessageShow('Списание успешно',2);
         });
-        await this.props.setLoaderHide();
-        await this.props.onClose();
-        await this.props.modalActClose();
-        await this.props.onReboot();*/
+        //await this.props.setLoaderHide();
+        //await this.props.onClose();
+        //await this.props.modalActClose();
+        //await this.props.onReboot();
         
     }
 
-    changeOsn = (e) => {
+    /*changeOsn = (e) => {
         var arr = [],
         val = parseInt(e.target.value);
         this.props.osn_equip.forEach(row => {
@@ -84,9 +141,9 @@ class Defect extends Component{
             osn_upload: arr,
         });
         this.osnUpload = arr;
-    }
+    }*/
 
-    changeDop = (e) => {
+    /*changeDop = (e) => {
         var arr = [],
         val = parseInt(e.target.value),
         indx = 0;
@@ -105,7 +162,7 @@ class Defect extends Component{
             this.changeAmount(1, l++)
         })
         this.dopUpload.push(arr);
-    }
+    }*/
 
     changeAmount = (val, indx) => {
         let arr = this.state.dop_upload;
@@ -124,28 +181,28 @@ class Defect extends Component{
                     <p>Дефектная ведомость</p>
                     <div className='act_container'>
                         <div className='combo_div'>
-                            <label>Структурное подразделение</label>
-                            <label>{this.props.data.ot_name}</label>
+                            <label>Структурное подразделение: </label>
+                            <span>{this.props.data.ot_name}</span>
                         </div>
                         <div className='combo_div'>
-                            <label>Основное средство</label>
-                            <label>{this.props.row.equip_name}</label>
+                            <label>Основное средство: </label>
+                            <span>{this.props.row.equip_name}</span>
                         </div>
                         <div className='combo_div'>
-                            <label>Инвентарный номер</label>
-                            <label>{this.props.row.bl_inv_num}</label>
+                            <label>Инвентарный номер: </label>
+                            <span>{this.props.row.bl_inv_num}</span>
                         </div>
                         <div className='combo_div'>
-                            <label>Год ввода в эксплуатацию</label>
-                            <label></label>
+                            <label>Год ввода в эксплуатацию: </label>
+                            <span>{this.state.dateExp}</span>
                         </div>
                         <div className='combo_div'>
-                            <label>Срок эксплуатации</label>
-                            <label></label>
+                            <label>Срок эксплуатации: </label>
+                            <span>{this.state.dateRazn}</span>
                         </div>
                         <div className='combo_div'>
-                            <label>Материально-ответственное лицо</label>
-                            <label>{this.props.row.mol_name}</label>
+                            <label>Материально-ответственное лицо: </label>
+                            <span>{this.props.row.mol_name}</span>
                         </div>
                         <div className='combo_div'>
                             <table className='act_table'>
@@ -159,8 +216,8 @@ class Defect extends Component{
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><textarea></textarea></td>
-                                        <td><textarea></textarea></td>
+                                        <td><textarea onChange={(e) => {this.setState({ defTxt: e.target.value})}} value={this.state.defTxt}></textarea></td>
+                                        <td><textarea onChange={(e) => { this.setState({ zakTxt: e.target.value})}} value={this.state.zakTxt}></textarea></td>
                                         <td><input type='date'></input></td>
                                         <td><input></input></td>
                                     </tr>

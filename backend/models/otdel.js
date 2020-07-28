@@ -280,7 +280,7 @@ exports.otd_data_equip1 = async(mo_id, otd_id, reg, eq_id) => {
 exports.spisatDocNum = async function (data, cb) {
     //console.log(data.act_id + ' act')
     var sql = `SELECT MAX(lb_act_num) FROM logbook WHERE lb_act_id = `+data.act_id+` `
-    console.log(sql)
+    //console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);
@@ -296,7 +296,7 @@ exports.spisatInsert = async function (docNum,data, row, us_id, cb) {
                 VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`, 
                 `+us_id+`, `+row.bl_eq_id+`, '`+row.bl_inv_num+`', '`+row.bl_buh_name+`', `+row.sp_amount+`);
      `;
-     //console.log(sql)
+    //console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);

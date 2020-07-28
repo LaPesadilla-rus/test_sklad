@@ -270,7 +270,7 @@ export default class OtdBlock2 extends Component{
                 }
                 {this.state.isDefectOpen &&
                     <Defect key={this.nextUniqueId()}
-                                onClose={this.changeAct1433}
+                                onClose={this.changeDefect}
                                 modalActClose={this.changeModalAct}
                                 onReboot={this.props.onReboot}
                                 row={this.state.act_data}

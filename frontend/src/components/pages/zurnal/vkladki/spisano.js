@@ -33,6 +33,7 @@ export default class Spisano extends Component{
                                 {/*<th className='thead'>Ед. изм.</th>
                                 <th className='thead'>Кол-во</th>*/}
                                 <th className='thead'>Пользователь</th>
+                                <th className='thead'>Док-т</th>
                                 
                             </tr>
                         </thead>

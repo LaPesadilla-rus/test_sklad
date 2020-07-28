@@ -119,9 +119,10 @@ app.post('/otdel/spisat14_31', otdelController.spisat14_31);
 app.post('/otdel/spisat14_33', otdelController.spisat14_33);
 app.post('/otdel/all_filter', otdelController.all_filter);
 app.post('/otdel/prim/update', otdelController.primUpd);
-app.post('/otdel/New_eq', otdelController.New_eq)
-app.post('/otdel/Update_used', otdelController.Update_used)
-app.post('/otdel/Delete_used', otdelController.Delete_used)
+app.post('/otdel/New_eq', otdelController.New_eq);
+app.post('/otdel/Update_used', otdelController.Update_used);
+app.post('/otdel/Delete_used', otdelController.Delete_used);
+app.post('/otdel/spisatDefect', otdelController.spisatDefect);
 //--------------------------------
 
 ///---------------------------------------------
