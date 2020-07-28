@@ -33,7 +33,7 @@ exports.file_14_33 = function (data, req, docNum, res) {
         ws.getCell(20,2).value = data.dop_upload[0].equip_text;
         ws.getCell(20,5).value = data.dop_upload[0].bl_inv_num;
         ws.getCell(20,7).value = data.dop_upload[0].un_name;
-        ws.getCell(20,10).value = '1';
+        ws.getCell(20,10).value = data.dop_upload[0].sp_amount;
 
         ws.getCell(20,1).border = border;
         ws.getCell(20,2).border = border;
@@ -57,7 +57,7 @@ exports.file_14_33 = function (data, req, docNum, res) {
         n = n + 1
         ws.mergeCells(n,1,n,6);
         ws.mergeCells(n,7,n,10);
-        ws.getCell(n,7).value = req.body.data.neof_name;
+        ws.getCell(n,7).value = req.body.data.new_inv_nb;
         ws.getCell(n,1).value = 'Новый инвентарный номер: ';
        
         n = n +2;

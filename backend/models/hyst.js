@@ -5,13 +5,8 @@ const conn = require('../db_con.js');
 const pool = new Pool (conn.conn_str);
 
 exports.spisatHystory = async function (docNum,data, us_id, cb) {
-    var sql = ` INSERT INTO public.history(
-                     hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
-                    hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
-                    hy_mol_id1, hy_otd_id1, hy_mol_id2, hy_otd_id2, 
-                    hy_act_id, hy_act_num, hy_user, hy_poyasn, hy_usr_id)
-                    VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, `+data.act_id+`, `+docNum+`, '`+data.user+`', 'Списано', `+us_id+`);
-     `;
+    //console.log(data, '-------')
+    var sql = ` `;
      data.dop_upload.forEach(row => {
         sql = ` INSERT INTO public.history(
                 hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 

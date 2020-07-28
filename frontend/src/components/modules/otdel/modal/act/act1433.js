@@ -32,7 +32,9 @@ class Act1433 extends Component{
         this.dopUpload.push(this.props.row);
         var arr = [];
         arr[0] = this.props.row;
-        this.setState({dop_upload: arr })   
+        this.setState({dop_upload: arr }, () => {
+            this.changeAmount(1, 0)
+        })   
     }
 
     onClose = () => {
@@ -60,7 +62,8 @@ class Act1433 extends Component{
             new_inv_nb: this.state.new_inv_nb,
             amount: this.props.row.bl_amount,
             mol: this.props.row.bl_mol_id,
-            idotd: this.props.row.bl_otd_id
+            idotd: this.props.row.bl_otd_id,
+            eqid: this.props.row.bl_id
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
@@ -70,7 +73,7 @@ class Act1433 extends Component{
         await axio.post('/otdel/spisat14_33', {data},  { responseType: 'arraybuffer' }).then(res=>{
           FileDownload(res.data, '14-33.xlsx');
         });
-        axio.post('/otdel/New_eq', {data})
+    //    axio.post('/otdel/New_eq', {data})
       //  axio.post('/otdel/Delete_used', {data})
         //await this.props.setLoaderHide();
         await this.props.onClose();
@@ -92,7 +95,10 @@ class Act1433 extends Component{
         this.setState({ 
             dop_sel: e.target.value,
         });
-        this.setState({dop_upload: this.state.dop_upload.concat(arr)})
+        let l = this.state.dop_upload.length;
+        this.setState({dop_upload: this.state.dop_upload.concat(arr)}, () => {
+            this.changeAmount(1, l++)
+        });
         this.dopUpload.push(arr);
     }
 
