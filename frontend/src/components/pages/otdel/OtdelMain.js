@@ -23,6 +23,7 @@ class OtdelMain extends Component{
             eq_name: '',
             eq_id: '',
             equip_data: [],
+            role: ''
         };
     }
 
@@ -42,8 +43,12 @@ class OtdelMain extends Component{
             });
             arr = res.data;
             //console.log(res.data)
-            
         });
+        await axio.get('/auth/access').then ( res => {
+            this.setState({
+                role: res.data.role
+            })
+        })
         this.setState({
             filter_data: arr,
             equip_data: data
@@ -166,6 +171,7 @@ class OtdelMain extends Component{
                 {(this.state.data.otd_data) ? this.state.data.otd_data.map(row => <OtdBlock2 key={this.nextUniqueId()} 
                                                                                                 data={this.state.data}
                                                                                                 row={row}
+                                                                                                role={this.state.role}
                                                                                                 onReboot={this.onReboot}/>) : ''}  
             </div>
         );

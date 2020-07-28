@@ -28,7 +28,9 @@ class Act1425 extends Component{
         this.dopUpload.push(this.props.row);
         var arr = [];
         arr[0] = this.props.row;
-        this.setState({dop_upload: arr })
+        this.setState({dop_upload: arr }, () => {
+            this.changeAmount(1, 0)
+        })
     }
 
     onClose = () => {
@@ -58,6 +60,7 @@ class Act1425 extends Component{
         
         await axio.post('/otdel/spisat14_25', {data},  { responseType: 'arraybuffer' }).then(res=>{
             FileDownload(res.data, '14-25.xlsx');
+            //this.props.setMessageShow('Списание успешно',2);
         });
         await this.props.setLoaderHide();
         await this.props.onClose();
@@ -95,7 +98,10 @@ class Act1425 extends Component{
         this.setState({ 
             dop_sel: e.target.value,
         });
-        this.setState({dop_upload: this.state.dop_upload.concat(arr)})
+        let l = this.state.dop_upload.length;
+        this.setState({dop_upload: this.state.dop_upload.concat(arr)}, () => {
+            this.changeAmount(1, l++)
+        })
         this.dopUpload.push(arr);
     }
 

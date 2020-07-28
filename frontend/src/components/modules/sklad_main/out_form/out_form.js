@@ -179,7 +179,8 @@ class OutForm extends Component{
     outAdd = () => {
         var err = '';
         //console.log(this.state.out_arr.length)
-        if (!this.state.act_row.st_inv_num){
+        //console.log(this.state.act_row.)
+        if (!this.state.act_row.st_inp_date){
             err = 'Не выбран выписываемый элемент!;';
         }
         if (this.state.kol === '' || parseInt(this.state.kol) <= 0 || this.state.kol > this.state.amount){
@@ -234,9 +235,14 @@ class OutForm extends Component{
     }
 
     outTreb = async () => {
-        if (!this.state.out_arr.otd_id){
-            alert('Заполните все поля! ');
+        if (!this.state.out_arr.equip){
+            alert('Таблица выписки пуста! ');
             return 0;
+        }else{
+            if (this.state.out_arr.equip.length === 0){
+                alert('Таблица выписки пуста! ');
+                return 0;
+            }
         }
         this.props.setLoaderShow();
         var data = this.state.out_arr;
@@ -359,7 +365,7 @@ class OutForm extends Component{
                         </table>
                         <div className='combo_div'>
                             <button className='button' onClick={this.outAdd}>Добавить к выписке</button>
-                            <button className='button button_green' onClick={this.outTreb}>Требование</button>
+                            <button className={`button `+((this.state.out_arr.equip && (this.state.out_arr.equip.length > 0) ? `button_green` : `button_gray` ))+``} onClick={this.outTreb}>Требование</button>
                             <button className='button button_red' onClick={this.onClose}>Отмена</button>
                         </div>
                         <table className='out_form_bottom_table'>

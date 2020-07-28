@@ -178,7 +178,7 @@ this.state.eq_data.map(id =>{
         })
     }
     render() {
-        var indx = 1;
+        //var indx = 1;
         return (
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">

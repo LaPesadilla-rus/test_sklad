@@ -43,3 +43,15 @@
     align-items: left;
     resize: none;
 }
+
+.act_table textarea {
+    height: 250px;
+}
+
+.act_container span {
+    margin-left: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+    background-color: #f1f1f1;
+}

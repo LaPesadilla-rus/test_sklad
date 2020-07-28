@@ -9,11 +9,6 @@ export default class Column extends Component{
         }
     }
 
-    componentDidMount = () => {
-        /*console.log(this.props)
-        this.props.changeAmount(1, this.props.indx);*/
-    }
-
     onChange = (e) => {
         let val = parseInt(e.target.value);
         if (val <= this.props.data.bl_amount && val >= 1){

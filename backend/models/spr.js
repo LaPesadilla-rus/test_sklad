@@ -320,13 +320,9 @@ exports.newUser = function(req, cb) {
         });
 }
 
-exports.updUser = function(req, cb) {
-    let data = req.body.data;
-    var sql =  `INSERT INTO users (us_login, us_pas, us_role, us_name)
-                    VALUES ('`+data.login+`', '`+data.pass1+`', `+data.role+`, '`+data.name+`' )
-                `;
-    sql = ` UPDATE users SET us_pas = '`+data.pass1+`'`
-    //console.log(sql)
+exports.updUser = function(data, cb) {
+    let sql = ` UPDATE users SET us_pas = '`+data.pass1+`', us_role = `+data.role+`, us_name = '`+data.name+`'
+            WHERE us_id = `+data.log_id+``;
     pool.query(sql 
         ,(err,res)=>{
             cb(err,'SAVE COMPLITE');
@@ -376,7 +372,7 @@ exports.watch = function(req,cb) {
 }
 
 exports.userList = function(cb) {
-    var sql =  `SELECT us_login, us_role, us_name 
+    var sql =  `SELECT us_id, us_login, us_role, us_name 
                 FROM users
                 WHERE us_id > 0 AND us_login <> ''
                 `;

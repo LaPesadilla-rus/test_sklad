@@ -8,7 +8,7 @@ import { setMessageShow } from '../../../../../store/message/actions';
 
 import Column from './column1423';
 
-class Act1423 extends Component{
+class Defect extends Component{
     constructor(){
         super();
         UnicId.enableUniqueIds(this);
@@ -21,6 +21,11 @@ class Act1423 extends Component{
             dop_sel: '',
             osn_upload: [],
             dop_upload: [],
+            dateExp: '',
+            dateRazn: '',
+            defTxt: '',
+            zakTxt: '',
+
         }
     }
 
@@ -31,7 +36,56 @@ class Act1423 extends Component{
         arr[0] = this.props.row;
         this.setState({dop_upload: arr }, () => {
             this.changeAmount(1, 0)
+        });
+        //console.log(this.props.row)
+        //console.log(this.props.row.bl_inp_date)
+        let d = new Date(this.props.row.bl_inp_date)
+        let dd = new Date();
+        let str = ''
+        let fYear = dd.getFullYear() - d.getFullYear();
+        str += fYear;
+        if (fYear === 0){
+            str += ' Лет ';
+        }else if ( fYear === 1){
+            str += ' Год ';
+        }else if (fYear > 1 && fYear < 5){
+            str += ' Года ';
+        }else if (fYear > 4 || fYear === 1){
+            str += ' Лет '
+        }
+        let fMont = dd.getMonth() - d.getMonth();
+        str += fMont;
+        if (fMont === 0){
+            str += ' Месяцев ';
+        }else if ( fMont === 1){
+            str += ' Месяц ';
+        }else if (fMont > 1 && fMont < 5){
+            str += ' Месяца ';
+        }else if (fMont > 4 || fMont === 1){
+            str += ' Месяцев '
+        }
+        let fDay = dd.getDate() - d.getDate();
+        str += fDay;
+        if (fDay === 0){
+            str += ' Дней ';
+        }else if ( fDay === 1){
+            str += ' День ';
+        }else if (fDay > 1 && fDay < 5){
+            str += ' Дня ';
+        }else if (fDay > 4 || fDay === 1){
+            str += ' Дней '
+        }
+        //str += 'Год: ' + (dd.getFullYear() - d.getFullYear());
+        //str += ' Месяцы: ' + (dd.getMonth() - d.getMonth());
+        //str += ' Дни: ' + (dd.getDate() - d.getDate());
+        let row = this.props.row;
+        row.sp_amount = 1;
+        this.setState({
+            dateRazn: str,
+            dateExp: d.getFullYear(),
+            //dop_upload: row,
         })
+        //console.log(str)
     }
 
     onClose = () => {
@@ -39,38 +93,42 @@ class Act1423 extends Component{
     }
 
     onSubmith = async () => {    
-        if (this.state.osn_upload.length === 0){
+        /*if (this.state.osn_upload.length === 0){
             alert('Основное средство не выбрано');
             return 0;
-        }
-        this.props.setLoaderShow();
+        }*/
+        //this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.osn_upload,
             user: this.props.actUser,
             mol_name: this.props.row.mol_name,
-            act_id: 1,
+            act_id: 7,
             prim: '',
             equip: this.state.dop_upload,
-            ot_name: this.props.data.ot_name
+            ot_name: this.props.data.ot_name,
+            defTxt: this.state.defTxt,
+            zakTxt: this.state.zakTxt,
+            dateRazn: this.state.dateRazn,
+            dateExp: this.state.dateExp
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
         const FileDownload = require('js-file-download');
         
-        await axio.post('/otdel/spisat14_23', {data},  { responseType: 'arraybuffer' }).then(res=>{
-            FileDownload(res.data, '14-23.xlsx');
+        await axio.post('/otdel/spisatDefect', {data},  { responseType: 'arraybuffer' }).then(res=>{
+            FileDownload(res.data, 'Defect.xlsx');
             //this.props.setMessageShow('Списание успешно',2);
         });
-        await this.props.setLoaderHide();
-        await this.props.onClose();
-        await this.props.modalActClose();
-        await this.props.onReboot();
+        //await this.props.setLoaderHide();
+        //await this.props.onClose();
+        //await this.props.modalActClose();
+        //await this.props.onReboot();
         
     }
 
-    changeOsn = (e) => {
+    /*changeOsn = (e) => {
         var arr = [],
         val = parseInt(e.target.value);
         this.props.osn_equip.forEach(row => {
@@ -83,9 +141,9 @@ class Act1423 extends Component{
             osn_upload: arr,
         });
         this.osnUpload = arr;
-    }
+    }*/
 
-    changeDop = (e) => {
+    /*changeDop = (e) => {
         var arr = [],
         val = parseInt(e.target.value),
         indx = 0;
@@ -104,7 +162,7 @@ class Act1423 extends Component{
             this.changeAmount(1, l++)
         })
         this.dopUpload.push(arr);
-    }
+    }*/
 
     changeAmount = (val, indx) => {
         let arr = this.state.dop_upload;
@@ -120,81 +178,49 @@ class Act1423 extends Component{
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
                 <div className="act_main">
-                    <p>Акт 14-23 </p>
+                    <p>Дефектная ведомость</p>
                     <div className='act_container'>
                         <div className='combo_div'>
+                            <label>Структурное подразделение: </label>
+                            <span>{this.props.data.ot_name}</span>
+                        </div>
+                        <div className='combo_div'>
+                            <label>Основное средство: </label>
+                            <span>{this.props.row.equip_name}</span>
+                        </div>
+                        <div className='combo_div'>
+                            <label>Инвентарный номер: </label>
+                            <span>{this.props.row.bl_inv_num}</span>
+                        </div>
+                        <div className='combo_div'>
+                            <label>Год ввода в эксплуатацию: </label>
+                            <span>{this.state.dateExp}</span>
+                        </div>
+                        <div className='combo_div'>
+                            <label>Срок эксплуатации: </label>
+                            <span>{this.state.dateRazn}</span>
+                        </div>
+                        <div className='combo_div'>
                             <label>Материально-ответственное лицо: </label>
-                            <label className='act_container_text'>{this.props.row.mol_name}</label>
-                        </div>
-                        <div className='combo_div'>
-                            <label>Мы нижеподписавшиеся: </label>
-                        </div>
-                        <div className='combo_div'>
-                            <label>1: </label>
-                            <label className='act_container_text'>_____</label>
-                        </div>
-                        <div className='combo_div'>
-                            <label>2: </label>
-                            <label className='act_container_text'>{this.props.actUser}</label>
-                        </div>
-                        <div className='combo_div'>
-                            <label>3: </label>
-                            <label className='act_container_text'>_____</label>
-                        </div>
-                        <div className='combo_div'>
-                            <label>4: </label>
-                            <label className='act_container_text'>{this.props.row.mol_name}</label>
-                        </div>
-                        <div className='act_line_div'>
-                            <label>подтверждаем, что в следующем основном средстве: </label>
-                            <select onChange={this.changeOsn} value={this.state.osn_sel}>
-                                <option placeholder='----' value='-1'></option>
-                                {this.props.osn_equip.map( id => <option key={id.bl_id} value={id.bl_id}>{id.equip_name}</option>)}
-                            </select>
+                            <span>{this.props.row.mol_name}</span>
                         </div>
                         <div className='combo_div'>
                             <table className='act_table'>
                                 <thead>
                                     <tr>
-                                        <th>№ п/п</th>
-                                        <th>Наименование ОС</th>
-                                        <th>Инвентарный номер</th>
-                                        <th>Единица измерения</th>
-                                        <th>Количество</th>
+                                        <th>Дефекты и повреждения</th>
+                                        <th>Заключение комиссии о целесообразности ремонта</th>
+                                        <th>Срок устранения дефектов</th>
+                                        <th>Отвественный за выполнение ремонта</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{(this.osnUpload.length > 0) ? 1 : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? this.osnUpload[0].equip_text : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? this.osnUpload[0].bl_inv_num : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? this.osnUpload[0].un_name : ''}</td>
-                                        <td>{(this.osnUpload.length > 0) ? 1 : ''}</td>
+                                        <td><textarea onChange={(e) => {this.setState({ defTxt: e.target.value})}} value={this.state.defTxt}></textarea></td>
+                                        <td><textarea onChange={(e) => { this.setState({ zakTxt: e.target.value})}} value={this.state.zakTxt}></textarea></td>
+                                        <td><input type='date'></input></td>
+                                        <td><input></input></td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className='act_line_div'>
-                            <label>были установлены следующие материальные ценности: </label>
-                            <select onChange={this.changeDop} value={this.state.dop_sel}>
-                                <option placeholder='----' value='-1'></option>
-                                {this.props.dop_equip.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
-                            </select>
-                        </div>
-                        <div className='combo_div'>
-                            <table className='act_table'>
-                                <thead>
-                                    <tr>
-                                        <th>№ п/п</th>
-                                        <th>Наименование МЦ</th>
-                                        <th>Инвентарный номер</th>
-                                        <th>Единица измерения</th>
-                                        <th>Текущее кол-во</th>
-                                        <th>Количество</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { this.state.dop_upload.map((row, indx) => <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
                         </div>
@@ -220,5 +246,5 @@ export default connect(
     '',
     pushDispatchToProps,
 
-)(Act1423)
+)(Defect)
 

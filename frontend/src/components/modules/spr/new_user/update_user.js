@@ -1,6 +1,7 @@
 import React, {Component}  from 'react';
 import './new_user.css';
 import axio from 'axios';
+import UnicId from 'react-html-id';
 
 import ModalInfo from '../../../simple_comp/modal_info/modalInfo';
 
@@ -8,6 +9,7 @@ export default class UpdateUser extends Component {
     
     constructor (props) {
         super(props);
+        UnicId.enableUniqueIds(this);
         this.state = {
             login: '',
             pass1: '',
@@ -16,7 +18,9 @@ export default class UpdateUser extends Component {
             isShowMessage: false,
             errTxt: '',
             color: '',
-            name: ''
+            name: '',
+            login_data: [],
+            log_id: ''
         };
     }
 
@@ -24,18 +28,14 @@ export default class UpdateUser extends Component {
         event.preventDefault();
 
         const data = {
-            login: this.state.login,
             pass1: this.state.pass1,
             pass2: this.state.pass2,
             role: this.state.role,
             name: this.state.name,
+            log_id: this.state.log_id
         }
         console.log(data)      
         var err = '';
-        if (data.login === ''){
-            err = err + 'Логин не введен! ';
-            //console.log(err)
-        }
         if (data.pass1 !== data.pass2 || data.pass1 === '' || data.pass2 === ''){
             err = err + 'Пароли не совпадают! ';
         }
@@ -47,7 +47,7 @@ export default class UpdateUser extends Component {
             this.setState({ errTxt: err});
             this.showMessage(0);
         }else{
-            axio.post('/users/new', {data}).then(res => {
+            axio.post('/users/upd', {data}).then(res => {
                 if (res.data === 'SAVE COMPLITE') {
                 this.setState({ errTxt: 'Сохранение успешно'});
                 this.showMessage(1);
@@ -78,12 +78,31 @@ export default class UpdateUser extends Component {
             })
         }
         axio.get('/user/list').then( res => {
-            console.log(res.data)
+            this.setState({
+                login_data: res.data
+            });
         })
     }
 
     showMessage = (val) => {
         this.setState(state => ({ isShowMessage : !state.isShowMessage, color: val}))
+    }
+
+    changeLogin = (e) => {
+        let val = e.target.value;
+        
+        this.state.login_data.forEach( row => {
+            if( row.us_id === parseInt(val)){
+                this.setState({
+                    name: row.us_name,
+                    role: row.us_role
+                })
+            }
+        })
+
+        this.setState({
+            log_id: val
+        })
     }
 
     render () {
@@ -95,7 +114,10 @@ export default class UpdateUser extends Component {
                         </div>
                         <div>
                             <label>Логин: </label>
-                            <input onChange={(e) => {this.setState({ login: e.target.value})}} value={this.state.login}></input>
+                            <select onChange={this.changeLogin} value={this.state.log_id}>
+                                <option value='-1'></option>
+                                {this.state.login_data && this.state.login_data.map( row => <option key={this.nextUniqueId()} value={row.us_id}>{row.us_login}</option>)}     
+                            </select>
                         </div>
                         <div>
                             <label>Пароль: </label>
