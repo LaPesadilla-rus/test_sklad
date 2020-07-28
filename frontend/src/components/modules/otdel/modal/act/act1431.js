@@ -17,6 +17,7 @@ class Act1431 extends Component{
         this.OsnData =[];
         this.loader = false;
         this.state = {
+            eq_data:[],
             osn_sel:'',
             dop_sel: '',
             osn_upload: [],
@@ -24,14 +25,20 @@ class Act1431 extends Component{
             dop_upload: [],
             neof_name: '',
             new_inv_nb: '',
-            all_mas:''
+            all_mas:'',
+            eq_name: '',
+            datas: [],
+            val_eq: '',
+            eq_id_ch: '',
+            values: []
         }
     }
-    componentDidMount () {
+    componentDidMount = ()=> {
         let arr1 = this.props.dop_equip,
             arr2 = this.props.osn_equip,
             arr3 = arr1.concat(arr2),
             arr4 = [];
+            
         arr3.forEach( row =>{
             if(row.bl_otd_id===row.mo_otd_id){
                 arr4.push(row)
@@ -44,11 +51,44 @@ class Act1431 extends Component{
         arr[0] = this.props.row;
         this.setState({dop_upload: arr, new_upload: arr4}, () => {
             this.changeAmount(1, 0)
-        })   
+        //    console.log(this.props.row)
+    })  
+    let arr_eq =[];
+    axio.get('/otdel/filter_data').then 
+    (res=>{
+        res.data.eq_data.map(row => {
+            arr_eq.push(row);
+            console.log(row.eq_id);
+        })
+        this.setState({
+            datas: res.data,
+            eq_data: arr_eq,
+            
+        });
+    }); 
     }
+
+onChanged =(e)=>{
+this.setState({val_eq:e.target.value});
+let arrt = [];
+let val = e.target.value;
+this.state.eq_data.map(id =>{
+    if (parseInt(val)=== id){
+        arrt.push(id);
+   }
+
+    if (arrt.length ===0){
+        this.setState({val_eq:'' })
+    }
+})
+}
 
     onClose = () => {
         this.props.onClose();
+    }
+
+    GetOnChange =(e)=>{
+        this.setState({val_eq: e.target.value})
     }
 
     GetNeofName =(e)=>{
@@ -59,6 +99,15 @@ class Act1431 extends Component{
         this.setState({new_inv_nb: e.target.value})
     }
     onSubmith = async () => {
+    if (this.state.neof_name.length === 0){
+            alert('Введите название основного средства');
+            return 0;
+        }
+        if (this.state.new_inv_nb.length === 0){
+            alert('Введите инвентарный номер');
+            return 0;
+        }
+
         //this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
@@ -70,26 +119,27 @@ class Act1431 extends Component{
             ot_name: this.props.row.ot_name,
             neof_name: this.state.neof_name,
             new_inv_nb: this.state.new_inv_nb,
-            amount: this.props.row.bl_amount,
+            amount: '1',
             mol: this.props.row.bl_mol_id,
             idotd: this.props.row.bl_otd_id,
             dop_sel: this.state.dop_sel, 
-            eqid: this.props.row.bl_id
+            eqid: this.props.row.bl_id,
+            val_eq: this.state.val_eq
+           
             
         }
-        console.log(data)
+        console.log(this.state.val_eq)
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
         const FileDownload = require('js-file-download');
-        console.log(this.props.row)
+     //   console.log(this.props.row)
         await axio.post('/otdel/spisat14_31', {data},  { responseType: 'arraybuffer' }).then(res=>{
-           FileDownload(res.data, '14-31.xlsx');
+          FileDownload(res.data, '14-31.xlsx');
         });
         axio.post('/otdel/New_eq', {data})
-      /*  if (data.amount<=1) {axio.post('/otdel/Delete_used', {data})}*/
-        /*{ axio.post('/otdel/Update_used', {data})}*/
-        console.log(data.amount)
+  
+       // console.log(data.amount)
       // 
         //await this.props.setLoaderHide();
         await this.props.onClose();
@@ -120,8 +170,6 @@ class Act1431 extends Component{
         
     }
  
-
-
     changeAmount = (val, indx) => {
         let arr = this.state.dop_upload;
         arr[indx].sp_amount = val;
@@ -182,6 +230,13 @@ class Act1431 extends Component{
                                     { this.state.dop_upload.map((row, indx )=> <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className='act_line_lab'>
+                        <label   >Наименование основного средства</label>
+                        <select onChange={this.GetOnChange}   value={this.state.val_eq}>
+                                <option placeholder='----' value='-1'></option>
+                                 {this.state.eq_data.map( id => <option key={this.nextUniqueId()} value={id.eq_id}>{id.eq_name}</option>)}
+                           </select> 
                         </div>
                         <div className='act_line_lab'>
                             <label>Было сформировано основное средство: </label>

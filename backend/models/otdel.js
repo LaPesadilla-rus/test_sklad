@@ -296,7 +296,7 @@ exports.spisatInsert = async function (docNum,data, row, us_id, cb) {
                 VALUES ( '`+data.mol_name+`', '`+data.user+`', '`+data.prim+`', `+data.act_id+`, `+docNum+`, 
                 `+us_id+`, `+row.bl_eq_id+`, '`+row.bl_inv_num+`', '`+row.bl_buh_name+`', `+row.sp_amount+`);
      `;
-     //console.log(sql)
+     console.log(sql)
     await pool.query(sql).then (
         (res) => {
             cb('',res);
@@ -349,7 +349,7 @@ exports.filter_data_eq = async function (cb) {
 exports.New_eq = async function(data,cb) {
 var sql = `INSERT INTO public.balance(
          bl_eq_id, bl_amount, bl_inv_num, bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id, bl_buh_name)
-VALUES (`+data.act_id+` , `+data.amount+` , '`+data.new_inv_nb+`', '`+data.user+`' , '`+data.prim+`' , `+data.mol+` , `+data.idotd+` , '`+data.neof_name+`');`
+VALUES (`+data.val_eq+`,  `+data.amount+` , '`+data.new_inv_nb+`', '`+data.user+`' , '`+data.prim+`' , `+data.mol+` , `+data.idotd+` , '`+data.neof_name+`');`
                     console.log(sql)
      pool.query(sql).then (
         (res) => {
@@ -381,7 +381,7 @@ exports.Delete_used = async function(data,cb) {
                     cb('',res);
                 }
             ).catch(function(err) {
-              //  console.log(err)
+                console.log(err)
                 cb(err,'');
             });
         }

@@ -332,6 +332,15 @@ exports.spisat14_31 = async function(req, res) {
         
     });
     for (i = 0; i < data.equip.length; i++){
+     //console.log(data.equip)
+        await Otdel.Update_used(data,data.equip[i], function(err,docs){
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            
+        })
+
         await Otdel.spisatInsert(docNum, data, data.equip[i], req.headers.us_id, function (err, docs) {
             if (err) {
                 console.log(err);
@@ -339,12 +348,13 @@ exports.spisat14_31 = async function(req, res) {
             }
         });
     }
-    /*await Hyst.spisatHystory( data,  function (err, docs) {
+    //----
+    await Hyst.spisatHystory( docNum, data,req.headers.us_id,  function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-    });*/
+    });
 
     Files_14_31.file_14_31( data, req, docNum, res);
 }
@@ -356,7 +366,7 @@ exports.spisat14_33 = async function(req, res) {
             console.log(err);
             return res.sendStatus(500);
         }
-        //console.log(docs.rows[0].max + ' max')
+
         if (docs.rows[0].max == false){
             docNum = docs.rows[0].max;
         }else{
@@ -364,20 +374,28 @@ exports.spisat14_33 = async function(req, res) {
         }
         
     });
-/*    for (i = 0; i < req.body.data.equip.length; i++){
-        await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
+    for (i = 0; i < req.body.data.equip.length; i++){
+       
+      await Otdel.Update_used(data,req.body.data.equip[i], function(err,docs){
+            if (err) {
+                console.log(err);
+                return res.sendStatus(500);
+            }
+            
+        })
+     await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
             if (err) {
                 console.log(err);
                 return res.sendStatus(500);
             }
         });
     }
- /*  await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
+  await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-    });*/
+    });
 
     Files_14_33.file_14_33(data, req, docNum, res);
 }
