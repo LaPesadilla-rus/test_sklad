@@ -37,8 +37,6 @@ class Defect extends Component{
         this.setState({dop_upload: arr }, () => {
             this.changeAmount(1, 0)
         });
-        //console.log(this.props.row)
-        //console.log(this.props.row.bl_inp_date)
         let d = new Date(this.props.row.bl_inp_date)
         let dd = new Date();
         let str = ''
@@ -75,17 +73,12 @@ class Defect extends Component{
         }else if (fDay > 4 || fDay === 1){
             str += ' Дней '
         }
-        //str += 'Год: ' + (dd.getFullYear() - d.getFullYear());
-        //str += ' Месяцы: ' + (dd.getMonth() - d.getMonth());
-        //str += ' Дни: ' + (dd.getDate() - d.getDate());
         let row = this.props.row;
         row.sp_amount = 1;
         this.setState({
             dateRazn: str,
             dateExp: d.getFullYear(),
-            //dop_upload: row,
         })
-        //console.log(str)
     }
 
     onClose = () => {
@@ -97,7 +90,7 @@ class Defect extends Component{
             alert('Основное средство не выбрано');
             return 0;
         }*/
-        //this.props.setLoaderShow();
+        this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
             osn_upload: this.state.osn_upload,
@@ -121,10 +114,10 @@ class Defect extends Component{
             FileDownload(res.data, 'Defect.xlsx');
             //this.props.setMessageShow('Списание успешно',2);
         });
-        //await this.props.setLoaderHide();
-        //await this.props.onClose();
-        //await this.props.modalActClose();
-        //await this.props.onReboot();
+        await this.props.setLoaderHide();
+        await this.props.onClose();
+        await this.props.modalActClose();
+        await this.props.onReboot();
         
     }
 

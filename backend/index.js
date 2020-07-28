@@ -130,6 +130,8 @@ app.post('/zurnal/postupl', zurnalController.postupl);
 app.post('/zurnal/vipiska', zurnalController.vipiska);
 app.post('/zurnal/spisano', zurnalController.spisano);
 app.post('/zurnal/moving', zurnalController.moving);
+
+app.post('/zurnal/downloadFile', zurnalController.download);
 //----------------------------------------------
 
 app.listen(4000, function() {

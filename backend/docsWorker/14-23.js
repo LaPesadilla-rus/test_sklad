@@ -98,9 +98,10 @@ exports.file_14_23 = function (data, req, docNum, res) {
             ws.getCell(n,7).alignment = alligment;
             n++;
         }
-        
-        workbook.xlsx.writeFile('./docs/test10.xlsx').then( () => {
-                res.download('./docs/test10.xlsx')
+
+        let fileName = '14-23_' + docNum + '.xlsx' 
+        workbook.xlsx.writeFile('./docs/archive/14-23/'+fileName).then( () => {
+                res.download('./docs/archive/14-23/'+fileName)
             }
         );
     });

@@ -157,7 +157,7 @@ exports.spisano = function(data, cb) {
         sql_where = '';
     let sql = `SELECT lo.*,to_char(lo.lb_date, 'DD.MM.YYYY') as lo_date, (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as equip_name,
                 --mo.mo_name, otd.ot_name,
-                us.us_name, ac.ac_name
+                us.us_name, ac.ac_name, ac.ac_id
                 FROM logbook lo  
 
                 inner join users us
@@ -278,4 +278,8 @@ exports.moving = function(data, cb) {
     , (err,res)=>{
         cb(err,res);
     });
+}
+
+exports.download = async function(data, cb) {
+    
 }

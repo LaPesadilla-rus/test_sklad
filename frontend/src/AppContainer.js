@@ -74,13 +74,11 @@ class AppContainer extends React.Component {
               <div className="back">
               {this.props.loader_status && <Loader/>}
               {this.props.message_state && <ModalInfo/>}
-                <div className="App">
-                    {this.props.isAuthorize ?  <div className="App">
-                        <Menu />
-                        <Routs {...this.props}/>
-                    </div> : <div className="App"><AuthContainer/></div>}
+                {this.props.isAuthorize ?  <div className="App">
+                                                <Menu />
+                                                {<Routs {...this.props}/>}
+                                            </div> : <div className="App"><AuthContainer/></div>}
                   
-                </div> 
               </div>
             </BrowserRouter>
           );

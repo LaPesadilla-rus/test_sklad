@@ -59,7 +59,6 @@ export default class Zurnal extends Component{
             contrNum: this.state.contrNum,
         }
         axio.post('/zurnal/vipiska', {data}).then(res=>{
-            console.log(res.data)
             this.setState({
                 data: res.data
             })

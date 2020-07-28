@@ -62,3 +62,21 @@ exports.moving = function(req,res) {
         res.send(docs.rows);
     })
 }
+
+exports.download = function(req,res) {
+    let data = req.body.data;
+    let fileName = '';
+    if (data.ac_id === 7){
+        fileName = 'defect';
+    }else{
+        fileName = data.ac_name;
+    }
+    res.download('./docs/archive/'+ fileName + '/' + fileName + '_' + data.docNum + '.xlsx');
+    /*Zurnal.download(req.body.data,function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        //res.send(docs.rows);
+    })*/
+}
