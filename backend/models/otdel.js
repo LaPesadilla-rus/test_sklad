@@ -373,16 +373,29 @@ exports.Delete_used = async function(data,cb) {
         });
     }
 
-    exports.Update_used = async function(data,row, cb) {
-        var sql = `UPDATE  public.balance SET bl_amount=bl_amount-`+row.sp_amount+`  WHERE bl_id =`+data.eqid+``
-        console.log(sql)
-             pool.query(sql).then (
-                (res) => {
-                    cb('',res);
-                }
-            ).catch(function(err) {
-                console.log(err)
-                cb(err,'');
-            });
-        }
+exports.Update_used = async function(data,row, cb) {
+    var sql = `UPDATE  public.balance SET bl_amount=bl_amount-`+row.sp_amount+`  WHERE bl_id =`+data.eqid+``
+    console.log(sql)
+            pool.query(sql).then (
+            (res) => {
+                cb('',res);
+            }
+        ).catch(function(err) {
+            console.log(err)
+            cb(err,'');
+        });
+    }
+
+exports.backToSklad = async function(data,row, cb) {
+    var sql = `UPDATE  public.balance SET bl_amount=bl_amount-`+row.sp_amount+`  WHERE bl_id =`+data.eqid+``
+    console.log(sql)
+            pool.query(sql).then (
+            (res) => {
+                cb('',res);
+            }
+        ).catch(function(err) {
+            console.log(err)
+            cb(err,'');
+        });
+    }
     

@@ -21,6 +21,7 @@
 .act_table td {
     border: 1px solid black;
     background-color: rgb(137, 168, 201);
+    padding: 1px;
 }
 
 .act_line_div{
@@ -46,6 +47,7 @@
 
 .act_table textarea {
     height: 250px;
+    width: calc(100% - 10px);
 }
 
 .act_container span {

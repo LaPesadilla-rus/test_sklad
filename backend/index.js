@@ -123,6 +123,7 @@ app.post('/otdel/New_eq', otdelController.New_eq);
 app.post('/otdel/Update_used', otdelController.Update_used);
 app.post('/otdel/Delete_used', otdelController.Delete_used);
 app.post('/otdel/spisatDefect', otdelController.spisatDefect);
+app.post('/otdel/backToSklad', otdelController.backToSklad);
 //--------------------------------
 
 ///---------------------------------------------
@@ -130,6 +131,8 @@ app.post('/zurnal/postupl', zurnalController.postupl);
 app.post('/zurnal/vipiska', zurnalController.vipiska);
 app.post('/zurnal/spisano', zurnalController.spisano);
 app.post('/zurnal/moving', zurnalController.moving);
+
+app.post('/zurnal/downloadFile', zurnalController.download);
 //----------------------------------------------
 
 app.listen(4000, function() {
