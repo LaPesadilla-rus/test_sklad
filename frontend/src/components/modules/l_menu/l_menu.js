@@ -34,7 +34,7 @@ export default class Menu extends Component{
         return (
             <div ref={this.wrapperRef} className="left_menu_back">
                 {<div ref={this.vvRef} className="left_menu">
-                        <p>Меню</p>
+                        <p>{(this.state.show ===false)? 'Меню' : null}</p>
                         <NavLink className='button_block' activeClassName="act" to="/sklad/all">
                             <MdAssignment />
                             <label>{(this.state.show ===false)? 'Склад': ''}</label>

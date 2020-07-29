@@ -27,7 +27,7 @@ exports.all = function (cb) {
                     inner join units_spr un
                     on un.un_id = st.st_un_id
 
-                    order by st.st_id desc
+                    order by st.st_id
                 `
     , (err,res)=>{
         cb(err, res); 
@@ -153,9 +153,12 @@ exports.kat2 = function(cb) {
 
 exports.equip_save = function(req,cb) {
     if(!req.body.data) return res.sendStatus(400);
+    if(req.body.data.marka === ''){
+        req.body.data.marka = 0
+    }
     var sql = `INSERT INTO public.equip_spr (eq_kat_id, eq_mark_id, eq_type_id, eq_name)
     VALUES ( `+req.body.data.kat+`,`+req.body.data.marka+`,`+req.body.data.type+`,'`+req.body.data.name+`');`;
-    console.log(sql); 
+    //console.log(sql); 
     pool.query(sql
     , (err,res)=>{
         if (err !== undefined) {

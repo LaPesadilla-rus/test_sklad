@@ -6,6 +6,7 @@ export default class OtdEquipsDisabled extends Component{
     render() {
         return (
             <tr className='button button_gray otdel_grow act_disable_button'>
+                <td></td>
                 <td>{this.props.mol && this.props.mol}</td>
                 <td>{this.props.row.bl_inv_num}</td>
                 <td>{this.props.row.equip_name}</td>

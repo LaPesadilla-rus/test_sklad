@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './data_table.css';
 
-
+import { MdBuild, MdSettings, MdCallToAction} from "react-icons/md";
 
 
 /*const Data_row = (props) => {
@@ -32,15 +32,19 @@ export default class DataRow extends Component{
     render() {
         //console.log(this.props.row)
         var color_sreds= false;
-        var color_kart = false
+        var color_kart = false;
+        let icon = <MdBuild/>;
         if (this.props.row.kat_name === 'Основные средства'){
             color_sreds = true;
+            icon = <MdSettings/>
         }
         if (this.props.row.kat_name === 'Картриджи'){
             color_kart = true;
+            icon = <MdCallToAction/>
         }
         return (
                 <tr onClick={this.editEquip} className= {'sklad_table_row '+(color_sreds ? 'kat_osn' : '') + (color_kart ? 'kat_kartr' : '' )}>
+                    <td className='sklad_table_cell'>{icon}</td>
                     <td className='sklad_table_cell'>{this.props.row.kat_name}</td> 
                     <td className='sklad_table_cell'>{this.props.row.st_inv_num}</td> 
                     <td className='sklad_table_cell cell_left'>{this.props.row.equip_name}</td>

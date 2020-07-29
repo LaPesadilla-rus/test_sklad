@@ -20,14 +20,15 @@ app.use(express.json());
 app.use( async function (req, res, next) {
     var sql = '';
     var data = [];
-    //console.log()
+    //console.log(req.originalUrl + ' ' + ' USER_ID: ' + req.headers.us_id)
     sql = `SELECT * FROM users WHERE us_id = `+req.headers.us_id+` and us_rt = '`+req.headers.rt+`'`;
     //console.log(sql)
-    await pool.query(sql).then (
+    await pool.query(sql).then(
         (res) => {
             data = res.rows;
         }
-    ).catch(function(err) {
+    ).catch( (err) => {
+        //console.log(err);
     });
     if (data.length > 0 || req.originalUrl === '/auth/login' || req.originalUrl === '/auth/out' || req.originalUrl === '/auth/logCheck'){
         next()

@@ -376,10 +376,10 @@ exports.Delete_used = async function(data,cb) {
 exports.Update_used = async function(data,row, cb) {
     var sql = `UPDATE  public.balance SET bl_amount=bl_amount-`+row.sp_amount+`  WHERE bl_id =`+data.eqid+``
     console.log(sql)
-            pool.query(sql).then (
-            (res) => {
-                cb('',res);
-            }
+    pool.query(sql).then (
+    (res) => {
+        cb('',res);
+    }
         ).catch(function(err) {
             console.log(err)
             cb(err,'');
@@ -389,13 +389,26 @@ exports.Update_used = async function(data,row, cb) {
 exports.backToSklad = async function(data,row, cb) {
     var sql = `UPDATE  public.balance SET bl_amount=bl_amount-`+row.sp_amount+`  WHERE bl_id =`+data.eqid+``
     console.log(sql)
-            pool.query(sql).then (
-            (res) => {
-                cb('',res);
-            }
+    pool.query(sql).then (
+    (res) => {
+        cb('',res);
+    }
         ).catch(function(err) {
             console.log(err)
             cb(err,'');
         });
+}
+
+exports.defectStatUpd = async function(data, cb) {
+    var sql = `UPDATE  public.balance SET bl_spisat = 1  WHERE bl_id = `+data.dop_upload[0].bl_id+``
+    console.log(sql)
+    pool.query(sql).then (
+    (res) => {
+        cb('',res);
     }
+        ).catch(function(err) {
+            console.log(err)
+            cb(err,'');
+    });
+}
     

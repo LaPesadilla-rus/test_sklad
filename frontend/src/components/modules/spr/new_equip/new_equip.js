@@ -182,8 +182,11 @@ export default class New_equip extends Component {
         if (data.type === ''){
             err = err + 'Тип оборудования не выбран! ';
         }
-        if (data.marka === ''){
+        /*if (data.marka === ''){
             err = err + 'Производитель не выбран! ';
+        }*/
+        if (data.marka === '-1'){
+            data.marka = '0';
         }
         if (data.name === ''){
             err = err + 'Модель не заполнена! ';
