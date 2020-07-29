@@ -123,6 +123,7 @@ app.post('/otdel/New_eq', otdelController.New_eq);
 app.post('/otdel/Update_used', otdelController.Update_used);
 app.post('/otdel/Delete_used', otdelController.Delete_used);
 app.post('/otdel/spisatDefect', otdelController.spisatDefect);
+app.post('/otdel/backToSklad', otdelController.backToSklad);
 //--------------------------------
 
 ///---------------------------------------------

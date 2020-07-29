@@ -203,16 +203,12 @@ class Defect extends Component{
                                     <tr>
                                         <th>Дефекты и повреждения</th>
                                         <th>Заключение комиссии о целесообразности ремонта</th>
-                                        <th>Срок устранения дефектов</th>
-                                        <th>Отвественный за выполнение ремонта</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td><textarea onChange={(e) => {this.setState({ defTxt: e.target.value})}} value={this.state.defTxt}></textarea></td>
                                         <td><textarea onChange={(e) => { this.setState({ zakTxt: e.target.value})}} value={this.state.zakTxt}></textarea></td>
-                                        <td><input type='date'></input></td>
-                                        <td><input></input></td>
                                     </tr>
                                 </tbody>
                             </table>

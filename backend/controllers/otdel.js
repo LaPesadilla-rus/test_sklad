@@ -452,3 +452,13 @@ exports.spisatDefect = async function(req, res) {
     
     Files_defect.file_defect(data, req, docNum, res)
 }
+
+exports.backToSklad = async function(req, res) {
+    await Otdel.backToSklad(req.body.data, function(err,docs){
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs);
+    })
+}
