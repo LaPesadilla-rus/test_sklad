@@ -17,6 +17,7 @@ class Act1433 extends Component{
         this.OsnData =[];
         this.loader = false;
         this.state = {
+            eq_data:[],
             osn_sel:'',
             dop_sel: '',
             osn_upload: [],
@@ -24,7 +25,12 @@ class Act1433 extends Component{
             dop_upload: [],
             neof_name: '',
             new_inv_nb: '',
-            all_mas:[]
+            all_mas:[],
+            eq_name: '',
+            datas: [],
+            val_eq: '',
+            eq_id_chs: '',
+            values: []
         }
     }
     componentDidMount () {
@@ -34,7 +40,40 @@ class Act1433 extends Component{
         arr[0] = this.props.row;
         this.setState({dop_upload: arr }, () => {
             this.changeAmount(1, 0)
-        })   
+        })  
+        
+        let arr_eq =[];
+        axio.get('/otdel/filter_data').then 
+        (res=>{
+            res.data.eq_data.map(row => {
+                arr_eq.push(row);
+               // console.log(row.eq_id);
+            })
+            this.setState({
+                datas: res.data,
+                eq_data: arr_eq,
+                
+            });
+        }); 
+    }
+
+    
+    onChanged =(e)=>{
+    this.setState({val_eq:e.target.value});
+    let arrt = [];
+    let val = e.target.value;
+    this.state.eq_data.map(id =>{
+        if (parseInt(val)=== id){
+            arrt.push(id);
+       }
+    
+        if (arrt.length ===0){
+            this.setState({val_eq:'' })
+        }
+    })
+    }
+    GetOnChanges =(e)=>{
+        this.setState({val_eq: e.target.value})
     }
 
     onClose = () => {
@@ -49,6 +88,15 @@ class Act1433 extends Component{
         this.setState({new_inv_nb: e.target.value})
     }
     onSubmith = async () => {
+        
+        if (this.state.neof_name.length === 0){
+            alert('Введите название основного средства');
+            return 0;
+        }
+        if (this.state.new_inv_nb.length === 0){
+            alert('Введите инвентарный номер');
+            return 0;
+        }
         //this.props.setLoaderShow();
         var data = {
             dop_upload: this.state.dop_upload,
@@ -63,7 +111,8 @@ class Act1433 extends Component{
             amount: this.props.row.bl_amount,
             mol: this.props.row.bl_mol_id,
             idotd: this.props.row.bl_otd_id,
-            eqid: this.props.row.bl_id
+            eqid: this.props.row.bl_id,
+            val_eq: this.state.val_eq
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
@@ -73,9 +122,7 @@ class Act1433 extends Component{
         await axio.post('/otdel/spisat14_33', {data},  { responseType: 'arraybuffer' }).then(res=>{
           FileDownload(res.data, '14-33.xlsx');
         });
-    //    axio.post('/otdel/New_eq', {data})
-      //  axio.post('/otdel/Delete_used', {data})
-        //await this.props.setLoaderHide();
+        axio.post('/otdel/New_eq', {data})
         await this.props.onClose();
         await this.props.modalActClose();
         await this.props.onReboot();
@@ -109,6 +156,21 @@ class Act1433 extends Component{
             dop_upload: arr
         })
     }
+
+    delRows = (data) => {
+        var arr = this.state.dop_upload;
+        for (var i = 0; i < arr.length; i++){//console.log(arr)
+         {
+            if (arr[i].bl_id === data.bl_id)
+            arr.splice(i, 1);
+                
+            }
+        }this.setState({
+            dop_upload: arr
+        })
+       }
+
+
     render() {
         //var indx = 1;
         return (
@@ -159,9 +221,16 @@ class Act1433 extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map((row, indx )=> <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
+                                    { this.state.dop_upload.map((row, indx )=> <Column key={this.nextUniqueId()} delRows={this.delRows} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className='act_line_lab'>
+                        <label >Наименование основного средства</label>
+                        <select className='act_line_sel' onChange={this.GetOnChanges}  value={this.state.val_eq}>
+                        <option placeholder='----' value='-1'></option>    
+                        {this.state.eq_data.map( id => <option key={this.nextUniqueId()} value={id.eq_id}>{id.eq_name}</option>)}
+                           </select> 
                         </div>
                         <div className='act_line_lab'>
                             <label>Было сформировано основное средство: </label>

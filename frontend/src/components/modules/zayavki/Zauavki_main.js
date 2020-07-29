@@ -45,7 +45,7 @@ Look = (arr) => {
         <div className='Table_pol'>
             <div className='back'>
                     <button className='buttons' onClick={this.show}>Создать</button>
-                    <button className='buttons' onClick={this.onReboot} >Кнопка стратегического значения</button>
+                    <button className='buttons' onClick={this.onReboot} ></button>
             </div>
                 <div className='ForB'>
                 <table className='Table' border='1' >

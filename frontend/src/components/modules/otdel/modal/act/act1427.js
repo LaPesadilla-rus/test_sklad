@@ -112,6 +112,20 @@ class Act1427 extends Component{
         })
     }
 
+    delRows = (data) => {
+        var arr = this.state.dop_upload;
+        for (var i = 0; i < arr.length; i++){//console.log(arr)
+         {
+            if (arr[i].bl_id === data.bl_id)
+            arr.splice(i, 1);
+                
+            }
+        }this.setState({
+            dop_upload: arr
+        })
+       }
+
+
     render() {
         return (
             <div className='background_modal background_modal_pos'>
@@ -185,7 +199,7 @@ class Act1427 extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map((row, indx) => <Column1427 key={this.nextUniqueId()} data={row} indx={indx} />)}
+                                    { this.state.dop_upload.map((row, indx) => <Column1427 key={this.nextUniqueId()}  data={row} indx={indx} />)}
                                 </tbody>
                             </table>
                         </div>
@@ -208,7 +222,7 @@ class Act1427 extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map((row, indx) => <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
+                                    { this.state.dop_upload.map((row, indx) => <Column key={this.nextUniqueId()} data={row} delRows={this.delRows} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
                         </div>

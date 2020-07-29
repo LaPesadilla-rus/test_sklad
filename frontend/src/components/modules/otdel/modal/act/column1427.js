@@ -3,6 +3,7 @@ import './act.css';
 
 export default class Column1427 extends Component{
 
+    
     render() {
         console.log(this.props)
         return (
