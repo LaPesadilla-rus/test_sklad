@@ -33,7 +33,7 @@ export default class Menu extends Component{
     render (){
         return (
             <div ref={this.wrapperRef} className="left_menu_back">
-                <div ref={this.vvRef} className="left_menu">
+                {<div ref={this.vvRef} className="left_menu">
                         <p>Меню</p>
                         <NavLink className='button_block' activeClassName="act" to="/sklad/all">
                             <MdAssignment />
@@ -57,7 +57,7 @@ export default class Menu extends Component{
                         <div className='button_block down_button_block' onClick={() => this.onClick()} >
                             <MdCompareArrows/><label>{(this.state.show ===false)?'Свернуть':''}</label>
                         </div>
-                </div>
+                </div>}
             </div>
         );
     }

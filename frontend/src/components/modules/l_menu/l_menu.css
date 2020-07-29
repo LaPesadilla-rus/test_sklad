@@ -11,23 +11,19 @@
 }
 
 .left_menu_back.is-open{
-    /*margin-left: -195px;*/
     width:50px;
     transition: all 1s;
 }
 .left_menu.is-open{
-    /*margin-left: -195px;*/
     width:50px;
     transition: all 1s;
 }
 
 .left_menu_back{
     background-color: #692828;
-    min-width: 210px;
-    height: 100%;
+    width: 210px;
+    min-height: 100vh;
     transition: all 1s;
-    display: flex;
-    /*display: flex;*/
 }
 
 
