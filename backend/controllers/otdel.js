@@ -349,7 +349,6 @@ exports.spisat14_31 = async function(req, res) {
             }
         });
     }
-    //----
     await Hyst.spisatHystory( docNum, data,req.headers.us_id,  function (err, docs) {
         if (err) {
             console.log(err);

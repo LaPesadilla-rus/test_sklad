@@ -32,6 +32,7 @@ class Act1431 extends Component{
             eq_id_ch: '',
             values: []
         }
+        this.delRows = this.delRows.bind(this)
     }
     componentDidMount = ()=> {
         let arr1 = this.props.dop_equip,
@@ -58,7 +59,7 @@ class Act1431 extends Component{
     (res=>{
         res.data.eq_data.map(row => {
             arr_eq.push(row);
-            console.log(row.eq_id);
+         //   console.log(row.eq_id);
         })
         this.setState({
             datas: res.data,
@@ -82,11 +83,10 @@ this.state.eq_data.map(id =>{
     }
 })
 }
-
     onClose = () => {
         this.props.onClose();
     }
-
+   
     GetOnChange =(e)=>{
         this.setState({val_eq: e.target.value})
     }
@@ -165,20 +165,32 @@ this.state.eq_data.map(id =>{
         }, () => {
             this.changeAmount(1, l++)
         });
-        
         this.dopUpload.push(arr);
-        
     }
- 
+
     changeAmount = (val, indx) => {
         let arr = this.state.dop_upload;
         arr[indx].sp_amount = val;
         this.setState({
             dop_upload: arr
         })
+     console.log(this.state.dop_upload)
     }
+    delRows = (data) => {
+        var arr = this.state.dop_upload;
+        for (var i = 0; i < arr.length; i++){//console.log(arr)
+         {
+            if (arr[i].bl_id === data.bl_id)
+            arr.splice(i, 1);
+                
+            }
+        }this.setState({
+            dop_upload: arr
+        })
+       }
+
     render() {
-        //var indx = 1;
+      //  var indx = 1;
         return (
             <div className='background_modal background_modal_pos'>
             <div className="modal modal_pos">
@@ -213,6 +225,7 @@ this.state.eq_data.map(id =>{
                             <select onChange={this.changeDop} value={this.state.dop_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.state.new_upload.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
+                               {console.log(this.state.dop_upload)} 
                             </select>
                         </div>
                         <div className='combo_div'>
@@ -224,18 +237,19 @@ this.state.eq_data.map(id =>{
                                         <th>Инвентарный номер</th>
                                         <th>Единица измерения</th>
                                         <th>Количество</th>
+                                        <th>Количество списываемого оборудования</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { this.state.dop_upload.map((row, indx )=> <Column key={this.nextUniqueId()} data={row} indx={indx} changeAmount={this.changeAmount} />)}
+                                    { this.state.dop_upload.map((row, indx )=> <Column key={this.nextUniqueId()} delRows={this.delRows} data={row} indx={indx} changeAmount={this.changeAmount} />)}
                                 </tbody>
                             </table>
                         </div>
                         <div className='act_line_lab'>
-                        <label   >Наименование основного средства</label>
-                        <select onChange={this.GetOnChange}   value={this.state.val_eq}>
+                        <label >Наименование основного средства</label>
+                        <select className='act_line_sel' onChange={this.GetOnChange}   value={this.state.val_eq}>
                                 <option placeholder='----' value='-1'></option>
-                                 {this.state.eq_data.map( id => <option key={this.nextUniqueId()} value={id.eq_id}>{id.eq_name}</option>)}
+                                 {this.state.eq_data.map( id => <option key={this.nextUniqueId()}  value={id.eq_id}>{id.eq_name}</option>)}
                            </select> 
                         </div>
                         <div className='act_line_lab'>

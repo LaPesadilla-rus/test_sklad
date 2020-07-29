@@ -348,8 +348,8 @@ exports.filter_data_eq = async function (cb) {
 }
 exports.New_eq = async function(data,cb) {
 var sql = `INSERT INTO public.balance(
-         bl_eq_id, bl_amount, bl_inv_num, bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id, bl_buh_name)
-VALUES (`+data.val_eq+`,  `+data.amount+` , '`+data.new_inv_nb+`', '`+data.user+`' , '`+data.prim+`' , `+data.mol+` , `+data.idotd+` , '`+data.neof_name+`');`
+         bl_un_id,bl_eq_id, bl_amount, bl_inv_num, bl_inp_usr, bl_prim, bl_mol_id, bl_otd_id, bl_buh_name)
+VALUES (0,`+data.val_eq+`,  `+data.amount+` , '`+data.new_inv_nb+`', '`+data.user+`' , '`+data.prim+`' , `+data.mol+` , `+data.idotd+` , '`+data.neof_name+`');`
                     console.log(sql)
      pool.query(sql).then (
         (res) => {

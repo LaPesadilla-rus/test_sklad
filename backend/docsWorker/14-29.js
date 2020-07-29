@@ -155,9 +155,9 @@ exports.file_14_29 = function (data, req, docNum, res) {
             ws.getCell(n,7).alignment = alligment;
             n++;
         }
-        
-        workbook.xlsx.writeFile('./docs/test30.xlsx').then(function(){
-            res.download('./docs/test30.xlsx');
+        let fileName = '14-29_' + docNum + '.xlsx'
+        workbook.xlsx.writeFile('./docs/archive/14-29/' + fileName).then(function(){
+            res.download('./docs/archive/14-29/' + fileName);
         });
     });
 }

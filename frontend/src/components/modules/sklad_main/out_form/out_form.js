@@ -297,7 +297,7 @@ class OutForm extends Component{
         });
         if (row.st_id === this.err_id){
             this.err_id = '';
-        }
+        }console.log(arr.equip.data)
         
     }
 

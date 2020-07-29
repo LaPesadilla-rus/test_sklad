@@ -9,6 +9,11 @@ export default class Column extends Component{
         }
     }
 
+    DeleteClick =()=>{
+        this.props.delRows(this.props.data);
+        console.log(this.props.data.bl_id)
+    }
+
     onChange = (e) => {
         let val = parseInt(e.target.value);
         if (val <= this.props.data.bl_amount && val >= 1){
@@ -19,7 +24,7 @@ export default class Column extends Component{
         }
        
     }
-
+   
     render() {
         return (
             <React.Fragment>
@@ -30,6 +35,7 @@ export default class Column extends Component{
                     <td>{this.props.data.un_name}</td>
                     <td>{this.props.data.bl_amount}</td>
                     <td><input type='number' onChange={this.onChange} value={this.state.amount}></input></td>
+                    <td><button className='Delete' onClick={this.DeleteClick}>X</button></td>
                 </tr>
             </React.Fragment>
         );

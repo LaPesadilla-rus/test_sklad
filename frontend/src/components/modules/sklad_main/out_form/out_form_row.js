@@ -4,7 +4,7 @@ import './out_form.css';
 export default class OutFormRow extends Component{
 
     delClick = () => {
-        this.props.delRow(this.props.row);
+        this.props.delRow(this.props);
     }
 
     render() {

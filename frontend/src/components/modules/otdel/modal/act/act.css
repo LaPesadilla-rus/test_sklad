@@ -55,3 +55,17 @@
     border-radius: 2px;
     background-color: #f1f1f1;
 }
+.act_line_sel{
+    margin-left: 10px;  
+}
+
+.Delete{
+    width: 50px;
+    height: 20px;
+    background-color: red;
+    border-color: rgb(117, 30, 30);
+    border-radius: 10%;
+    color: white;
+    margin-bottom: 2px;
+}
+
