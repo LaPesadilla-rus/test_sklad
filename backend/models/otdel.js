@@ -398,4 +398,15 @@ exports.backToSklad = async function(data,row, cb) {
             cb(err,'');
         });
     }
-    
+
+ exports.ShowUserOtd =  function(cb){
+    var sql = `SELECT * FROM users where us_role=10 `
+    console.log(sql)
+     pool.query(sql).then (
+        (res) => {
+            cb('',res);
+        }
+    ).catch(function(err) {
+        cb(err,'');
+    });
+}

@@ -15,6 +15,10 @@ exports.file_14_23 = function (data, req, docNum, res) {
     var workbook = new Excel.Workbook();
     workbook.xlsx.readFile('./docs/14-23_mk3.xlsx').then(function(){
         var ws = workbook.getWorksheet(1);
+        n=13
+        ws.getCell(n,2).value = req.body.data.us;
+        n=15
+        ws.getCell(n,2).value = req.body.data.us_s;
         var n = 20;
         ws.getCell(11,6).value = req.body.data.mol_name;
         ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;

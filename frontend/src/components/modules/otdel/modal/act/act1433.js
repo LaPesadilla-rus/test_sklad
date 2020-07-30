@@ -16,6 +16,8 @@ class Act1433 extends Component{
         this.dopData = [];
         this.OsnData =[];
         this.loader = false;
+        this.us ='';
+        this.us_s='';
         this.state = {
             eq_data:[],
             osn_sel:'',
@@ -30,7 +32,13 @@ class Act1433 extends Component{
             datas: [],
             val_eq: '',
             eq_id_chs: '',
-            values: []
+            values: [],
+            users_otd: [],
+            user_arr:[],
+            users:[],
+            val_user:'',
+            val_us_s:'',
+            used_sotr:[]
         }
     }
     componentDidMount () {
@@ -55,9 +63,46 @@ class Act1433 extends Component{
                 
             });
         }); 
+
+        let usarr =[];
+        axio.get('/otdel/ShowUserOtd').then 
+        (res=>{ 
+            res.data.map(row => { 
+                usarr.push(row);
+                //console.log(usarr);
+            })
+            this.setState({
+                user_arr: res.data,
+                users: usarr,
+                used_sotr:usarr
+            });
+        }); 
+
+    }
+     
+    SelectUser=(e)=>{
+        let arUs=[];
+        let val =e.target.value;
+        this.state.users.map(row =>{
+            if (parseInt(val)=== row.us_id){
+                this.us=row.us_name+"   "+row.us_dolsn
+                arUs.push(row)
+           }
+        })  
+    }
+    
+    SelectedUser=(e)=>{
+        let usar=[]
+        let val =e.target.value;
+        this.state.users.map(row =>{
+            if (parseInt(val)=== row.us_id){
+                this.us_s=row.us_name+"   "+row.us_dolsn
+                usar.push(row)
+            }
+        })     
+         
     }
 
-    
     onChanged =(e)=>{
     this.setState({val_eq:e.target.value});
     let arrt = [];
@@ -78,6 +123,15 @@ class Act1433 extends Component{
 
     onClose = () => {
         this.props.onClose();
+    }
+
+    GetSelect =(e)=>{
+        this.SelectUser(e);
+        this.setState({val_user: e.target.value})
+    }
+    GetSelected =(e)=>{
+        this.SelectedUser(e);
+        this.setState({val_us_s: e.target.value})
     }
 
     GetNeofName =(e)=>{
@@ -112,17 +166,21 @@ class Act1433 extends Component{
             mol: this.props.row.bl_mol_id,
             idotd: this.props.row.bl_otd_id,
             eqid: this.props.row.bl_id,
-            val_eq: this.state.val_eq
+            val_eq: this.state.val_eq,
+            val_user:this.props.val_user,
+            us:this.us,
+            us_s:this.us_s
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
+        console.log(this.props)
         const FileDownload = require('js-file-download');
        // console.log(data)
-        await axio.post('/otdel/spisat14_33', {data},  { responseType: 'arraybuffer' }).then(res=>{
-          FileDownload(res.data, '14-33.xlsx');
-        });
-        axio.post('/otdel/New_eq', {data})
+         await axio.post('/otdel/spisat14_33', {data},  { responseType: 'arraybuffer' }).then(res=>{
+         FileDownload(res.data, '14-33.xlsx');
+      });
+      //  axio.post('/otdel/New_eq', {data})
         await this.props.onClose();
         await this.props.modalActClose();
         await this.props.onReboot();
@@ -159,7 +217,7 @@ class Act1433 extends Component{
 
     delRows = (data) => {
         var arr = this.state.dop_upload;
-        for (var i = 0; i < arr.length; i++){//console.log(arr)
+        for (var i = 1; i < arr.length; i++){//console.log(arr)
          {
             if (arr[i].bl_id === data.bl_id)
             arr.splice(i, 1);
@@ -188,7 +246,10 @@ class Act1433 extends Component{
                         </div>
                         <div className='combo_div'>
                             <label>1: </label>
-                            <label className='act_container_text'>_____</label>
+                            <select onChange={this.GetSelect} value={this.state.val_user}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.state.users.map( id => <option key={this.nextUniqueId()} value={id.us_id}>{id.us_name + id.us_dolsn}</option>)} 
+                            </select>
                         </div>
                         <div className='combo_div'>
                             <label>2: </label>
@@ -196,7 +257,10 @@ class Act1433 extends Component{
                         </div>
                         <div className='combo_div'>
                             <label>3: </label>
-                            <label className='act_container_text'>_____</label>
+                            <select onChange={this.GetSelected} value={this.state.val_us_s}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.state.users.map( id => <option key={this.nextUniqueId()} value={id.us_id}>{id.us_name + id.us_dolsn}</option>)}
+                            </select>
                         </div>
                         <div className='combo_div'>
                             <label>4: </label>

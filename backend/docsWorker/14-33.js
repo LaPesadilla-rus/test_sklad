@@ -15,6 +15,12 @@ exports.file_14_33 = function (data, req, docNum, res) {
     var workbook = new Excel.Workbook();
     workbook.xlsx.readFile('./docs/14-33.xlsx').then(function(){
         var ws = workbook.getWorksheet(1);
+        n=13
+        ws.mergeCells(n,2,n,7);
+        ws.getCell(n,2).value = req.body.data.us;
+        n=15
+        ws.mergeCells(n,2,n,7);
+        ws.getCell(n,2).value = req.body.data.us_s;
         console.log(req.body.data)
         var n = 20;
         ws.getCell(11,10).value = req.body.data.ot_name;

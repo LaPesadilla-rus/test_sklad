@@ -109,6 +109,8 @@ app.post('/zauvki/delete_zauvka',zauvkiController.delete_zauvka)
 app.get('/otdel/data', otdelController.otd_data);
 app.get('/otdel/all2', otdelController.all2);
 app.get('/otdel/filter_data', otdelController.filter_data);
+app.get('/otdel/ShowUserOtd', otdelController.ShowUserOtd);
+
 
 app.post('/otdel/moveEQ', otdelController.moveEQ);
 app.post('/otdel/spisat14_23', otdelController.spisat14_23);

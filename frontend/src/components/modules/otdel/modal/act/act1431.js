@@ -16,6 +16,8 @@ class Act1431 extends Component{
         this.dopData = [];
         this.OsnData =[];
         this.loader = false;
+        this.us ='';
+        this.us_s='';
         this.state = {
             eq_data:[],
             osn_sel:'',
@@ -30,9 +32,14 @@ class Act1431 extends Component{
             datas: [],
             val_eq: '',
             eq_id_ch: '',
-            values: []
+            values: [],
+            users_otd: [],
+            user_arr:[],
+            users:[],
+            val_user:'',
+            val_us_s:'',
+            used_sotr:[]
         }
-        this.delRows = this.delRows.bind(this)
     }
     componentDidMount = ()=> {
         let arr1 = this.props.dop_equip,
@@ -54,20 +61,53 @@ class Act1431 extends Component{
             this.changeAmount(1, 0)
         //    console.log(this.props.row)
     })  
+    let usarr =[];
+    axio.get('/otdel/ShowUserOtd').then 
+    (res=>{ 
+        console.log(res.data)
+        res.data.map(row => { 
+            usarr.push(row);
+            //console.log(usarr);
+        })
+        this.setState({
+            user_arr: res.data,
+            users: usarr,
+            used_sotr:usarr
+        });
+    }); 
     let arr_eq =[];
     axio.get('/otdel/filter_data').then 
-    (res=>{
-        res.data.eq_data.map(row => {
-            arr_eq.push(row);
-         //   console.log(row.eq_id);
+    (res=>{console.log(res.data.eq_data)
+        res.data.eq_data.map(row => { arr_eq.push(row);
         })
         this.setState({
             datas: res.data,
             eq_data: arr_eq,
-            
         });
     }); 
-    }
+}
+SelectUser=(e)=>{
+    let arUs=[];
+    let val =e.target.value;
+    this.state.users.map(row =>{
+        if (parseInt(val)=== row.us_id){
+            this.us=row.us_name+row.us_dolsn
+            arUs.push(row)
+       }
+    }) 
+}
+
+SelectedUser=(e)=>{
+    let usar=[]
+    let val =e.target.value;
+    this.state.users.map(row =>{
+        if (parseInt(val)=== row.us_id){
+            this.us_s=row.us_name+"  "+row.us_dolsn
+            usar.push(row)
+        }
+    })    
+    
+}
 
 onChanged =(e)=>{
 this.setState({val_eq:e.target.value});
@@ -87,6 +127,15 @@ this.state.eq_data.map(id =>{
         this.props.onClose();
     }
    
+    GetSelect =(e)=>{
+        this.SelectUser(e);
+        this.setState({val_user: e.target.value})
+    }
+    GetSelected =(e)=>{
+        this.SelectedUser(e);
+        this.setState({val_us_s: e.target.value})
+    }
+
     GetOnChange =(e)=>{
         this.setState({val_eq: e.target.value})
     }
@@ -124,16 +173,17 @@ this.state.eq_data.map(id =>{
             idotd: this.props.row.bl_otd_id,
             dop_sel: this.state.dop_sel, 
             eqid: this.props.row.bl_id,
-            val_eq: this.state.val_eq
-           
-            
+            val_eq: this.state.val_eq,
+            users: this.state.users,
+            val_user:this.state.val_user,
+            val_us_s:this.state.val_us_s,
+            us:this.us,
+            us_s:this.us_s
         }
-        console.log(this.state.val_eq)
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
         })
         const FileDownload = require('js-file-download');
-     //   console.log(this.props.row)
         await axio.post('/otdel/spisat14_31', {data},  { responseType: 'arraybuffer' }).then(res=>{
           FileDownload(res.data, '14-31.xlsx');
         });
@@ -142,9 +192,9 @@ this.state.eq_data.map(id =>{
        // console.log(data.amount)
       // 
         //await this.props.setLoaderHide();
-        await this.props.onClose();
-        await this.props.modalActClose();
-        await this.props.onReboot();
+        //await this.props.onClose();
+        //await this.props.modalActClose();
+        //await this.props.onReboot();
     }
 
     changeDop = async (e) => {
@@ -177,17 +227,16 @@ this.state.eq_data.map(id =>{
      console.log(this.state.dop_upload)
     }
     delRows = (data) => {
-        var arr = this.state.dop_upload;
-        for (var i = 0; i < arr.length; i++){//console.log(arr)
-         {
-            if (arr[i].bl_id === data.bl_id)
-            arr.splice(i, 1);
-                
+            var arr = this.state.dop_upload;
+            for (var i = 1; i < arr.length; i++){//console.log(arr)
+            { if (arr[i].bl_id === data.bl_id)
+                arr.splice(i, 1);
             }
-        }this.setState({
-            dop_upload: arr
-        })
-       }
+            this.setState({
+                dop_upload: arr
+            })
+            }
+        }
 
     render() {
       //  var indx = 1;
@@ -206,7 +255,10 @@ this.state.eq_data.map(id =>{
                         </div>
                         <div className='combo_div'>
                             <label>1: </label>
-                            <label className='act_container_text'>_____</label>
+                            <select onChange={this.GetSelect} value={this.state.val_user}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.state.users.map( id => <option key={this.nextUniqueId()} value={id.us_id}>{id.us_name + id.us_dolsn}</option>)}
+                            </select>
                         </div>
                         <div className='combo_div'>
                             <label>2: </label>
@@ -214,7 +266,10 @@ this.state.eq_data.map(id =>{
                         </div>
                         <div className='combo_div'>
                             <label>3: </label>
-                            <label className='act_container_text'>_____</label>
+                            <select onChange={this.GetSelected} value={this.state.val_us_s}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.state.users.map( id => <option key={this.nextUniqueId()} value={id.us_id}>{id.us_name + id.us_dolsn}</option>)}
+                            </select>
                         </div>
                         <div className='combo_div'>
                             <label>4: </label>
@@ -225,7 +280,6 @@ this.state.eq_data.map(id =>{
                             <select onChange={this.changeDop} value={this.state.dop_sel}>
                                 <option placeholder='----' value='-1'></option>
                                 {this.state.new_upload.map( id => <option key={this.nextUniqueId()} value={id.bl_id}>{id.equip_name}</option>)}
-                               {console.log(this.state.dop_upload)} 
                             </select>
                         </div>
                         <div className='combo_div'>

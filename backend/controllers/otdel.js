@@ -461,3 +461,15 @@ exports.backToSklad = async function(req, res) {
         res.send(docs);
     })
 }
+
+exports.ShowUserOtd = function(req,res){
+    Otdel.ShowUserOtd(function (err, docs) {
+        console.log(docs.rows)
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs.rows);
+
+    });
+    }

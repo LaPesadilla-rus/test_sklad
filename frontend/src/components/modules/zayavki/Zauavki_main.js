@@ -45,7 +45,7 @@ Look = (arr) => {
         <div className='Table_pol'>
             <div className='back'>
                     <button className='buttons' onClick={this.show}>Создать</button>
-                    <button className='buttons' onClick={this.onReboot} ></button>
+                    <button className='buttons' onClick={this.onReboot} >Обновить</button>
             </div>
                 <div className='ForB'>
                 <table className='Table' border='1' >
@@ -74,30 +74,3 @@ Look = (arr) => {
     }   
 }
 
-//export default Data_Block;
-
-
-/*{this.state.arr.map(  <Zauvki_nap  key={za_id} 
-    row={row} />)}
-Look={this.Look}/>
-
-{(this.state.arr.lenght > 0) ? this.state.arr.map(id => <Zauvki_nap 
-                                                        key={id.za_id} 
-                                                        row={id}
-                                                        Look={this.Look} />): null}</tbody>
-   {(this.state.arr.lenght > 0) ? this.state.arr.map(id => <Zauvki_nap 
-                                                        key={id.za_id} 
-                                                        row={id}
-                                                        Look={this.Look} />): null}</tbody>
-
-{this.state.arr.map(id =><Zauvki_nap Look={this.Look}>) )}/></Zauvki_nap>
-{this.state.arr.lenght >0 ?: ''}
-
-{ this.state.arr.map(id => <Zauvki_nap key={id.za_id} 
-                                                       row={id}
-                                                    Look={this.Look}/>)} 
-
-
-
-{this.state.arr.map(row=>< Zauvki_nap Look={this.Look}/>)} */
-// 57 строка - не работает. Проверить в консоли, потом по развертке

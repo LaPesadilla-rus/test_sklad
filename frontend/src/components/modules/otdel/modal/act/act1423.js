@@ -15,12 +15,20 @@ class Act1423 extends Component{
         this.osnUpload = [];
         this.dopUpload = [];
         this.dopData = [];
+        this.us ='';
+        this.us_s='';
         this.loader = false;
         this.state = {
             osn_sel: '',
             dop_sel: '',
             osn_upload: [],
             dop_upload: [],
+            users_otd: [],
+            user_arr:[],
+            users:[],
+            val_user:'',
+            val_us_s:'',
+            used_sotr:[]
         }
     }
 
@@ -32,6 +40,51 @@ class Act1423 extends Component{
         this.setState({dop_upload: arr }, () => {
             this.changeAmount(1, 0)
         })
+        let usarr =[];
+        axio.get('/otdel/ShowUserOtd').then 
+        (res=>{ 
+            res.data.map(row => { 
+                usarr.push(row);
+                //console.log(usarr);
+            })
+            this.setState({
+                user_arr: res.data,
+                users: usarr,
+                used_sotr:usarr
+            });
+        }); 
+    }
+
+    SelectUser=(e)=>{
+        let arUs=[];
+        let val =e.target.value;
+        this.state.users.map(row =>{
+            if (parseInt(val)=== row.us_id){
+                this.us=row.us_name+row.us_dolsn
+                arUs.push(row)
+           }
+        })  
+    }
+    
+    SelectedUser=(e)=>{
+        let usar=[]
+        let val =e.target.value;
+        this.state.users.map(row =>{
+            if (parseInt(val)=== row.us_id){
+                this.us_s=row.us_name+"  "+row.us_dolsn
+                usar.push(row)
+            }
+        })     
+         
+    }
+
+    GetSelect =(e)=>{
+        this.SelectUser(e);
+        this.setState({val_user: e.target.value})
+    }
+    GetSelected =(e)=>{
+        this.SelectedUser(e);
+        this.setState({val_us_s: e.target.value})
     }
 
     onClose = () => {
@@ -52,7 +105,12 @@ class Act1423 extends Component{
             act_id: 1,
             prim: '',
             equip: this.state.dop_upload,
-            ot_name: this.props.data.ot_name
+            ot_name: this.props.data.ot_name,
+            users: this.state.users,
+            val_user:this.state.val_user,
+            val_us_s:this.state.val_us_s,
+            us:this.us,
+            us_s:this.us_s
         }
         this.state.dop_upload.forEach(row => {
             data.prim = data.prim + ' ' + row.equip_name;
@@ -117,7 +175,7 @@ class Act1423 extends Component{
 
     delRows = (data) => {
         var arr = this.state.dop_upload;
-        for (var i = 0; i < arr.length; i++){//console.log(arr)
+        for (var i = 1; i < arr.length; i++){//console.log(arr)
          {
             if (arr[i].bl_id === data.bl_id)
             arr.splice(i, 1);
@@ -146,7 +204,10 @@ class Act1423 extends Component{
                         </div>
                         <div className='combo_div'>
                             <label>1: </label>
-                            <label className='act_container_text'>_____</label>
+                            <select onChange={this.GetSelect} value={this.state.val_user}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.state.users.map( id => <option key={this.nextUniqueId()} value={id.us_id}>{id.us_name + id.us_dolsn}</option>)} 
+                            </select>
                         </div>
                         <div className='combo_div'>
                             <label>2: </label>
@@ -154,7 +215,10 @@ class Act1423 extends Component{
                         </div>
                         <div className='combo_div'>
                             <label>3: </label>
-                            <label className='act_container_text'>_____</label>
+                            <select onChange={this.GetSelected} value={this.state.val_us_s}>
+                                <option placeholder='----' value='-1'></option>
+                                {this.state.users.map( id => <option key={this.nextUniqueId()} value={id.us_id}>{id.us_name + id.us_dolsn}</option>)}
+                            </select>
                         </div>
                         <div className='combo_div'>
                             <label>4: </label>

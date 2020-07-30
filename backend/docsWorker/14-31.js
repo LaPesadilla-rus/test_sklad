@@ -12,20 +12,26 @@ exports.file_14_31 = function (data, req, docNum, res) {
     }
     const alligment = { vertical: 'middle', horizontal: 'center', wrapText: true };
 
+    console.log(data)
+
     var workbook = new Excel.Workbook();
     workbook.xlsx.readFile('./docs/14-31.xlsx').then(function(){
         var ws = workbook.getWorksheet(1);
-        console.log(req.body.data)
+        n=13
+        ws.mergeCells(n,2,n,7);
+        ws.getCell(n,2).value = req.body.data.us;
+        n=15
+        ws.mergeCells(n,2,n,7);
+        ws.getCell(n,2).value = req.body.data.us_s;
         var n = 20;
         ws.getCell(11,10).value = req.body.data.ot_name;
         ws.getCell(7,1).value = ws.getCell(7,1).value + ' ' + docNum;
-
         rows = ws.getRow(n);
         rows.height = 38;
         rows.commit();
-         
         i=1
         data.dop_upload.forEach(row => {
+
             rows = ws.getRow(n);
             rows.height = 38;
             rows.commit();
