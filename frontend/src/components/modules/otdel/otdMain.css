@@ -81,3 +81,18 @@
     background-color: rgb(52, 88, 121);
 }
 
+.otd_wait_spisat {
+    background-color: rgb(167, 125, 98);
+    border: 1px solid rgb(92, 50, 10);
+    box-shadow: 0 0 3px rgb(187, 82, 64);
+    transition: all 0.5s;
+}
+
+.otd_wait_spisat:hover{
+    background-color: rgb(160, 85, 39);
+}
+
+.test_otd{
+    color: seagreen;
+}
+

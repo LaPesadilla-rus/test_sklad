@@ -15,6 +15,7 @@ import Act1425 from './modal/act/act1425';
 import Act1431 from './modal/act/act1431';
 import Act1433 from './modal/act/act1433';
 import Defect from './modal/act/defect';
+import Zakl from './modal/act/zakl';
 
 
 export default class OtdBlock2 extends Component{
@@ -31,6 +32,7 @@ export default class OtdBlock2 extends Component{
             isAct1431Open: false,
             isAct1433Open: false,
             isDefectOpen: false,
+            isZaklOpen: false,
             selEquip: [],
             act_data: [],
             osn_equip: [],
@@ -77,6 +79,11 @@ export default class OtdBlock2 extends Component{
 
     changeDefect = () =>{
         this.setState(state => ({ isDefectOpen: !state.isDefectOpen}));
+        this.sortDopOsn();
+    }
+
+    changeZakl = () =>{
+        this.setState(state => ({ isZaklOpen: !state.isZaklOpen}));
         this.sortDopOsn();
     }
 
@@ -145,6 +152,9 @@ export default class OtdBlock2 extends Component{
         if (reg === '100'){
             this.changeDefect();
         }
+        if (reg === '200'){
+            this.changeZakl();
+        }
     }
             
     render() {
@@ -154,6 +164,7 @@ export default class OtdBlock2 extends Component{
                 <table className='otd_table'>
                     <thead>
                         <tr>
+                            <th></th>
                             <th>МОЛ</th>
                             <th>Инв. ном</th>
                             <th>Наименование</th>
@@ -271,6 +282,17 @@ export default class OtdBlock2 extends Component{
                 {this.state.isDefectOpen &&
                     <Defect key={this.nextUniqueId()}
                                 onClose={this.changeDefect}
+                                modalActClose={this.changeModalAct}
+                                onReboot={this.props.onReboot}
+                                row={this.state.act_data}
+                                actUser='Admin'
+                                data={this.props.row}
+                                osn_equip={this.state.osn_equip}
+                                dop_equip={this.state.dop_equip} />
+                }
+                {this.state.isZaklOpen &&
+                    <Zakl key={this.nextUniqueId()}
+                                onClose={this.changeZakl}
                                 modalActClose={this.changeModalAct}
                                 onReboot={this.props.onReboot}
                                 row={this.state.act_data}

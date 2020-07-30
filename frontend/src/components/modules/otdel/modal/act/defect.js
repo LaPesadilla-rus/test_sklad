@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { setLoaderShow, setLoaderHide } from '../../../../../store/loader/actions';
 import { setMessageShow } from '../../../../../store/message/actions';
 
-import Column from './column1423';
-
 class Defect extends Component{
     constructor(){
         super();
@@ -73,8 +71,8 @@ class Defect extends Component{
         }else if (fDay > 4 || fDay === 1){
             str += ' Дней '
         }
-        let row = this.props.row;
-        row.sp_amount = 1;
+        //let row = this.props.row;
+        //row.sp_amount = 1;
         this.setState({
             dateRazn: str,
             dateExp: d.getFullYear(),
@@ -121,49 +119,12 @@ class Defect extends Component{
         
     }
 
-    /*changeOsn = (e) => {
-        var arr = [],
-        val = parseInt(e.target.value);
-        this.props.osn_equip.forEach(row => {
-            if (row.bl_id === val){
-                arr.push(row);
-            }
-        });
-        this.setState({ 
-            osn_sel: e.target.value,
-            osn_upload: arr,
-        });
-        this.osnUpload = arr;
-    }*/
-
-    /*changeDop = (e) => {
-        var arr = [],
-        val = parseInt(e.target.value),
-        indx = 0;
-        this.dopData.forEach(row => {
-            if (row.bl_id === val){
-                arr.push(row);
-                this.dopData.splice(indx, 1);
-            }
-            indx ++;
-        });
-        this.setState({ 
-            dop_sel: e.target.value,
-        });
-        let l = this.state.dop_upload.length;
-        this.setState({dop_upload: this.state.dop_upload.concat(arr)}, () => {
-            this.changeAmount(1, l++)
-        })
-        this.dopUpload.push(arr);
-    }*/
-
     changeAmount = (val, indx) => {
         let arr = this.state.dop_upload;
         arr[indx].sp_amount = val;
         this.setState({
             dop_upload: arr
-        })
-        
+        }) 
     }
 
     render() {

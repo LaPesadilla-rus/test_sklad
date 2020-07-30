@@ -24,15 +24,20 @@ export default class ModalAct extends Component{
                             <button className='button' onClick={this.clickAct} value='100'>Дефектная ведомость</button>
                         </div>;
         let refoundButton = <div className='otdel_workspace_equip'>
-                                <button className='button button_yellow'>Вернуть на склад</button>
+                                <button className='button button_yellow' onClick={this.clickAct} value='800'>Вернуть на склад</button>
                             </div>
+        let zaklButton = <div>
+            <button className='button'  onClick={this.clickAct} value='200'>Экспертное заключение</button>
+        </div>
         return (
             <div className='background_modal background_modal_pos'>
                 <div className="modal modal_pos">
                     <div className="otdel_modal">
                         <p>Выбрать способ списания: </p>
-                        {(this.props.data.eq_kat_id === 0) ? defButtons : actButtons}
+                        {(this.props.data.eq_kat_id === 0) ?((!this.props.data.bl_spisat) ? defButtons : null ): actButtons}
+                        {(this.props.data.bl_spisat) ? zaklButton : null}
                         {(this.props.role === 0) ? refoundButton: null}
+                        
                         <div className='combo_div'>
                             <button className='button button_red' onClick={this.onClose}>Отмена</button>
                         </div>

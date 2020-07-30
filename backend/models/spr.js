@@ -50,10 +50,10 @@ exports.all = function (cb) {
                 (te.te_name || ' ' || ma.ma_name || ' '|| eq.eq_name) as item, eq.eq_name as equip_name
                 FROM equip_spr eq
                 
-                inner join marka_equip_spr ma
+                left outer join marka_equip_spr ma
                 on ma.ma_id = eq.eq_mark_id
                 
-                inner join type_equip_spr te
+                left outer join type_equip_spr te
                 on te.te_id = eq_type_id`
     , (err, res) => {
         errm = {...errm, err: err};

@@ -434,6 +434,7 @@ exports.spisatDefect = async function(req, res) {
         
     });
     for (i = 0; i < req.body.data.equip.length; i++){
+        console.log(req.body.data.equip[i])
         await Otdel.spisatInsert(docNum, req.body.data, req.body.data.equip[i], req.headers.us_id, function (err, docs) {
             if (err) {
                 console.log(err);
@@ -441,8 +442,14 @@ exports.spisatDefect = async function(req, res) {
             }
         });
     }
+    await Otdel.defectStatUpd(req.body.data, function (err, docs) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+    });
     
-    await Hyst.spisatHystory(docNum, req.body.data, req.headers.us_id, function (err, docs) {
+    await Hyst.spisatHystoryDefect(docNum, req.body.data, req.headers.us_id, function (err, docs) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);

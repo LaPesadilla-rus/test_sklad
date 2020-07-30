@@ -24,6 +24,26 @@ exports.spisatHystory = async function (docNum,data, us_id, cb) {
      });
 }
 
+exports.spisatHystoryDefect = async function (docNum,data, us_id, cb) {
+    //console.log(data, '-------')
+    var sql = ` `;
+     data.dop_upload.forEach(row => {
+        sql = ` INSERT INTO public.history(
+                hy_eq_id, hy_pr_id, hy_un_id, hy_amount, 
+                hy_inv_num, hy_contr_num, hy_prim, hy_inp_usr, 
+                hy_mol_id1, hy_otd_id1, hy_in_osn_id, 
+                hy_act_id, hy_act_num, hy_user, hy_poyasn, hy_usr_id)
+                VALUES ( `+row.bl_eq_id+`, `+row.bl_pr_id+`, `+row.bl_un_id+`, `+row.sp_amount+`, 
+                            '`+row.bl_inv_num+`', '`+row.bl_contr_num+`', '`+row.bl_prim+`', '`+row.bl_inp_usr+`', 
+                            `+row.bl_mol_id+`, `+row.bl_otd_id+`, `+data.equip[0].bl_id+`, 
+                            `+data.act_id+`, `+docNum+`, '`+data.user+`', 'Ожидает списания', `+us_id+`);
+        `;
+        pool.query(sql, (err,res) => {
+            cb(err,res);
+        });
+     });
+}
+
 exports.Move = async function (data, us_id, cb) {
     if (!data.mol_id){
         data.mol_id = data.row.bl_mol_id

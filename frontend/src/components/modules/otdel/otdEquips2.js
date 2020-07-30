@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './otdMain.css';
 import axio from 'axios';
 
+import { MdBuild, MdSettings, MdCallToAction, MdGavel} from "react-icons/md";
+
 export default class OtdEquips2 extends Component{
     constructor(){
         super();
@@ -72,16 +74,23 @@ export default class OtdEquips2 extends Component{
 
     render() {
         let button_item = `button_item`;
+        let icon = <MdBuild/>
         if (this.props.row.kat_name === 'Основные средства'){
             button_item += ` kat_osn`;
+            icon = <MdSettings/>
         }
         if (this.props.row.kat_name === 'Картриджи'){
             button_item += ` kat_kartr`;
+            icon = <MdCallToAction/>
+        }
+        if (this.props.row.bl_spisat){
+            button_item = `button_item otd_wait_spisat`;
+            icon = <MdGavel/>
         }
         let spsButton = <div className='button_container'> <div className='button button_yellow' onClick={this.clickAct}>Списать</div></div>
-        
         return (
-                <tr className={`button sklad_table_row `+((this.props.reg) ? 'otd_button_red' : button_item)+`  otdel_grow`} >
+                <tr className={`button sklad_table_row  `+((this.props.reg) ? 'otd_button_red' : button_item)+`  otdel_grow`} >
+                    <td>{icon}</td>
                     <td onClick={this.clickMove}>{this.props.mol && this.props.mol}</td>
                     <td onClick={this.clickMove}>{this.props.row.bl_inv_num}</td>
                     <td onClick={this.clickMove}>{this.props.row.equip_name}</td>
